@@ -1,0 +1,136 @@
+import type { ComponentDef, StyleBundle } from "@/lib/styles/types";
+import { glass } from "./kit";
+import { glassCode } from "./code";
+import {
+  AccordionPreview,
+  AvatarPreview,
+  BadgePreview,
+  ButtonPreview,
+  CardPreview,
+  DropdownPreview,
+  GlassDecor,
+  InputPreview,
+  ModalPreview,
+  NavbarPreview,
+  ProgressPreview,
+  SkeletonPreview,
+  SwitchPreview,
+  TabsPreview,
+  ToastPreview,
+  TooltipPreview,
+} from "./previews";
+
+export const GLASS_DEFS: ComponentDef[] = [
+  {
+    id: "button",
+    name: "Button",
+    description: "Primary action with a violet glow and a frosted secondary — both with blur, rgba borders and hover shine.",
+    Preview: ButtonPreview,
+    code: glassCode.button,
+  },
+  {
+    id: "card",
+    name: "Card",
+    description: "A floating glass panel over a gradient image placeholder, badge chip and glowing CTA.",
+    Preview: CardPreview,
+    code: glassCode.card,
+  },
+  {
+    id: "navbar",
+    name: "Navbar",
+    description: "Frosted site header with gradient logo orb, muted links and a glass sign-in pill.",
+    Preview: NavbarPreview,
+    code: glassCode.navbar,
+  },
+  {
+    id: "input",
+    name: "Input field",
+    description: "Translucent field with uppercase micro-label and a violet focus ring.",
+    Preview: InputPreview,
+    code: glassCode.input,
+  },
+  {
+    id: "badge",
+    name: "Badge / Tag",
+    description: "Tinted glass pills — status dot, sparkle icon and neutral ghost variants.",
+    Preview: BadgePreview,
+    code: glassCode.badge,
+  },
+  {
+    id: "modal",
+    name: "Modal",
+    description: "Dialog on a blurred dark scrim. Click the trigger to open, backdrop or ✕ to close.",
+    Preview: ModalPreview,
+    code: glassCode.modal,
+  },
+  {
+    id: "accordion",
+    name: "Accordion",
+    description: "Three frosted FAQ rows with smooth grid-rows expand/collapse and rotating chevrons.",
+    Preview: AccordionPreview,
+    code: glassCode.accordion,
+  },
+  {
+    id: "tooltip",
+    name: "Tooltip",
+    description: "Hover the button — a glass bubble scales in with an arrow, pure CSS group-hover.",
+    Preview: TooltipPreview,
+    code: glassCode.tooltip,
+  },
+  {
+    id: "tabs",
+    name: "Tabs",
+    description: "Segmented glass track with a raised active pill and a frosted content panel.",
+    Preview: TabsPreview,
+    code: glassCode.tabs,
+  },
+  {
+    id: "dropdown",
+    name: "Dropdown menu",
+    description: "Trigger opens a heavily-blurred floating menu with icon rows and a destructive action.",
+    Preview: DropdownPreview,
+    code: glassCode.dropdown,
+  },
+  {
+    id: "switch",
+    name: "Toggle / Switch",
+    description: "On state glows violet with a soft halo; off state stays quietly frosted.",
+    Preview: SwitchPreview,
+    code: glassCode.switch,
+  },
+  {
+    id: "skeleton",
+    name: "Skeleton loader",
+    description: "Card-shaped glass skeleton with translucent pulsing blocks.",
+    Preview: SkeletonPreview,
+    code: glassCode.skeleton,
+  },
+  {
+    id: "toast",
+    name: "Toast / Notification",
+    description: "Success and error glass toasts with tinted icon wells and a countdown line.",
+    Preview: ToastPreview,
+    code: glassCode.toast,
+  },
+  {
+    id: "progress",
+    name: "Progress bar",
+    description: "Violet→cyan gradient fill with neon glow, animating to 72% with a live counter.",
+    Preview: ProgressPreview,
+    code: glassCode.progress,
+  },
+  {
+    id: "avatar",
+    name: "Avatar",
+    description: "Photo and gradient-initials avatars with a light ring and colored status dots.",
+    Preview: AvatarPreview,
+    code: glassCode.avatar,
+  },
+];
+
+export const GLASSMORPHISM_BUNDLE: StyleBundle = {
+  stage: (m) => glass(m).stage,
+  text: (m) => glass(m).text,
+  Decor: GlassDecor,
+  defs: GLASS_DEFS,
+};

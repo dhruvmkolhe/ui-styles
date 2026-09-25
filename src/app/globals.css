@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+    --radius: 0.625rem;
+  }
+
+  .dark {
+    --background: 240 10% 3.5%;
+    --foreground: 0 0% 96%;
+    --card: 240 8% 5.5%;
+    --card-foreground: 0 0% 96%;
+    --popover: 240 9% 6%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 0 0% 96%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 4.5% 11%;
+    --secondary-foreground: 0 0% 92%;
+    --muted: 240 4.5% 11%;
+    --muted-foreground: 240 5% 62%;
+    --accent: 240 4.5% 12%;
+    --accent-foreground: 0 0% 96%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 4.5% 14%;
+    --input: 240 4.5% 16%;
+    --ring: 240 4.9% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  ::selection {
+    @apply bg-violet-500/30;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* ---- Style-specific fonts used inside preview canvases ---- */
+  .font-impact {
+    font-family: Impact, Haettenschweiler, "Arial Narrow Bold", "Anton",
+      sans-serif;
+    letter-spacing: 0.01em;
+  }
+  .font-y2k {
+    font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", "Segoe Print",
+      cursive;
+  }
+  .font-terminal {
+    font-family: var(--font-geist-mono), "Courier New", monospace;
+  }
+
+  /* ---- Dark-tech grid overlay ---- */
+  .grid-lines-green {
+    background-image: linear-gradient(rgba(0, 255, 65, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 255, 65, 0.08) 1px, transparent 1px);
+    background-size: 26px 26px;
+  }
+  .grid-lines-cyan {
+    background-image: linear-gradient(rgba(0, 255, 255, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 255, 255, 0.07) 1px, transparent 1px);
+    background-size: 26px 26px;
+  }
+
+  /* ---- Hero gradient text ---- */
+  .text-gradient {
+    @apply bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent;
+  }
+
+  /* ---- Thin scrollbars for code panels ---- */
+  .code-scroll::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+  }
+  .code-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .code-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+  }
+  .code-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.22);
+  }
+}
