@@ -1,57 +1,62 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { STYLE_LIST } from "@/lib/styles/registry";
 import { StyleCard } from "@/components/styles/style-card";
 
-const FILTERS = [
-  { id: "all", label: "All styles" },
-  { id: "live", label: "Live galleries" },
-  { id: "soon", label: "Coming soon" },
-] as const;
-
-type FilterId = (typeof FILTERS)[number]["id"];
-
 export function ExploreGrid() {
-  const [filter, setFilter] = useState<FilterId>("all");
+  const [selectedTag, setSelectedTag] = useState<string>("all");
 
-  const styles = STYLE_LIST.filter((s) =>
-    filter === "all" ? true : s.status === filter
-  );
+  const allTags = useMemo(() => {
+    const set = new Set<string>();
+    STYLE_LIST.forEach((s) => s.tags.forEach((t) => set.add(t.toLowerCase())));
+    return ["all", ...Array.from(set)];
+  }, []);
 
-  const counts: Record<FilterId, number> = {
-    all: STYLE_LIST.length,
-    live: STYLE_LIST.filter((s) => s.status === "live").length,
-    soon: STYLE_LIST.filter((s) => s.status === "soon").length,
-  };
+  const styles = useMemo(() => {
+    if (selectedTag === "all") return STYLE_LIST;
+    return STYLE_LIST.filter((s) =>
+      s.tags.some((t) => t.toLowerCase() === selectedTag)
+    );
+  }, [selectedTag]);
 
   return (
     <div className="mt-12">
-      {/* filters */}
-      <div className="flex flex-wrap items-center justify-center gap-2">
-        {FILTERS.map((f) => (
-          <button
-            key={f.id}
-            onClick={() => setFilter(f.id)}
-            className={cn(
-              "rounded-full border px-4 py-1.5 text-xs font-medium transition-colors",
-              filter === f.id
-                ? "border-violet-500/50 bg-violet-500/15 text-violet-300"
-                : "border-border bg-card/50 text-muted-foreground hover:text-foreground"
-            )}
-          >
-            {f.label}
-            <span className="ml-1.5 text-[10px] opacity-70">{counts[f.id]}</span>
-          </button>
-        ))}
+      {/* tag filter bar */}
+      <div className="flex flex-wrap items-center justify-center gap-2 max-w-4xl mx-auto">
+        {allTags.map((tag) => {
+          const active = selectedTag === tag;
+          const count =
+            tag === "all"
+              ? STYLE_LIST.length
+              : STYLE_LIST.filter((s) =>
+                  s.tags.some((t) => t.toLowerCase() === tag)
+                ).length;
+
+          return (
+            <button
+              key={tag}
+              onClick={() => setSelectedTag(tag)}
+              className={cn(
+                "rounded-full border px-3.5 py-1.5 text-xs font-medium capitalize transition-all",
+                active
+                  ? "border-violet-500 bg-violet-500/20 text-violet-300 shadow-sm"
+                  : "border-border bg-card/50 text-muted-foreground hover:border-violet-500/30 hover:text-foreground"
+              )}
+            >
+              {tag}
+              <span className="ml-1.5 text-[10px] opacity-70">({count})</span>
+            </button>
+          );
+        })}
       </div>
 
-      {/* grid */}
+      {/* grid: 1 col mobile / 2 tablet / 3 desktop / 4 xl */}
       <motion.div
         layout
-        className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        className="mt-10 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
         {styles.map((s, i) => (
           <motion.div
@@ -59,7 +64,7 @@ export function ExploreGrid() {
             layout
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: i * 0.04 }}
+            transition={{ duration: 0.35, delay: Math.min(i * 0.03, 0.3) }}
           >
             <StyleCard meta={s} variant="full" />
           </motion.div>

@@ -6,9 +6,9 @@ import { ArrowRight, Sparkles, SquareTerminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const stats = [
-  { value: "8", label: "design aesthetics" },
+  { value: "25", label: "design aesthetics" },
   { value: "15", label: "components per style" },
-  { value: "120", label: "copy-ready snippets" },
+  { value: "375", label: "copy-ready snippets" },
   { value: "2×", label: "light & dark modes" },
 ];
 
@@ -45,7 +45,7 @@ export function Hero() {
         <motion.div variants={float} initial="hidden" animate="show" custom={0}>
           <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-4 py-1.5 text-xs text-muted-foreground backdrop-blur">
             <Sparkles className="h-3.5 w-3.5 text-violet-400" />
-            8 aesthetics · 120 components · one hub
+            25 aesthetics · 375 components · one hub
           </span>
         </motion.div>
 
@@ -66,7 +66,7 @@ export function Hero() {
           custom={2}
           className="mt-6 max-w-xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg"
         >
-          Browse 8 design aesthetics. Copy clean code. Ship faster.
+          Browse 25 design aesthetics. Copy clean code. Ship faster.
         </motion.p>
 
         <motion.div

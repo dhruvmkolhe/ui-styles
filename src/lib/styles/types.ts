@@ -10,7 +10,31 @@ export type StyleSlug =
   | "neomorphism"
   | "retro-y2k"
   | "dark-tech"
-  | "bento-grid";
+  | "bento-grid"
+  | "neobrutalist"
+  | "swiss"
+  | "editorial"
+  | "retro-futuristic"
+  | "bauhaus"
+  | "art-deco"
+  | "material"
+  | "monochromatic"
+  | "scandinavian"
+  | "modernist"
+  | "organic"
+  | "luxury-minimal"
+  | "neo-geo"
+  | "kinetic"
+  | "gradient-modern"
+  | "typography-first"
+  | "metropolitan";
+
+export interface StyleTokens {
+  bg: string;
+  fg: string;
+  accent: string;
+  border: string;
+}
 
 export interface StyleMeta {
   slug: StyleSlug;
@@ -21,6 +45,7 @@ export interface StyleMeta {
   palette: string[];
   status: "live" | "soon";
   defaultMode: Mode;
+  tokens?: StyleTokens;
 }
 
 export interface ComponentDef {

@@ -12,19 +12,27 @@ function esc(s: string): string {
 }
 
 const C = {
-  punct: "text-zinc-600",
-  tag: "text-rose-400/90",
-  attr: "text-sky-300/90",
-  str: "text-emerald-300/90",
-  comment: "text-zinc-500 italic",
+  punct: "text-zinc-400",
+  tag: "text-rose-400 font-medium",
+  attr: "text-sky-300",
+  str: "text-emerald-300",
+  comment: "text-amber-400/80 italic",
 };
 
 function highlightTag(raw: string): string {
   // raw includes the leading < and trailing >
   let out = "";
-  const re = /(<\/?)([a-zA-Z][a-zA-Z0-9-]*)|([a-zA-Z_:@\-.[\]()#\w]+)(=)("(?:[^"]*)"|'(?:[^')]*')?[^"]*")|("[^"]*")|(\/?>)|([^"'>=\s]+)/g;
+  const re =
+    /(<\/?)([a-zA-Z][a-zA-Z0-9-]*)|([a-zA-Z_:@\-.[\]()#%/\w]+)(=)("(?:[^"]*)"|'(?:[^'])*'|[^"'>\s]+)|("[^"]*")|(\/?>)|([^"'>=\s]+)/g;
   let m: RegExpExecArray | null;
+  let lastIndex = 0;
+
   while ((m = re.exec(raw)) !== null) {
+    if (m.index > lastIndex) {
+      out += esc(raw.slice(lastIndex, m.index));
+    }
+    lastIndex = re.lastIndex;
+
     if (m[1] !== undefined) {
       out += `<span class="${C.punct}">${esc(m[1])}</span><span class="${C.tag}">${esc(m[2])}</span>`;
     } else if (m[3] !== undefined) {
@@ -37,6 +45,11 @@ function highlightTag(raw: string): string {
       out += esc(m[0]);
     }
   }
+
+  if (lastIndex < raw.length) {
+    out += esc(raw.slice(lastIndex));
+  }
+
   return out;
 }
 
@@ -50,7 +63,6 @@ export function highlightHtml(src: string): string {
       out += `<span class="${C.comment}">${esc(src.slice(i, j))}</span>`;
       i = j;
     } else if (src[i] === "<") {
-      // find the closing > that is not inside quotes
       let j = i + 1;
       let quote: string | null = null;
       while (j < src.length) {

@@ -1,0 +1,269 @@
+"use client";
+
+import React from "react";
+import type { Mode } from "@/lib/styles/types";
+import { kinetic } from "./kit";
+
+function ArrowRightIcon() {
+  return (
+    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+    </svg>
+  );
+}
+
+function ZapIcon() {
+  return (
+    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+    </svg>
+  );
+}
+
+function XIcon() {
+  return (
+    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  );
+}
+
+export function ButtonPreview({ mode }: { mode: Mode }) {
+  const k = kinetic(mode);
+  return (
+    <div className="flex flex-wrap items-center gap-4">
+      <button className={k.btnPrimary}>
+        <span>MAX VELOCITY</span>
+        <ZapIcon />
+      </button>
+      <button className={k.btnSecondary}>
+        <span>SLANTED BOOST</span>
+      </button>
+    </div>
+  );
+}
+
+export function CardPreview({ mode }: { mode: Mode }) {
+  const k = kinetic(mode);
+  return (
+    <div className={`${k.panel} w-full max-w-md space-y-4`}>
+      <div className={`flex items-center justify-between border-b-2 ${mode === 'dark' ? 'border-[#FF5500]' : 'border-[#0A0E17]'} pb-3`}>
+        <div className="flex items-center gap-2">
+          <span className="w-3 h-3 bg-[#FF5500] -skew-x-6 inline-block" />
+          <span className="w-3 h-3 bg-[#00E5FF] -skew-x-6 inline-block" />
+        </div>
+        <span className={k.badge}>KINETIC BOOSTER</span>
+      </div>
+      <h3 className={`${k.heading} text-2xl leading-none`}>ACCELERATED MOTION ENGINE</h3>
+      <p className={`${k.muted} font-sans text-xs leading-relaxed uppercase`}>
+        Slanted 6-degree angles, high-contrast kinetic orange, electric cyan accents, and velocity indicator lines.
+      </p>
+      <div className="pt-2 flex items-center justify-between">
+        <span className="font-mono text-[10px] text-[#00E5FF] font-bold">SPD: 240 FPS</span>
+        <button className={k.btnPrimarySm}>
+          <span>ACCELERATE</span>
+          <ArrowRightIcon />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export function NavbarPreview({ mode }: { mode: Mode }) {
+  const k = kinetic(mode);
+  return (
+    <header className={`${k.bar} flex items-center justify-between px-6 py-4 w-full`}>
+      <div className="flex items-center gap-3">
+        <div className="w-5 h-5 bg-[#FF5500] -skew-x-12 flex items-center justify-center text-white font-black text-xs">
+          K
+        </div>
+        <a href="#" className="font-black text-sm uppercase tracking-wider text-[#FF5500] -skew-x-6">KINETIC_LAB</a>
+      </div>
+
+      <nav className="hidden md:flex items-center gap-8 font-mono text-xs uppercase tracking-widest font-black">
+        <a href="#" className="text-[#FF5500] underline decoration-2 underline-offset-4">01. SPEED</a>
+        <a href="#" className={`${k.muted} hover:text-[#00E5FF]`}>02. MOTION</a>
+        <a href="#" className={`${k.muted} hover:text-[#00E5FF]`}>03. VECTORS</a>
+      </nav>
+
+      <button className={k.btnPrimarySm}>LAUNCH SPEED</button>
+    </header>
+  );
+}
+
+export function InputPreview({ mode }: { mode: Mode }) {
+  const k = kinetic(mode);
+  return (
+    <div className="w-full max-w-sm space-y-1.5">
+      <label className={k.label}>01 // INPUT VELOCITY PARAMETER</label>
+      <input type="text" placeholder="BOOST-ORANGE-900" className={k.input} defaultValue="" />
+      <p className="font-mono text-[10px] text-[#FF5500] font-bold">KINETIC ENGINE ACCELERATION</p>
+    </div>
+  );
+}
+
+export function BadgePreview({ mode }: { mode: Mode }) {
+  const k = kinetic(mode);
+  return (
+    <div className="flex flex-wrap items-center gap-3">
+      <span className={k.badge}>KINETIC ORANGE</span>
+      <span className={k.badgeOutline}>ELECTRIC CYAN</span>
+      <span className="inline-flex items-center px-2.5 py-0.5 text-[10px] font-black uppercase tracking-widest bg-[#00E5FF] text-[#0A0E17] border border-black -skew-x-6">
+        BOOST READY
+      </span>
+    </div>
+  );
+}
+
+export function ModalPreview({ mode }: { mode: Mode }) {
+  const k = kinetic(mode);
+  return (
+    <div className={`${k.panel} w-full max-w-md space-y-5`}>
+      <div className={`flex items-center justify-between border-b-2 ${mode === 'dark' ? 'border-[#FF5500]' : 'border-[#0A0E17]'} pb-3`}>
+        <span className="font-mono text-xs font-bold text-[#FF5500] -skew-x-6">MAX OVERDRIVE ALERT</span>
+        <button className={`${k.muted} hover:text-[#FF5500]`}><XIcon /></button>
+      </div>
+      <h3 className={`${k.heading} text-xl`}>ENGAGE TURBO BOOST ENGINE?</h3>
+      <p className={`${k.muted} font-sans text-xs leading-relaxed uppercase`}>
+        Motion vector parameters will be boosted to maximum 240Hz refresh rate.
+      </p>
+      <div className="flex justify-end gap-3 pt-2">
+        <button className={k.btnSecondary}>ABORT</button>
+        <button className={k.btnPrimary}>ENGAGE BOOST</button>
+      </div>
+    </div>
+  );
+}
+
+export function AccordionPreview({ mode }: { mode: Mode }) {
+  const k = kinetic(mode);
+  return (
+    <div className={`${k.panel} w-full max-w-md divide-y-2 ${mode === 'dark' ? 'divide-[#FF5500]' : 'divide-[#0A0E17]'} p-0`}>
+      <div className="p-4">
+        <button className="w-full flex items-center justify-between text-left font-mono text-xs font-black uppercase tracking-wider text-[#FF5500]">
+          <span>01 // WHAT IS KINETIC DESIGN?</span>
+          <span className="font-black">-</span>
+        </button>
+        <p className={`mt-3 ${k.muted} font-sans text-xs leading-relaxed uppercase`}>
+          UI design centered around physical momentum, slanted 6-degree angles, speed lines, and rapid transition feedback.
+        </p>
+      </div>
+      <div className="p-4">
+        <button className={`w-full flex items-center justify-between text-left font-mono text-xs font-black uppercase tracking-wider ${k.muted}`}>
+          <span>02 // HIGH-ENERGY CONTRAST</span>
+          <span className="font-black">+</span>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export function TooltipPreview({ mode }: { mode: Mode }) {
+  return (
+    <div className="relative inline-block">
+      <div className={`bg-[#FF5500] text-white border-2 border-black px-3 py-1 font-mono text-[10px] font-black uppercase tracking-widest -skew-x-6 ${mode === 'dark' ? 'shadow-[2px_2px_0_#00E5FF]' : 'shadow-[2px_2px_0_#0A0E17]'}`}>
+        SPD: 240FPS-ORANGE
+      </div>
+    </div>
+  );
+}
+
+export function TabsPreview({ mode }: { mode: Mode }) {
+  const k = kinetic(mode);
+  return (
+    <div className={`flex border-b-2 ${mode === 'dark' ? 'border-[#FF5500]' : 'border-[#0A0E17]'} w-full max-w-md font-mono text-xs`}>
+      <button className="px-5 py-2.5 bg-[#FF5500] text-white font-black tracking-wider -skew-x-6 border-r-2 border-black">
+        01. VELOCITY
+      </button>
+      <button className="px-5 py-2.5 bg-[#00E5FF] text-[#0A0E17] font-black tracking-wider -skew-x-6 border-r-2 border-black">
+        02. TURBO
+      </button>
+      <button className={`px-5 py-2.5 ${k.muted} font-black tracking-wider`}>
+        03. VECTOR
+      </button>
+    </div>
+  );
+}
+
+export function DropdownPreview({ mode }: { mode: Mode }) {
+  const k = kinetic(mode);
+  return (
+    <div className={`${k.panel} w-56 p-0 divide-y-2 ${mode === 'dark' ? 'divide-[#FF5500]' : 'divide-[#0A0E17]'} font-mono text-xs uppercase tracking-wider`}>
+      <div className="p-3 bg-[#FF5500] text-white font-black flex justify-between items-center -skew-x-6">
+        <span>SELECT SPEED</span>
+        <span>▼</span>
+      </div>
+      <a href="#" className="block p-3 text-[#00E5FF] hover:bg-[#00E5FF] hover:text-[#0A0E17] transition-colors">120 FPS HIGH</a>
+      <a href="#" className="block p-3 text-[#FF5500] hover:bg-[#FF5500] hover:text-white transition-colors">240 FPS TURBO</a>
+      <a href="#" className="block p-3 text-white hover:bg-white hover:text-black transition-colors">UNLIMITED MAX</a>
+    </div>
+  );
+}
+
+export function SwitchPreview({ mode }: { mode: Mode }) {
+  const k = kinetic(mode);
+  return (
+    <div className="flex items-center gap-4">
+      <button className={`w-12 h-6 border-2 border-black bg-[#00E5FF] relative p-0.5 rounded-none -skew-x-6 ${mode === 'dark' ? 'shadow-[2px_2px_0_#FF5500]' : 'shadow-[2px_2px_0_#0A0E17]'}`}>
+        <div className="w-5 h-4.5 bg-[#FF5500] rounded-none" />
+      </button>
+      <span className={`font-mono text-xs font-black tracking-widest -skew-x-6 ${k.heading}`}>BOOST ENGINE: ACTIVE</span>
+    </div>
+  );
+}
+
+export function SkeletonPreview({ mode }: { mode: Mode }) {
+  const k = kinetic(mode);
+  return (
+    <div className={`${k.panel} w-full max-w-sm p-6 space-y-4`}>
+      <div className="h-4 bg-[#FF5500] animate-pulse w-1/3 -skew-x-6" />
+      <div className="h-8 bg-[#00E5FF] animate-pulse w-3/4 border-2 border-black -skew-x-6" />
+      <div className="space-y-2">
+        <div className="h-3 bg-[#FF5500]/30 animate-pulse w-full" />
+        <div className="h-3 bg-[#FF5500]/30 animate-pulse w-5/6" />
+      </div>
+    </div>
+  );
+}
+
+export function ToastPreview({ mode }: { mode: Mode }) {
+  const k = kinetic(mode);
+  return (
+    <div className={`${k.panel} w-full max-w-sm p-4 border-l-8 border-l-[#FF5500] flex items-start gap-3`}>
+      <div className="w-3 h-3 bg-[#00E5FF] border border-black mt-0.5 flex-shrink-0 -skew-x-6" />
+      <div className="space-y-1">
+        <p className="font-mono text-xs font-black text-[#FF5500] -skew-x-6">VELOCITY BOOST DEPLOYED</p>
+        <p className={`${k.muted} font-mono text-xs uppercase`}>Engine refresh rate boosted to 240Hz.</p>
+      </div>
+    </div>
+  );
+}
+
+export function ProgressPreview({ mode }: { mode: Mode }) {
+  return (
+    <div className="w-full max-w-sm space-y-2">
+      <div className="flex justify-between font-mono text-xs font-black uppercase">
+        <span className="text-[#00E5FF]">ACCELERATION</span>
+        <span className="text-[#FF5500]">96%</span>
+      </div>
+      <div className={`h-4 w-full border-2 border-black ${mode === 'dark' ? 'bg-[#0A0E17]' : 'bg-white'} p-0.5 shadow-[2px_2px_0_#FF5500]`}>
+        <div className="h-full bg-gradient-to-r from-[#FF5500] to-[#00E5FF] w-[96%] -skew-x-6" />
+      </div>
+    </div>
+  );
+}
+
+export function AvatarPreview({ mode }: { mode: Mode }) {
+  const k = kinetic(mode);
+  return (
+    <div className="flex items-center gap-3">
+      <div className="w-10 h-10 bg-[#FF5500] text-white border-2 border-[#00E5FF] flex items-center justify-center font-mono font-black text-sm -skew-x-6 shadow-[2px_2px_0_#00E5FF]">
+        KL
+      </div>
+      <div>
+        <p className={`font-black text-xs uppercase -skew-x-6 ${k.heading}`}>SPEED RACER</p>
+        <p className="font-mono text-[10px] text-[#00E5FF] uppercase font-bold">KINETIC PILOT</p>
+      </div>
+    </div>
+  );
+}

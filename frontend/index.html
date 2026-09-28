@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b0d12" />
+    <meta name="description" content="Browse the Component Vault, preview UI patterns, and inspect their React source." />
+    <title>Component Vault — Design library</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Component library navigation">
+        <a class="brand" href="/" aria-label="Component Vault home">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+          <span>component<span class="brand-light">vault</span></span>
+        </a>
+
+        <div class="sidebar-label">LIBRARY</div>
+        <label class="search-box">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.8" cy="8.8" r="5.8"></circle><path d="m13 13 4 4"></path></svg>
+          <input id="component-search" type="search" placeholder="Find a component…" autocomplete="off" aria-label="Find a component" />
+          <kbd>/</kbd>
+        </label>
+
+        <nav id="category-nav" class="category-nav" aria-label="Filter component category"></nav>
+        <div class="sidebar-footer">
+          <span class="online-dot" aria-hidden="true"></span>
+          <span id="library-count">Loading library…</span>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="breadcrumbs"><span>Library</span><span class="crumb-slash">/</span><strong id="breadcrumb-category">Components</strong></div>
+              <a class="docs-link" href="/__docs/design-system" target="_blank" rel="noreferrer">Design system guide <span aria-hidden="true">↗</span></a>
+        </header>
+
+        <div class="workspace">
+          <section class="intro-row" aria-labelledby="page-title">
+            <div>
+              <div class="eyebrow"><span class="eyebrow-line"></span> THE COMPONENT LIBRARY</div>
+              <h1 id="page-title">Made to be <span>remixed.</span></h1>
+              <p class="intro-copy">Browse visual studies for each component. Open the TSX source to see its implementation.</p>
+            </div>
+            <div class="version-chip"><span class="version-dot"></span> VISUAL STUDIES <span class="version-divider"></span> TSX SOURCE</div>
+          </section>
+
+          <section class="browser" aria-label="Component browser">
+            <div class="browser-heading">
+              <div class="selected-meta">
+                <span id="selected-category" class="category-pill">COMPONENT</span>
+                <span id="selected-path" class="file-path">components/ui/button.tsx</span>
+              </div>
+              <div class="view-toggle" role="tablist" aria-label="Component view">
+                <button id="preview-tab" class="view-tab is-active" role="tab" aria-selected="true" aria-controls="preview-panel">Preview</button>
+                <button id="code-tab" class="view-tab" role="tab" aria-selected="false" aria-controls="code-panel">Source code</button>
+              </div>
+            </div>
+
+            <div id="preview-panel" class="preview-panel" role="tabpanel" aria-labelledby="preview-tab">
+              <div class="preview-toolbar"><span><i></i><i></i><i></i></span><span class="preview-caption">VISUAL SAMPLE</span><span class="preview-size">RESPONSIVE</span></div>
+              <div id="component-preview" class="preview-canvas" aria-live="polite"></div>
+            </div>
+
+            <div id="code-panel" class="code-panel" role="tabpanel" aria-labelledby="code-tab" hidden>
+              <div class="code-toolbar"><div><span class="code-file-icon">TS</span><span id="code-filename">button.tsx</span></div><button id="copy-code" class="copy-button" type="button">Copy source</button></div>
+              <pre class="code-scroll"><code id="source-code">Select a component to view its source.</code></pre>
+            </div>
+
+            <div class="component-info">
+              <div>
+                <h2 id="component-name">Button</h2>
+                <p id="component-description">A flexible action control with accessible focus and clear variants.</p>
+              </div>
+              <span id="component-index" class="component-index">01 / 196</span>
+            </div>
+          </section>
+
+          <section class="catalog-section" aria-labelledby="catalog-title">
+            <div class="catalog-heading">
+              <div><div class="eyebrow">PICK YOUR STARTING POINT</div><h2 id="catalog-title">Explore components</h2></div>
+              <span id="results-count" class="results-count"></span>
+            </div>
+            <div id="component-grid" class="component-grid" aria-live="polite"></div>
+          </section>
+
+          <footer class="page-footer"><span>Built for curious makers.</span><span>Browse the source. Make it yours.</span></footer>
+        </div>
+      </main>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  </body>
+</html>

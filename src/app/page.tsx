@@ -39,7 +39,7 @@ export default function LandingPage() {
       <section className="container border-t border-border/60 py-24">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-balance text-3xl font-bold tracking-tight sm:text-4xl">
-            One hub. Eight aesthetics.
+            One hub. 25 aesthetics.
           </h2>
           <p className="mt-4 text-muted-foreground">
             Every card below is rendered live in its own design language. Click
@@ -47,7 +47,7 @@ export default function LandingPage() {
           </p>
         </div>
 
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {STYLE_LIST.map((s) => (
             <StyleCard key={s.slug} meta={s} />
           ))}

@@ -55,7 +55,7 @@ export function CodeBlock({
         </button>
       </div>
       <pre
-        className="code-scroll max-h-[420px] overflow-auto p-4 text-[12.5px] leading-[1.7]"
+        className="code-scroll max-h-[420px] overflow-auto p-4 text-[12.5px] leading-[1.7] text-zinc-100 font-mono"
         dangerouslySetInnerHTML={{ __html: highlightHtml(code) }}
       />
     </div>

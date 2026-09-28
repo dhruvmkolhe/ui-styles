@@ -27,7 +27,7 @@ const TIERS: Tier[] = [
     annual: { price: "$0", period: "forever", note: "no credit card needed" },
     cta: "Start for free",
     features: [
-      "3 styles unlocked",
+      "5 styles unlocked",
       "5 components per style",
       "Watermarked code",
       "Community support",
@@ -41,7 +41,7 @@ const TIERS: Tier[] = [
     cta: "Go Pro",
     featured: true,
     features: [
-      "All 8 styles unlocked",
+      "All 25 styles unlocked",
       "All 15 components per style",
       "Clean, unwatermarked code",
       "Collections & favorites",

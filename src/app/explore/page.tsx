@@ -5,7 +5,7 @@ import { ExploreGrid } from "@/components/explore/explore-grid";
 export const metadata: Metadata = {
   title: "Explore styles",
   description:
-    "Browse 8 UI design aesthetics — Japandi, Glassmorphism, Brutalist, Minimalist, Neomorphism, Retro/Y2K, Dark Tech and Bento Grid.",
+    "Browse 25 UI design aesthetics — Japandi, Glassmorphism, Brutalist, Minimalist, Neomorphism, Retro/Y2K, Dark Tech, Bento Grid, Neobrutalist, Swiss, Editorial, and more.",
 };
 
 export default function ExplorePage() {
@@ -17,7 +17,7 @@ export default function ExplorePage() {
             Style Explorer
           </span>
           <h1 className="mt-6 text-balance text-4xl font-bold tracking-tight sm:text-5xl">
-            Explore 8 design <span className="text-gradient">aesthetics</span>
+            Explore 25 design <span className="text-gradient">aesthetics</span>
           </h1>
           <p className="mt-5 text-balance leading-relaxed text-muted-foreground">
             Each style is a complete design language — rendered live below in

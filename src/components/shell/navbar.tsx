@@ -11,7 +11,7 @@ import { LoginDialog } from "@/components/shell/login-dialog";
 
 const links = [
   { href: "/explore", label: "Explore" },
-  { href: "/components", label: "Components" },
+  { href: "/component-vault", label: "Component Vault" },
   { href: "/#pricing", label: "Pricing" },
 ];
 

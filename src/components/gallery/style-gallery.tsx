@@ -21,6 +21,23 @@ import { NEOMORPHISM_BUNDLE } from "@/components/styles/neomorphism";
 import { RETRO_Y2K_BUNDLE } from "@/components/styles/retro-y2k";
 import { DARK_TECH_BUNDLE } from "@/components/styles/dark-tech";
 import { BENTO_GRID_BUNDLE } from "@/components/styles/bento-grid";
+import { NEOBRUTALIST_BUNDLE } from "@/components/styles/neobrutalist";
+import { SWISS_BUNDLE } from "@/components/styles/swiss";
+import { EDITORIAL_BUNDLE } from "@/components/styles/editorial";
+import { RETRO_FUTURISTIC_BUNDLE } from "@/components/styles/retro-futuristic";
+import { BAUHAUS_BUNDLE } from "@/components/styles/bauhaus";
+import { ART_DECO_BUNDLE } from "@/components/styles/art-deco";
+import { MATERIAL_BUNDLE } from "@/components/styles/material";
+import { MONOCHROMATIC_BUNDLE } from "@/components/styles/monochromatic";
+import { SCANDINAVIAN_BUNDLE } from "@/components/styles/scandinavian";
+import { MODERNIST_BUNDLE } from "@/components/styles/modernist";
+import { NEO_GEO_BUNDLE } from "@/components/styles/neo-geo";
+import { ORGANIC_BUNDLE } from "@/components/styles/organic";
+import { LUXURY_MINIMAL_BUNDLE } from "@/components/styles/luxury-minimal";
+import { GRADIENT_MODERN_BUNDLE } from "@/components/styles/gradient-modern";
+import { KINETIC_BUNDLE } from "@/components/styles/kinetic";
+import { TYPOGRAPHY_FIRST_BUNDLE } from "@/components/styles/typography-first";
+import { METROPOLITAN_BUNDLE } from "@/components/styles/metropolitan";
 import { Button } from "@/components/ui/button";
 
 const BUNDLES: Partial<Record<StyleSlug, StyleBundle>> = {
@@ -32,6 +49,23 @@ const BUNDLES: Partial<Record<StyleSlug, StyleBundle>> = {
   "retro-y2k": RETRO_Y2K_BUNDLE,
   "dark-tech": DARK_TECH_BUNDLE,
   "bento-grid": BENTO_GRID_BUNDLE,
+  neobrutalist: NEOBRUTALIST_BUNDLE,
+  swiss: SWISS_BUNDLE,
+  editorial: EDITORIAL_BUNDLE,
+  "retro-futuristic": RETRO_FUTURISTIC_BUNDLE,
+  bauhaus: BAUHAUS_BUNDLE,
+  "art-deco": ART_DECO_BUNDLE,
+  material: MATERIAL_BUNDLE,
+  monochromatic: MONOCHROMATIC_BUNDLE,
+  scandinavian: SCANDINAVIAN_BUNDLE,
+  modernist: MODERNIST_BUNDLE,
+  "neo-geo": NEO_GEO_BUNDLE,
+  organic: ORGANIC_BUNDLE,
+  "luxury-minimal": LUXURY_MINIMAL_BUNDLE,
+  "gradient-modern": GRADIENT_MODERN_BUNDLE,
+  kinetic: KINETIC_BUNDLE,
+  "typography-first": TYPOGRAPHY_FIRST_BUNDLE,
+  metropolitan: METROPOLITAN_BUNDLE,
 };
 
 
@@ -149,6 +183,8 @@ function GallerySection({
 
 /* ------------------------------------------------------------------ */
 
+import { ComingSoon } from "@/components/shell/coming-soon";
+
 export function StyleGallery({
   slug,
   meta,
@@ -160,7 +196,7 @@ export function StyleGallery({
   const [mode, setMode] = useState<Mode>(meta.defaultMode);
   const [openCode, setOpenCode] = useState<Record<string, boolean>>({});
 
-  if (!bundle) return null;
+  if (!bundle) return <ComingSoon meta={meta} />;
 
   const toggleCode = (id: string) =>
     setOpenCode((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -174,7 +210,7 @@ export function StyleGallery({
   return (
     <div>
       {/* ---- sticky toolbar: light/dark preview toggle ---- */}
-      <div className="sticky top-16 z-40 -mx-4 mb-10 border-b border-border/70 bg-background/80 px-4 py-3 backdrop-blur-xl sm:-mx-6 sm:px-6">
+      <div className="sticky top-16 z-40 -mx-4 mb-10 border-b border-border/70 bg-background/95 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6">
         <div className="container flex items-center justify-between gap-4 !px-0">
           <p className="hidden items-center gap-2 text-xs text-muted-foreground sm:flex">
             <TerminalSquare className="h-3.5 w-3.5" />
