@@ -1,19 +1,29 @@
 import {
+  AlignLeft,
   Bell,
+  Calendar,
+  CheckSquare,
   ChevronsUpDown,
+  CircleDot,
   CircleUserRound,
+  ClipboardList,
+  Columns3,
   Frame,
   Gauge,
+  Hash,
   Layers,
   List,
+  ListFilter,
   Menu,
   MessageSquare,
   MousePointerClick,
   PanelTop,
   RectangleEllipsis,
+  Sparkles,
   Tag,
   TextCursorInput,
   ToggleRight,
+  Type,
 } from "lucide-react";
 
 export const COMPONENTS_CATALOG = [
@@ -107,4 +117,66 @@ export const COMPONENTS_CATALOG = [
     icon: CircleUserRound,
     description: "Image or initials fallback with an online status dot.",
   },
+  {
+    id: "checkbox",
+    name: "Checkbox",
+    icon: CheckSquare,
+    description: "Accessible toggle box with checked, indeterminate, disabled, and error states.",
+  },
+  {
+    id: "radio-group",
+    name: "Radio Group",
+    icon: CircleDot,
+    description: "Single-choice selection group with arrow key navigation and card variants.",
+  },
+  {
+    id: "select",
+    name: "Select",
+    icon: ListFilter,
+    description: "Accessible dropdown selector with placeholder, search, and disabled options.",
+  },
+  {
+    id: "textarea",
+    name: "Textarea",
+    icon: AlignLeft,
+    description: "Multi-line text input with character limit counter and auto-resize handling.",
+  },
+  {
+    id: "form",
+    name: "Form",
+    icon: ClipboardList,
+    description: "Form wrapper with submission handling, validation context, and error summaries.",
+  },
+  {
+    id: "label",
+    name: "Label",
+    icon: Type,
+    description: "Typography-aligned label with required indicator (*), optional badge, and hints.",
+  },
+  {
+    id: "form-field",
+    name: "Form Field",
+    icon: Columns3,
+    description: "Unified wrapper connecting label, control, helper text, and validation alerts.",
+  },
+  {
+    id: "date-input",
+    name: "Date Input",
+    icon: Calendar,
+    description: "Semantic date input with calendar trigger icon, clear action, and min/max limits.",
+  },
+  {
+    id: "number-input",
+    name: "Number Input",
+    icon: Hash,
+    description: "Stepper-controlled numeric input with increment (+), decrement (-), and arrow key steps.",
+  },
+  {
+    id: "showcase",
+    name: "Documentation & Showcase",
+    icon: Sparkles,
+    description: "Integrated form playground testing states, controls, and accessibility live.",
+  },
 ] as const;
+
+export type ComponentId = (typeof COMPONENTS_CATALOG)[number]["id"];

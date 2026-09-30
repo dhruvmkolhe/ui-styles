@@ -11,12 +11,13 @@ export function generateStaticParams() {
   return STYLE_LIST.map((s) => ({ slug: s.slug }));
 }
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
-}): Metadata {
-  const meta = getStyleMeta(params.slug);
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const meta = getStyleMeta(slug);
   if (!meta) return { title: "Style not found" };
   return {
     title: `${meta.name} UI style`,
@@ -24,8 +25,9 @@ export function generateMetadata({
   };
 }
 
-export default function StylePage({ params }: { params: { slug: string } }) {
-  const meta = getStyleMeta(params.slug);
+export default async function StylePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const meta = getStyleMeta(slug);
   if (!meta) notFound();
 
   const live = meta.status === "live";
@@ -54,7 +56,7 @@ export default function StylePage({ params }: { params: { slug: string } }) {
             }
           >
             <span className={live ? "h-1.5 w-1.5 rounded-full bg-emerald-400" : "h-1.5 w-1.5 rounded-full bg-amber-400"} />
-            {live ? "Live · 15 components" : "Coming soon"}
+            {live ? "Live · 25 components" : "Coming soon"}
           </span>
         </div>
 

@@ -38,6 +38,7 @@ import { GRADIENT_MODERN_BUNDLE } from "@/components/styles/gradient-modern";
 import { KINETIC_BUNDLE } from "@/components/styles/kinetic";
 import { TYPOGRAPHY_FIRST_BUNDLE } from "@/components/styles/typography-first";
 import { METROPOLITAN_BUNDLE } from "@/components/styles/metropolitan";
+import { getCommonFormDefs } from "@/components/styles/common-form-defs";
 import { Button } from "@/components/ui/button";
 
 const BUNDLES: Partial<Record<StyleSlug, StyleBundle>> = {
@@ -192,7 +193,16 @@ export function StyleGallery({
   slug: StyleSlug;
   meta: StyleMeta;
 }) {
-  const bundle = BUNDLES[slug];
+  const baseBundle = BUNDLES[slug];
+  const bundle = useMemo(() => {
+    if (!baseBundle) return undefined;
+    const formDefs = getCommonFormDefs(slug);
+    return {
+      ...baseBundle,
+      defs: [...baseBundle.defs, ...formDefs],
+    };
+  }, [baseBundle, slug]);
+
   const [mode, setMode] = useState<Mode>(meta.defaultMode);
   const [openCode, setOpenCode] = useState<Record<string, boolean>>({});
 
@@ -214,7 +224,7 @@ export function StyleGallery({
         <div className="container flex items-center justify-between gap-4 !px-0">
           <p className="hidden items-center gap-2 text-xs text-muted-foreground sm:flex">
             <TerminalSquare className="h-3.5 w-3.5" />
-            15 components · rendered live · copy-ready HTML + Tailwind
+            {bundle.defs.length} components · rendered live · copy-ready HTML + Tailwind
           </p>
           <div className="flex items-center gap-3">
             <span className="hidden text-xs text-muted-foreground sm:inline">

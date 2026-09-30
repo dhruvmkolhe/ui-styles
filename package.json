@@ -9,7 +9,7 @@
     "dev:frontend": "npm --prefix frontend run dev",
     "dev:backend": "cd backend && npm run dev",
     "dev:mcp": "cd mcp-server && npm run dev",
-    "dev": "npm --prefix frontend run dev",
+    "dev": "next dev",
     "dev:all": "npx concurrently \"npm run dev:frontend\" \"npm run dev:backend\" \"npm run dev:mcp\"",
     "build": "npm --prefix frontend run build",
     "build:cli": "cd cli && npm install && npm run build",

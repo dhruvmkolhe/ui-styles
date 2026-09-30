@@ -67,10 +67,6 @@ const config: Config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "blob-float": {
-          "0%, 100%": { transform: "translateY(0) scale(1)" },
-          "50%": { transform: "translateY(-24px) scale(1.06)" },
-        },
         shimmer: {
           "100%": { transform: "translateX(100%)" },
         },
@@ -78,8 +74,6 @@ const config: Config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        blob: "blob-float 9s ease-in-out infinite",
-        "blob-slow": "blob-float 13s ease-in-out infinite",
       },
     },
   },

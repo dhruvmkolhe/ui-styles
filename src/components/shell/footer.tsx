@@ -5,7 +5,7 @@ import { STYLE_LIST } from "@/lib/styles/registry";
 const productLinks = [
   { href: "/explore", label: "Explore styles" },
   { href: "/components", label: "Components" },
-  { href: "/#pricing", label: "Pricing" },
+  { href: "/component-vault", label: "Component Vault" },
 ];
 
 const resourceLinks = [
@@ -22,16 +22,21 @@ export function Footer() {
           {/* Brand */}
           <div>
             <Link href="/" className="flex items-center gap-2.5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-cyan-400">
-                <LayoutGrid className="h-4 w-4 text-white" strokeWidth={2.4} />
+              <span className="flex h-7 w-7 items-center justify-center rounded-md bg-teal-600 text-white shadow-sm">
+                <LayoutGrid className="h-4 w-4" strokeWidth={2.4} />
               </span>
-              <span className="text-[15px] font-semibold tracking-tight">
-                UI Hub
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-[15px] font-bold tracking-tight text-foreground">
+                  UI Hub
+                </span>
+                <span className="rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider bg-teal-500/10 text-teal-700 dark:text-teal-300 border border-teal-500/20">
+                  Free
+                </span>
+              </div>
             </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
-              Every UI style, one hub. Browse design aesthetics and copy clean,
-              ready-to-ship component code.
+            <p className="mt-3.5 max-w-xs text-xs leading-relaxed text-muted-foreground">
+              Every UI style, one hub. Browse 25 authentic design aesthetics and copy clean,
+              production-ready component code.
             </p>
           </div>
 

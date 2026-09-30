@@ -4,48 +4,48 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --background: 210 20% 98%;
+    --foreground: 222 47% 11%;
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 174 51% 39%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 16% 93%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 16% 93%;
+    --muted-foreground: 218 14% 46%;
+    --accent: 210 16% 93%;
+    --accent-foreground: 222 47% 11%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 10% 3.9%;
-    --radius: 0.625rem;
+    --border: 214 32% 90%;
+    --input: 214 32% 90%;
+    --ring: 174 51% 39%;
+    --radius: 0.5rem;
   }
 
   .dark {
-    --background: 240 10% 3.5%;
-    --foreground: 0 0% 96%;
-    --card: 240 8% 5.5%;
-    --card-foreground: 0 0% 96%;
-    --popover: 240 9% 6%;
-    --popover-foreground: 0 0% 96%;
-    --primary: 0 0% 96%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 4.5% 11%;
-    --secondary-foreground: 0 0% 92%;
-    --muted: 240 4.5% 11%;
-    --muted-foreground: 240 5% 62%;
-    --accent: 240 4.5% 12%;
-    --accent-foreground: 0 0% 96%;
+    --background: 222 47% 11%;
+    --foreground: 210 20% 98%;
+    --card: 217 33% 15%;
+    --card-foreground: 210 20% 98%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 20% 98%;
+    --primary: 174 51% 46%;
+    --primary-foreground: 222 47% 11%;
+    --secondary: 215 25% 23%;
+    --secondary-foreground: 210 20% 98%;
+    --muted: 215 25% 23%;
+    --muted-foreground: 217 19% 67%;
+    --accent: 215 25% 23%;
+    --accent-foreground: 210 20% 98%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 4.5% 14%;
-    --input: 240 4.5% 16%;
-    --ring: 240 4.9% 83.9%;
+    --border: 215 25% 23%;
+    --input: 215 25% 23%;
+    --ring: 174 51% 46%;
   }
 }
 
@@ -55,13 +55,15 @@
   }
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
+    overflow-x: hidden;
   }
   ::selection {
-    @apply bg-violet-500/30;
+    @apply bg-teal-500/25 text-teal-950 dark:text-teal-100;
   }
 }
 
@@ -96,9 +98,9 @@
     background-size: 26px 26px;
   }
 
-  /* ---- Hero gradient text ---- */
+  /* ---- Brand accent text ---- */
   .text-gradient {
-    @apply bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-teal-600 to-teal-500 dark:from-teal-400 dark:to-emerald-400 bg-clip-text text-transparent;
   }
 
   /* ---- Thin scrollbars for code panels ---- */

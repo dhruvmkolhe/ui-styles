@@ -67,7 +67,7 @@ export function InputPreview({ mode }: { mode: Mode }) {
   return (
     <div className="w-full max-w-sm space-y-2">
       <label className={k.label}>SUBSCRIBE TO THE WEEKLY DISPATCH</label>
-      <input type="email" placeholder="reader@journal.org" className={k.input} />
+      <input type="email" placeholder="reader@journal.org" className={k.input} suppressHydrationWarning />
       <p className="font-serif italic text-xs text-[#78716C]">Delivered every Sunday dawn. No spam.</p>
     </div>
   );
