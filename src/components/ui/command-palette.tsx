@@ -28,6 +28,7 @@ export interface CommandPaletteProps {
   loading?: boolean
   emptyMessage?: string
   enableGlobalShortcut?: boolean
+  inline?: boolean
   className?: string
 }
 
@@ -39,6 +40,7 @@ export function CommandPalette({
   loading = false,
   emptyMessage = "No matching commands found.",
   enableGlobalShortcut = true,
+  inline = false,
   className,
 }: CommandPaletteProps) {
   const [query, setQuery] = React.useState("")
@@ -151,27 +153,19 @@ export function CommandPalette({
     }
   }
 
-  if (!open) return null
+  if (!open && !inline) return null
 
   let globalCounter = 0
 
-  return (
+  const paletteContent = (
     <div
-      role="dialog"
-      aria-modal="true"
-      aria-label="Command Palette"
-      className="fixed inset-0 z-50 flex items-start justify-center p-4 pt-[10vh] sm:pt-[14vh] bg-black/60 backdrop-blur-xs animate-in fade-in-0"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onOpenChange(false)
-      }}
+      className={cn(
+        "w-full max-w-xl overflow-hidden rounded-xl border border-border bg-card text-card-foreground flex flex-col",
+        inline ? "shadow-md max-h-[460px]" : "shadow-2xl animate-in zoom-in-95 duration-150 max-h-[75vh]",
+        className
+      )}
+      onKeyDown={handleKeyDown}
     >
-      <div
-        className={cn(
-          "w-full max-w-xl overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow-2xl animate-in zoom-in-95 duration-150 flex flex-col max-h-[75vh]",
-          className
-        )}
-        onKeyDown={handleKeyDown}
-      >
         {/* Search Header */}
         <div className="flex items-center border-b border-border px-3.5 py-3 gap-2.5">
           {loading ? (
@@ -327,6 +321,23 @@ export function CommandPalette({
           <span>{flatItems.length} command{flatItems.length === 1 ? "" : "s"}</span>
         </div>
       </div>
-    </div>
-  )
+    )
+
+    if (inline) {
+      return paletteContent
+    }
+
+    return (
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Command Palette"
+        className="fixed inset-0 z-50 flex items-start justify-center p-4 pt-[10vh] sm:pt-[14vh] bg-black/60 backdrop-blur-xs animate-in fade-in-0"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) onOpenChange(false)
+        }}
+      >
+        {paletteContent}
+      </div>
+    )
 }

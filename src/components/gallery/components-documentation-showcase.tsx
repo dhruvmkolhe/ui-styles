@@ -41,6 +41,15 @@ import { MediaCard, MediaCardImage, MediaCardContent } from "@/components/ui/med
 import { CodeBlock } from "@/components/ui/code-block";
 import { MarkdownPreview } from "@/components/ui/markdown-preview";
 import { FilePreview } from "@/components/ui/file-preview";
+import { SearchBar } from "@/components/ui/search-bar";
+import { Filter } from "@/components/ui/filter";
+import { SortMenu } from "@/components/ui/sort-menu";
+import { RangeSlider } from "@/components/ui/range-slider";
+import { Slider } from "@/components/ui/slider";
+import { ColorPicker } from "@/components/ui/color-picker";
+import { Combobox } from "@/components/ui/combobox";
+import { MultiSelect } from "@/components/ui/multi-select";
+import { OtpInput } from "@/components/ui/otp-input";
 import { Button } from "@/components/ui/button";
 import { Alert } from "@/components/ui/alert";
 import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
@@ -284,6 +293,15 @@ const COMPONENTS_DOCS = [
   { id: "code-block", name: "Code Block", category: "Media & Content" },
   { id: "markdown-preview", name: "Markdown Preview", category: "Media & Content" },
   { id: "file-preview", name: "File Preview", category: "Media & Content" },
+  { id: "search-bar", name: "Search Bar", category: "Advanced / Utility" },
+  { id: "filter", name: "Filter", category: "Advanced / Utility" },
+  { id: "sort-menu", name: "Sort Menu", category: "Advanced / Utility" },
+  { id: "range-slider", name: "Range Slider", category: "Advanced / Utility" },
+  { id: "slider", name: "Slider", category: "Advanced / Utility" },
+  { id: "color-picker", name: "Color Picker", category: "Advanced / Utility" },
+  { id: "combobox", name: "Combobox", category: "Advanced / Utility" },
+  { id: "multi-select", name: "Multi-Select", category: "Advanced / Utility" },
+  { id: "otp-input", name: "OTP / PIN Input", category: "Advanced / Utility" },
   { id: "playground", name: "Full Suite Playground", category: "Integration" },
 ];
 
@@ -375,6 +393,19 @@ export function ComponentsDocumentationShowcase() {
   const [loadingBarValue, setLoadingBarValue] = useState(64);
   const [loadingBarIndet, setLoadingBarIndet] = useState(false);
   const [procStatus, setProcStatus] = useState<ProcessingStatus>("processing");
+
+  // Batch 9 Advanced / Utility interactive states
+  const [demoSearchQuery, setDemoSearchQuery] = useState("");
+  const [demoSearchSubmitted, setDemoSearchSubmitted] = useState<string | null>(null);
+  const [demoFilterValues, setDemoFilterValues] = useState<Record<string, any>>({ status: "active", rating: 75 });
+  const [demoSortValue, setDemoSortValue] = useState("name-asc");
+  const [demoRangeSliderVal, setDemoRangeSliderVal] = useState<[number, number]>([20, 80]);
+  const [demoSliderVal, setDemoSliderVal] = useState(50);
+  const [demoColorVal, setDemoColorVal] = useState("#3b82f6");
+  const [demoComboboxVal, setDemoComboboxVal] = useState("nextjs");
+  const [demoMultiSelectVal, setDemoMultiSelectVal] = useState<string[]>(["react", "typescript"]);
+  const [demoOtpVal, setDemoOtpVal] = useState("");
+  const [demoOtpCompleted, setDemoOtpCompleted] = useState<string | null>(null);
 
   const handleCopy = async (code: string, label: string) => {
     const ok = await copyCode(code, label);
@@ -5309,7 +5340,415 @@ export function ComponentsDocumentationShowcase() {
           </div>
         )}
 
-\n        {/* 70 · PLAYGROUND */}
+\n        
+        {/* BATCH 9 ADVANCED / UTILITY TABS */}
+        {activeTab === "search-bar" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Search Bar</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Search input featuring clear actions, active query debouncing, and autocomplete suggestion dropdown.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<SearchBar\n  value={query}\n  onChange={setQuery}\n  onSearch={(q) => console.log(q)}\n  suggestions={[\n    { id: "1", label: "React Components", category: "Framework" },\n    { id: "2", label: "Tailwind CSS", category: "Styling" }\n  ]}\n  placeholder="Search components..."\n/>`,
+                    "SearchBar"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+            <div className="p-6 rounded-xl border border-border bg-card max-w-lg mx-auto space-y-4">
+              <SearchBar
+                value={demoSearchQuery}
+                onChange={setDemoSearchQuery}
+                onSearch={(q) => setDemoSearchSubmitted(q)}
+                suggestions={[
+                  { id: "1", label: "React 19 Hooks", category: "React", description: "useActionState, useOptimistic" },
+                  { id: "2", label: "Tailwind CSS v4", category: "CSS", description: "Modern theme tokens" },
+                  { id: "3", label: "TypeScript Generics", category: "Language", description: "Strict type safety" },
+                  { id: "4", label: "Next.js Turbopack", category: "Build", description: "High performance compilation" },
+                ]}
+                placeholder="Search documentation, components..."
+                label="Search Documentation"
+              />
+              {demoSearchSubmitted && (
+                <div className="text-xs text-muted-foreground font-mono bg-muted/40 p-2.5 rounded-lg border border-border">
+                  Searched for: <span className="font-bold text-foreground">"{demoSearchSubmitted}"</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {activeTab === "filter" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Filter</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Modular filter toolbar supporting radios, multi-select checkboxes, keywords, and numeric ranges.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Filter\n  filters={[\n    { id: "status", label: "Status", type: "radio", options: [{ label: "Active", value: "active" }] }\n  ]}\n  values={filterState}\n  onChange={setFilterState}\n/>`,
+                    "Filter"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+            <div className="p-6 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-4">
+              <Filter
+                filters={[
+                  {
+                    id: "status",
+                    label: "Status",
+                    type: "radio",
+                    options: [
+                      { label: "Active", value: "active" },
+                      { label: "Archived", value: "archived" },
+                    ],
+                  },
+                  {
+                    id: "framework",
+                    label: "Framework",
+                    type: "multi-select",
+                    options: [
+                      { label: "React", value: "react", count: 24 },
+                      { label: "Vue", value: "vue", count: 12 },
+                      { label: "Svelte", value: "svelte", count: 8 },
+                    ],
+                  },
+                  {
+                    id: "rating",
+                    label: "Min Rating",
+                    type: "range",
+                    min: 0,
+                    max: 100,
+                    step: 5,
+                  },
+                ]}
+                values={demoFilterValues}
+                onChange={setDemoFilterValues}
+              />
+              <div className="text-xs font-mono text-muted-foreground bg-muted/40 p-2.5 rounded-lg border border-border">
+                Filter State: {JSON.stringify(demoFilterValues)}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "sort-menu" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Sort Menu</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Accessible dropdown selector for reordering records by directional criteria with indicator icons.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<SortMenu\n  options={[\n    { id: "name-asc", label: "Name (A → Z)", direction: "asc" },\n    { id: "newest", label: "Newest First", direction: "desc" }\n  ]}\n  value={sort}\n  onChange={(opt) => setSort(opt.id)}\n/>`,
+                    "SortMenu"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+            <div className="p-8 rounded-xl border border-border bg-card max-w-md mx-auto flex flex-col items-center space-y-4">
+              <SortMenu
+                options={[
+                  { id: "name-asc", label: "Name (A → Z)", direction: "asc" },
+                  { id: "name-desc", label: "Name (Z → A)", direction: "desc" },
+                  { id: "newest", label: "Newest First", direction: "desc" },
+                  { id: "oldest", label: "Oldest First", direction: "asc" },
+                  { id: "rating", label: "Highest Rated", direction: "desc" },
+                ]}
+                value={demoSortValue}
+                onChange={(opt) => setDemoSortValue(opt.id)}
+              />
+              <span className="text-xs font-mono text-muted-foreground">
+                Active Sort Option: <strong className="text-foreground">{demoSortValue}</strong>
+              </span>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "range-slider" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Range Slider</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Dual-handled continuous track for selecting bounded interval minimums and maximums without handle overlap.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<RangeSlider\n  min={0}\n  max={100}\n  step={1}\n  value={range}\n  onChange={setRange}\n  formatValue={(v) => \`$\${v}\`}\n/>`,
+                    "RangeSlider"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+            <div className="p-8 rounded-xl border border-border bg-card max-w-md mx-auto space-y-4">
+              <RangeSlider
+                min={0}
+                max={100}
+                step={1}
+                value={demoRangeSliderVal}
+                onChange={setDemoRangeSliderVal}
+                formatValue={(v) => `${v}`}
+              />
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-t pt-3">
+                <span>Lower: <strong className="font-mono text-foreground">${demoRangeSliderVal[0]}</strong></span>
+                <span>Upper: <strong className="font-mono text-foreground">${demoRangeSliderVal[1]}</strong></span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "slider" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Slider</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Single-point slider track with touch and mouse dragging, keyboard stepper increments, and scale marks.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Slider\n  min={0}\n  max={100}\n  step={1}\n  value={val}\n  onChange={setVal}\n  formatValue={(v) => \`\${v}%\`}\n/>`,
+                    "Slider"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+            <div className="p-8 rounded-xl border border-border bg-card max-w-md mx-auto space-y-4">
+              <Slider
+                min={0}
+                max={100}
+                step={5}
+                value={demoSliderVal}
+                onChange={setDemoSliderVal}
+                formatValue={(v) => `${v}%`}
+                marks={[
+                  { value: 0, label: "0%" },
+                  { value: 50, label: "50%" },
+                  { value: 100, label: "100%" },
+                ]}
+              />
+              <div className="text-center text-xs text-muted-foreground">
+                Current Level: <strong className="font-mono text-foreground">{demoSliderVal}%</strong>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "color-picker" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Color Picker</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Hex-validated color selection interface with preset swatches, native color wheel integration, and live preview.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<ColorPicker\n  value={color}\n  onChange={setColor}\n  label="Theme Accent"\n/>`,
+                    "ColorPicker"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+            <div className="p-8 rounded-xl border border-border bg-card max-w-md mx-auto flex flex-col items-center space-y-4">
+              <ColorPicker
+                value={demoColorVal}
+                onChange={setDemoColorVal}
+                label="Accent Color"
+              />
+              <div
+                className="w-full h-10 rounded-lg border shadow-inner transition-colors"
+                style={{ backgroundColor: demoColorVal }}
+              />
+            </div>
+          </div>
+        )}
+
+        {activeTab === "combobox" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Combobox</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Searchable select input with listbox semantics, keyboard navigation, clear triggers, and check indicators.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Combobox\n  options={[\n    { value: "nextjs", label: "Next.js" },\n    { value: "react", label: "React" }\n  ]}\n  value={selected}\n  onChange={setSelected}\n  placeholder="Select framework..."\n/>`,
+                    "Combobox"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+            <div className="p-8 rounded-xl border border-border bg-card max-w-md mx-auto space-y-4">
+              <Combobox
+                options={[
+                  { value: "react", label: "React 19", description: "Declarative component framework" },
+                  { value: "nextjs", label: "Next.js (App Router)", description: "Hybrid fullstack framework" },
+                  { value: "vue", label: "Vue.js", description: "The Progressive JavaScript Framework" },
+                  { value: "svelte", label: "SvelteKit", description: "Compiler-driven web platform" },
+                  { value: "astro", label: "Astro", description: "Content-first static architecture" },
+                ]}
+                value={demoComboboxVal}
+                onChange={setDemoComboboxVal}
+                placeholder="Choose a framework..."
+              />
+              <div className="text-xs text-muted-foreground font-mono">
+                Selected Framework: <strong className="text-foreground">{demoComboboxVal}</strong>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "multi-select" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Multi-Select</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Composite tag selector supporting multiple item choices, filter search, individual chip removal, and batch reset.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<MultiSelect\n  options={[\n    { value: "react", label: "React" },\n    { value: "typescript", label: "TypeScript" }\n  ]}\n  value={selectedList}\n  onChange={setSelectedList}\n/>`,
+                    "MultiSelect"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+            <div className="p-8 rounded-xl border border-border bg-card max-w-md mx-auto space-y-4">
+              <MultiSelect
+                options={[
+                  { value: "react", label: "React" },
+                  { value: "typescript", label: "TypeScript" },
+                  { value: "tailwind", label: "Tailwind CSS" },
+                  { value: "turbopack", label: "Turbopack" },
+                  { value: "radix", label: "Radix UI" },
+                  { value: "zustand", label: "Zustand" },
+                ]}
+                value={demoMultiSelectVal}
+                onChange={setDemoMultiSelectVal}
+                placeholder="Select skills..."
+              />
+              <div className="text-xs text-muted-foreground font-mono">
+                Selected Count: <strong className="text-foreground">{demoMultiSelectVal.length} items</strong>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "otp-input" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">OTP / PIN Input</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Segmented security verification code input with auto-advance, backspace repositioning, paste splitting, and masking.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<OtpInput\n  length={6}\n  value={otp}\n  onChange={setOtp}\n  onComplete={(code) => console.log("Code complete:", code)}\n/>`,
+                    "OtpInput"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+            <div className="p-8 rounded-xl border border-border bg-card max-w-md mx-auto flex flex-col items-center space-y-5">
+              <div className="text-center space-y-1">
+                <span className="text-xs font-semibold text-foreground uppercase tracking-wider">Two-Factor Authentication</span>
+                <p className="text-xs text-muted-foreground">Enter the 6-digit code sent to your authenticator app</p>
+              </div>
+
+              <OtpInput
+                length={6}
+                value={demoOtpVal}
+                onChange={setDemoOtpVal}
+                onComplete={(code) => setDemoOtpCompleted(code)}
+                success={!!demoOtpCompleted}
+              />
+
+              {demoOtpCompleted && (
+                <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-600 bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-500/20">
+                  <Sparkles className="h-3.5 w-3.5" /> Authentication Successful
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* 70 · PLAYGROUND */}
         {activeTab === "playground" && (
           <div className="space-y-8">
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">

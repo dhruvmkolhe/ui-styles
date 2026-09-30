@@ -83,7 +83,11 @@ import {
   Clapperboard,
   Code2,
   FileType2,
-  FileArchive
+  FileArchive,
+  Filter as FilterIcon,
+  ArrowUpDown,
+  Palette,
+  SlidersHorizontal
 } from "lucide-react";
 
 export const COMPONENTS_CATALOG = [
@@ -675,6 +679,78 @@ export const COMPONENTS_CATALOG = [
     description: "A component to display file metadata with an optional download action.",
     category: "Media & Content",
     icon: FileArchive,
+    isNew: true,
+  },
+  {
+    id: "search-bar",
+    name: "Search Bar",
+    description: "Search input with suggestions, query clearing, loading feedback, and keyboard control.",
+    category: "Advanced / Utility",
+    icon: Search,
+    isNew: true,
+  },
+  {
+    id: "filter",
+    name: "Filter",
+    description: "Multi-type facet filtering toolbar with count indicators, reset actions, and responsive layout.",
+    category: "Advanced / Utility",
+    icon: FilterIcon,
+    isNew: true,
+  },
+  {
+    id: "sort-menu",
+    name: "Sort Menu",
+    description: "Dropdown selector for ordering datasets by ascending or descending fields with directional cues.",
+    category: "Advanced / Utility",
+    icon: ArrowUpDown,
+    isNew: true,
+  },
+  {
+    id: "range-slider",
+    name: "Range Slider",
+    description: "Dual-thumb slider track for selecting bounded interval minimums and maximums without handle overlap.",
+    category: "Advanced / Utility",
+    icon: SlidersHorizontal,
+    isNew: true,
+  },
+  {
+    id: "slider",
+    name: "Slider",
+    description: "Single-value continuous slider with touch dragging, step increments, and optional scale marks.",
+    category: "Advanced / Utility",
+    icon: SlidersHorizontal,
+    isNew: true,
+  },
+  {
+    id: "color-picker",
+    name: "Color Picker",
+    description: "Color selector with palette swatches, hex input validation, and native wheel integration.",
+    category: "Advanced / Utility",
+    icon: Palette,
+    isNew: true,
+  },
+  {
+    id: "combobox",
+    name: "Combobox",
+    description: "Autocomplete select menu with keyboard listbox navigation, option highlighting, and clear action.",
+    category: "Advanced / Utility",
+    icon: ChevronsUpDown,
+    isNew: true,
+  },
+  {
+    id: "multi-select",
+    name: "Multi-Select",
+    description: "Tag-based multiple selection component with chip removal, option filtering, and batch clear.",
+    category: "Advanced / Utility",
+    icon: CheckSquare,
+    isNew: true,
+  },
+  {
+    id: "otp-input",
+    name: "OTP / PIN Input",
+    description: "Segmented digit code input with auto-advance, backspace navigation, paste distribution, and masking.",
+    category: "Advanced / Utility",
+    icon: KeyRound,
     isNew: true,
   }
 ] as const;
