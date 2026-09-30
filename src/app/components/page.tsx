@@ -27,10 +27,10 @@ export default function ComponentsPage() {
             Component Directory
           </span>
           <h1 className="mt-4 text-balance text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
-            35 Essential Components
+            45 Essential Components
           </h1>
           <p className="mt-4 text-balance leading-relaxed text-muted-foreground text-sm sm:text-base">
-            The complete suite of 35 production UI components crafted authentically in each aesthetic.
+            The complete suite of 45 production UI components crafted authentically in each aesthetic.
             Preview in light or dark mode and copy clean HTML + Tailwind CSS.
           </p>
         </div>

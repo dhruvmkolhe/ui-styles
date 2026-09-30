@@ -34,6 +34,16 @@ import {
   ToggleRight,
   Type,
   XCircle,
+  ArrowUp,
+  Command,
+  Compass,
+  ExternalLink,
+  ListOrdered,
+  Milestone,
+  PanelLeft,
+  Smartphone,
+  Split,
+  Waypoints,
 } from "lucide-react";
 
 export const COMPONENTS_CATALOG = [
@@ -246,6 +256,66 @@ export const COMPONENTS_CATALOG = [
     name: "Cookie Banner",
     icon: Cookie,
     description: "Consent management banner with granular category preferences and persistent storage.",
+  },
+  {
+    id: "breadcrumb",
+    name: "Breadcrumb",
+    icon: Milestone,
+    description: "Semantic trail navigation with icons, custom separators, responsive collapse, and active page semantics.",
+  },
+  {
+    id: "pagination",
+    name: "Pagination",
+    icon: ListOrdered,
+    description: "Configurable page switcher with range ellipsis, first/last jumps, and mobile responsive controls.",
+  },
+  {
+    id: "sidebar",
+    name: "Sidebar",
+    icon: PanelLeft,
+    description: "Collapsible navigation drawer with nested submenus, mobile slide-out overlay, badges, and focus trap.",
+  },
+  {
+    id: "navigation-menu",
+    name: "Navigation Menu",
+    icon: Compass,
+    description: "Accessible site navigation with dropdown content panels, active state indicators, and keyboard arrows.",
+  },
+  {
+    id: "menu-bar",
+    name: "Menu Bar",
+    icon: Split,
+    description: "Application-grade horizontal menu bar with nested cascading submenus, shortcuts, and ARIA menubar semantics.",
+  },
+  {
+    id: "stepper",
+    name: "Stepper",
+    icon: Waypoints,
+    description: "Process wizard with completed checkmarks, current highlights, error states, and responsive orientation.",
+  },
+  {
+    id: "bottom-navigation",
+    name: "Bottom Navigation",
+    icon: Smartphone,
+    description: "Mobile app bottom dock with badge indicators, safe-area padding, and active destination markers.",
+  },
+  {
+    id: "command-menu",
+    name: "Command Menu",
+    icon: Command,
+    description: "Command palette modal with instant search filtering, keyboard roving focus, and shortcut triggers.",
+  },
+  {
+    id: "link",
+    name: "Link",
+    icon: ExternalLink,
+    description: "Polymorphic anchor with automatic external target/rel detection, visual underline styles, and focus rings.",
+  },
+  {
+    id: "back-to-top",
+    name: "Back to Top",
+    icon: ArrowUp,
+    description: "Floating action button with scroll threshold visibility, smooth scrolling animation, and accessible label.",
   },
 ] as const;
 

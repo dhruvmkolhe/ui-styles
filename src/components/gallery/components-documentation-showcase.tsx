@@ -42,6 +42,59 @@ import { SuccessState } from "@/components/ui/success-state";
 import { Callout } from "@/components/ui/callout";
 import { NotificationCenter } from "@/components/ui/notification-center";
 import { CookieBanner } from "@/components/ui/cookie-banner";
+import { BreadcrumbNav } from "@/components/ui/breadcrumb";
+import { PaginationNav } from "@/components/ui/pagination";
+import {
+  Sidebar,
+  SidebarHeader,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarFooter,
+} from "@/components/ui/sidebar";
+import {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem as NavMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
+} from "@/components/ui/navigation-menu";
+import {
+  MenuBar,
+  MenuBarMenu,
+  MenuBarItem,
+  MenuBarSeparator,
+} from "@/components/ui/menu-bar";
+import { Stepper } from "@/components/ui/stepper";
+import { BottomNavigation } from "@/components/ui/bottom-navigation";
+import { CommandMenu } from "@/components/ui/command-menu";
+import { Link as CustomLink } from "@/components/ui/link";
+import { BackToTop } from "@/components/ui/back-to-top";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  Bell,
+  Compass,
+  FolderKanban,
+  Home,
+  LayoutGrid,
+  ListOrdered,
+  Milestone,
+  PanelLeftClose,
+  PanelLeftOpen,
+  Search,
+  Settings,
+  Smartphone,
+  Split,
+  User,
+  Waypoints,
+  ExternalLink,
+} from "lucide-react";
 
 const COMPONENTS_DOCS = [
   { id: "checkbox", name: "Checkbox", category: "Form" },
@@ -63,6 +116,16 @@ const COMPONENTS_DOCS = [
   { id: "callout", name: "Callout", category: "Feedback" },
   { id: "notification-center", name: "Notification Center", category: "Feedback" },
   { id: "cookie-banner", name: "Cookie Banner", category: "Feedback" },
+  { id: "breadcrumb", name: "Breadcrumb", category: "Navigation" },
+  { id: "pagination", name: "Pagination", category: "Navigation" },
+  { id: "sidebar", name: "Sidebar", category: "Navigation" },
+  { id: "navigation-menu", name: "Navigation Menu", category: "Navigation" },
+  { id: "menu-bar", name: "Menu Bar", category: "Navigation" },
+  { id: "stepper", name: "Stepper", category: "Navigation" },
+  { id: "bottom-navigation", name: "Bottom Navigation", category: "Navigation" },
+  { id: "command-menu", name: "Command Menu", category: "Navigation" },
+  { id: "link", name: "Link", category: "Navigation" },
+  { id: "back-to-top", name: "Back to Top", category: "Navigation" },
   { id: "playground", name: "Full Suite Playground", category: "Integration" },
 ];
 
@@ -95,6 +158,19 @@ export function ComponentsDocumentationShowcase() {
   const [emptyPreset, setEmptyPreset] = useState<"search" | "data" | "inbox" | "generic">("search");
   const [isRetrying, setIsRetrying] = useState(false);
   const [cookieConsent, setCookieConsent] = useState<string | null>(null);
+
+  // Batch 3 Navigation interactive states
+  const [breadcrumbSep, setBreadcrumbSep] = useState<"chevron" | "slash" | "dot">("chevron");
+  const [navPage, setNavPage] = useState(3);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarActive, setSidebarActive] = useState("overview");
+  const [stepperStep, setStepperStep] = useState(1);
+  const [stepperOrientation, setStepperOrientation] = useState<"horizontal" | "vertical">("horizontal");
+  const [bottomNavVal, setBottomNavVal] = useState("home");
+  const [cmdOpen, setCmdOpen] = useState(false);
+  const [cmdResult, setCmdResult] = useState<string | null>(null);
+  const [navMenuVal, setNavMenuVal] = useState<string | null>(null);
+  const [menuBarAction, setMenuBarAction] = useState<string | null>(null);
 
   const handleCopy = async (code: string, label: string) => {
     const ok = await copyCode(code, label);
@@ -1453,7 +1529,804 @@ export function ComponentsDocumentationShowcase() {
           </div>
         )}
 
-        {/* 20 · PLAYGROUND */}
+        {/* 20 · BREADCRUMB */}
+        {activeTab === "breadcrumb" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Breadcrumb</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Semantic trail navigation with icons, custom separators, responsive collapse, and active page semantics.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<BreadcrumbNav\n  items={[\n    { label: "Home", href: "/", icon: <Home className="h-3.5 w-3.5" /> },\n    { label: "Settings", href: "/settings" },\n    { label: "Team", isCurrent: true },\n  ]}\n  separator="/"\n/>`,
+                    "Breadcrumb"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-6">
+              {/* Interactive Controls */}
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-4 text-xs">
+                <span className="font-semibold text-muted-foreground">Separator Style:</span>
+                <div className="flex items-center gap-1.5">
+                  {(["chevron", "slash", "dot"] as const).map((sep) => (
+                    <Button
+                      key={sep}
+                      size="sm"
+                      variant={breadcrumbSep === sep ? "default" : "outline"}
+                      onClick={() => setBreadcrumbSep(sep)}
+                      className="h-7 text-xs capitalize"
+                    >
+                      {sep}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Breadcrumb Display */}
+              <div className="p-4 rounded-xl border border-border bg-card">
+                <BreadcrumbNav
+                  items={[
+                    { label: "Home", href: "#", icon: <Home className="h-3.5 w-3.5" /> },
+                    { label: "Dashboard", href: "#" },
+                    { label: "Components", href: "#", icon: <Layers className="h-3.5 w-3.5" /> },
+                    { label: "Navigation", href: "#" },
+                    { label: "Breadcrumb", isCurrent: true },
+                  ]}
+                  separator={
+                    breadcrumbSep === "slash" ? (
+                      <span className="opacity-40">/</span>
+                    ) : breadcrumbSep === "dot" ? (
+                      <span className="opacity-40">•</span>
+                    ) : undefined
+                  }
+                />
+              </div>
+
+              <div className="rounded-lg border border-border bg-muted/20 p-4 text-xs space-y-2">
+                <div className="font-semibold text-foreground">Accessibility Specifications:</div>
+                <ul className="list-disc list-inside text-muted-foreground space-y-1">
+                  <li>Wrapped in semantic <code className="font-mono text-[11px]">&lt;nav aria-label=&quot;Breadcrumb&quot;&gt;</code>.</li>
+                  <li>Ordered list <code className="font-mono text-[11px]">&lt;ol&gt;</code> structure communicates chronological hierarchy.</li>
+                  <li>Current destination marked with <code className="font-mono text-[11px]">aria-current=&quot;page&quot;</code> and disabled link cursor.</li>
+                  <li>Separators marked with <code className="font-mono text-[11px]">aria-hidden=&quot;true&quot;</code> to prevent screen-reader clutter.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 21 · PAGINATION */}
+        {activeTab === "pagination" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Pagination</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Accessible page switcher with range ellipsis, jump controls, and mobile responsive layout.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<PaginationNav\n  page={currentPage}\n  totalPages={16}\n  onPageChange={setCurrentPage}\n  siblingCount={1}\n  showFirstLast\n/>`,
+                    "Pagination"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-6">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-3">
+                <span>Active Page: <strong className="text-foreground">{navPage}</strong> of 16</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[11px]">Jump:</span>
+                  {[1, 5, 8, 16].map((p) => (
+                    <Button
+                      key={p}
+                      size="sm"
+                      variant={navPage === p ? "default" : "outline"}
+                      onClick={() => setNavPage(p)}
+                      className="h-6 w-7 text-[11px] p-0"
+                    >
+                      {p}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="p-4 rounded-xl border border-border bg-card flex justify-center">
+                <PaginationNav
+                  page={navPage}
+                  totalPages={16}
+                  onPageChange={setNavPage}
+                  siblingCount={1}
+                  showFirstLast
+                  disabled={isDisabled}
+                />
+              </div>
+
+              <div className="rounded-lg border border-border bg-muted/20 p-4 text-xs space-y-2">
+                <div className="font-semibold text-foreground">Keyboard &amp; Assistive Controls:</div>
+                <ul className="list-disc list-inside text-muted-foreground space-y-1">
+                  <li>Previous/Next buttons properly set <code className="font-mono text-[11px]">aria-disabled=&quot;true&quot;</code> at boundaries.</li>
+                  <li>Active page communicates status via <code className="font-mono text-[11px]">aria-current=&quot;page&quot;</code>.</li>
+                  <li>Responsive mobile mode collapses page numbers to <code className="font-mono text-[11px]">Page X of Y</code> automatically.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 22 · SIDEBAR */}
+        {activeTab === "sidebar" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Sidebar</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Collapsible navigation drawer with nested submenus, mobile slide-out overlay, badges, and focus trap.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Sidebar collapsed={isCollapsed}>\n  <SidebarHeader>UI Hub</SidebarHeader>\n  <SidebarContent>\n    <SidebarMenu>\n      <SidebarMenuItem>\n        <SidebarMenuButton icon={<Home />} isActive>Overview</SidebarMenuButton>\n      </SidebarMenuItem>\n    </SidebarMenu>\n  </SidebarContent>\n</Sidebar>`,
+                    "Sidebar"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-6">
+              <div className="flex items-center justify-between border-b border-border pb-3">
+                <span className="text-xs text-muted-foreground">
+                  Mode: <strong className="text-foreground">{sidebarCollapsed ? "Collapsed (Icon-Only)" : "Expanded (Full)"}</strong>
+                </span>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                  className="h-7 text-xs flex items-center gap-1.5"
+                >
+                  {sidebarCollapsed ? <PanelLeftOpen className="h-3.5 w-3.5" /> : <PanelLeftClose className="h-3.5 w-3.5" />}
+                  <span>{sidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}</span>
+                </Button>
+              </div>
+
+              {/* Embedded Sidebar Demonstration */}
+              <div className="flex justify-center p-2 rounded-xl bg-muted/20 border border-border">
+                <div
+                  className={cn(
+                    "border border-border bg-card rounded-xl transition-all duration-300 flex flex-col h-[360px] select-none shadow-md",
+                    sidebarCollapsed ? "w-16" : "w-64"
+                  )}
+                >
+                  <div className={cn("h-14 border-b border-border flex items-center px-3.5 gap-2 shrink-0", sidebarCollapsed && "justify-center")}>
+                    <div className="h-7 w-7 rounded-lg bg-teal-600 text-white flex items-center justify-center font-bold text-xs shrink-0">
+                      UI
+                    </div>
+                    {!sidebarCollapsed && (
+                      <div className="flex-1 min-w-0">
+                        <div className="text-xs font-bold truncate text-foreground">Workspace Studio</div>
+                        <div className="text-[10px] font-mono text-muted-foreground">Pro Tier</div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex-1 overflow-y-auto p-2 space-y-3">
+                    {!sidebarCollapsed && (
+                      <div className="px-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                        Platform
+                      </div>
+                    )}
+                    <div className="space-y-1">
+                      {[
+                        { id: "overview", label: "Overview", icon: <LayoutGrid className="h-4 w-4" /> },
+                        { id: "components", label: "Components", icon: <Layers className="h-4 w-4" />, badge: "45" },
+                        { id: "settings", label: "Settings", icon: <Settings className="h-4 w-4" /> },
+                      ].map((item) => (
+                        <button
+                          key={item.id}
+                          type="button"
+                          onClick={() => setSidebarActive(item.id)}
+                          title={sidebarCollapsed ? item.label : undefined}
+                          className={cn(
+                            "w-full flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-xs font-medium transition-colors text-left",
+                            sidebarActive === item.id
+                              ? "bg-teal-600 text-white font-semibold shadow-xs"
+                              : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                            sidebarCollapsed && "justify-center px-0"
+                          )}
+                        >
+                          <span className="shrink-0">{item.icon}</span>
+                          {!sidebarCollapsed && <span className="flex-1 truncate">{item.label}</span>}
+                          {!sidebarCollapsed && item.badge && (
+                            <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-white/20">
+                              {item.badge}
+                            </span>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className={cn("border-t border-border p-2.5 flex items-center gap-2.5 shrink-0", sidebarCollapsed && "justify-center")}>
+                    <div className="h-7 w-7 rounded-full bg-teal-500/10 text-teal-600 flex items-center justify-center font-bold text-xs shrink-0">
+                      JD
+                    </div>
+                    {!sidebarCollapsed && (
+                      <div className="flex-1 min-w-0 text-left">
+                        <div className="text-xs font-semibold text-foreground truncate">Jane Doe</div>
+                        <div className="text-[10px] text-muted-foreground truncate">admin@uihub.dev</div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 23 · NAVIGATION MENU */}
+        {activeTab === "navigation-menu" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Navigation Menu</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Accessible site navigation with dropdown content panels, active state indicators, and keyboard arrows.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<NavigationMenu>\n  <NavigationMenuList>\n    <NavigationMenuItem>\n      <NavigationMenuTrigger value="products">Products</NavigationMenuTrigger>\n      <NavigationMenuContent value="products">\n        <NavigationMenuLink href="/ui">UI Hub</NavigationMenuLink>\n      </NavigationMenuContent>\n    </NavigationMenuItem>\n  </NavigationMenuList>\n</NavigationMenu>`,
+                    "NavigationMenu"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-6">
+              <div className="p-3 rounded-xl border border-border bg-card">
+                <NavigationMenu value={navMenuVal} onValueChange={setNavMenuVal}>
+                  <NavigationMenuList>
+                    <NavMenuItem>
+                      <NavigationMenuTrigger value="solutions">Solutions</NavigationMenuTrigger>
+                      <NavigationMenuContent value="solutions">
+                        <div className="grid gap-2 w-64 p-1">
+                          <NavigationMenuLink href="#design-systems" isActive>
+                            <div className="text-xs font-bold">25 Design Systems</div>
+                            <div className="text-[11px] text-muted-foreground">Authentic design styles rendered live</div>
+                          </NavigationMenuLink>
+                          <NavigationMenuLink href="#cli">
+                            <div className="text-xs font-bold">CLI Code Generator</div>
+                            <div className="text-[11px] text-muted-foreground">Zero-dependency component export</div>
+                          </NavigationMenuLink>
+                        </div>
+                      </NavigationMenuContent>
+                    </NavMenuItem>
+
+                    <NavMenuItem>
+                      <NavigationMenuTrigger value="developers">Developers</NavigationMenuTrigger>
+                      <NavigationMenuContent value="developers">
+                        <div className="grid gap-2 w-64 p-1">
+                          <NavigationMenuLink href="#api-reference">
+                            <div className="text-xs font-bold">API Reference</div>
+                            <div className="text-[11px] text-muted-foreground">Radix UI and Tailwind CSS bindings</div>
+                          </NavigationMenuLink>
+                          <NavigationMenuLink href="#github">
+                            <div className="text-xs font-bold">Open Source Core</div>
+                            <div className="text-[11px] text-muted-foreground">MIT Licensed components suite</div>
+                          </NavigationMenuLink>
+                        </div>
+                      </NavigationMenuContent>
+                    </NavMenuItem>
+
+                    <NavMenuItem>
+                      <NavigationMenuLink href="/components" isActive>
+                        Components
+                      </NavigationMenuLink>
+                    </NavMenuItem>
+                  </NavigationMenuList>
+                </NavigationMenu>
+              </div>
+
+              <div className="rounded-lg border border-border bg-muted/20 p-4 text-xs space-y-2">
+                <div className="font-semibold text-foreground">Interaction &amp; Accessibility Highlights:</div>
+                <ul className="list-disc list-inside text-muted-foreground space-y-1">
+                  <li>Never depends solely on hover: operable via click, Space, or Enter key.</li>
+                  <li>Pressing <code className="font-mono text-[11px]">Escape</code> closes active submenus and restores focus to the trigger.</li>
+                  <li>Exposes <code className="font-mono text-[11px]">aria-expanded</code> and <code className="font-mono text-[11px]">aria-haspopup=&quot;true&quot;</code> states to screen readers.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 24 · MENU BAR */}
+        {activeTab === "menu-bar" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Menu Bar</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Application-grade horizontal menu bar with nested cascading submenus, shortcuts, and ARIA menubar semantics.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<MenuBar>\n  <MenuBarMenu id="file" label="File">\n    <MenuBarItem shortcut="⌘N">New Project</MenuBarItem>\n    <MenuBarSeparator />\n    <MenuBarItem shortcut="⌘S">Save</MenuBarItem>\n  </MenuBarMenu>\n</MenuBar>`,
+                    "MenuBar"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-6">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-3">
+                <span>Application Menu</span>
+                <span>Last Action: <strong className="text-foreground">{menuBarAction || "None"}</strong></span>
+              </div>
+
+              <div className="p-3 rounded-xl border border-border bg-card">
+                <MenuBar>
+                  <MenuBarMenu id="file" label="File">
+                    <MenuBarItem shortcut="⌘N" onClick={() => setMenuBarAction("New File")}>New File</MenuBarItem>
+                    <MenuBarItem shortcut="⌘O" onClick={() => setMenuBarAction("Open File")}>Open...</MenuBarItem>
+                    <MenuBarSeparator />
+                    <MenuBarItem shortcut="⌘S" onClick={() => setMenuBarAction("Save File")}>Save</MenuBarItem>
+                    <MenuBarItem disabled>Export as PDF</MenuBarItem>
+                  </MenuBarMenu>
+
+                  <MenuBarMenu id="edit" label="Edit">
+                    <MenuBarItem shortcut="⌘Z" onClick={() => setMenuBarAction("Undo")}>Undo</MenuBarItem>
+                    <MenuBarItem shortcut="⇧⌘Z" onClick={() => setMenuBarAction("Redo")}>Redo</MenuBarItem>
+                    <MenuBarSeparator />
+                    <MenuBarItem shortcut="⌘X" onClick={() => setMenuBarAction("Cut")}>Cut</MenuBarItem>
+                    <MenuBarItem shortcut="⌘C" onClick={() => setMenuBarAction("Copy")}>Copy</MenuBarItem>
+                    <MenuBarItem shortcut="⌘V" onClick={() => setMenuBarAction("Paste")}>Paste</MenuBarItem>
+                  </MenuBarMenu>
+
+                  <MenuBarMenu id="view" label="View">
+                    <MenuBarItem shortcut="⌘+" onClick={() => setMenuBarAction("Zoom In")}>Zoom In</MenuBarItem>
+                    <MenuBarItem shortcut="⌘-" onClick={() => setMenuBarAction("Zoom Out")}>Zoom Out</MenuBarItem>
+                    <MenuBarSeparator />
+                    <MenuBarItem shortcut="⌘0" onClick={() => setMenuBarAction("Reset Zoom")}>Actual Size</MenuBarItem>
+                  </MenuBarMenu>
+
+                  <MenuBarMenu id="help" label="Help">
+                    <MenuBarItem shortcut="F1" onClick={() => setMenuBarAction("Open Docs")}>Documentation</MenuBarItem>
+                    <MenuBarItem onClick={() => setMenuBarAction("Release Notes")}>Release Notes</MenuBarItem>
+                  </MenuBarMenu>
+                </MenuBar>
+              </div>
+
+              <div className="rounded-lg border border-border bg-muted/20 p-4 text-xs space-y-2">
+                <div className="font-semibold text-foreground">W3C Menubar Pattern Compliance:</div>
+                <ul className="list-disc list-inside text-muted-foreground space-y-1">
+                  <li>Uses <code className="font-mono text-[11px]">role=&quot;menubar&quot;</code> and <code className="font-mono text-[11px]">role=&quot;menuitem&quot;</code> attributes.</li>
+                  <li>Roving mouse enter opens adjacent menus when a menu is already active.</li>
+                  <li>Keyboard shortcut indicators are visually aligned with monospace typography.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 25 · STEPPER */}
+        {activeTab === "stepper" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Stepper</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Process wizard with completed checkmarks, current highlights, error states, and responsive orientation modes.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Stepper\n  steps={[\n    { id: 1, title: "Account", description: "Email & security" },\n    { id: 2, title: "Billing", description: "Credit card info" },\n    { id: 3, title: "Confirm", description: "Review and launch" },\n  ]}\n  currentStep={currentStep}\n  onStepClick={setCurrentStep}\n/>`,
+                    "Stepper"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-6">
+              <div className="flex items-center justify-between border-b border-border pb-3 text-xs">
+                <span className="text-muted-foreground">Orientation:</span>
+                <div className="flex items-center gap-1.5">
+                  <Button
+                    size="sm"
+                    variant={stepperOrientation === "horizontal" ? "default" : "outline"}
+                    onClick={() => setStepperOrientation("horizontal")}
+                    className="h-7 text-xs"
+                  >
+                    Horizontal
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant={stepperOrientation === "vertical" ? "default" : "outline"}
+                    onClick={() => setStepperOrientation("vertical")}
+                    className="h-7 text-xs"
+                  >
+                    Vertical
+                  </Button>
+                </div>
+              </div>
+
+              <div className="p-4 rounded-xl border border-border bg-card">
+                <Stepper
+                  steps={[
+                    { id: 1, title: "Account", description: "Identity verification" },
+                    { id: 2, title: "Billing Details", description: "Invoice address" },
+                    { id: 3, title: "Preferences", description: "Custom configurations", optional: true },
+                    { id: 4, title: "Review", description: "Final confirmation" },
+                  ]}
+                  currentStep={stepperStep}
+                  onStepClick={setStepperStep}
+                  orientation={stepperOrientation}
+                />
+              </div>
+
+              <div className="flex items-center justify-between pt-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={stepperStep === 0}
+                  onClick={() => setStepperStep((p) => Math.max(0, p - 1))}
+                  className="flex items-center gap-1.5"
+                >
+                  <ArrowLeft className="h-3.5 w-3.5" />
+                  <span>Previous</span>
+                </Button>
+                <span className="text-xs font-mono text-muted-foreground">
+                  Step {stepperStep + 1} of 4
+                </span>
+                <Button
+                  size="sm"
+                  disabled={stepperStep >= 3}
+                  onClick={() => setStepperStep((p) => Math.min(3, p + 1))}
+                  className="flex items-center gap-1.5"
+                >
+                  <span>Next Step</span>
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 26 · BOTTOM NAVIGATION */}
+        {activeTab === "bottom-navigation" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Bottom Navigation</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Mobile app bottom dock with badge indicators, safe-area padding, and accessible aria-current destination markers.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<BottomNavigation\n  items={[\n    { id: "home", label: "Home", icon: <Home /> },\n    { id: "search", label: "Search", icon: <Search /> },\n    { id: "activity", label: "Activity", icon: <Bell />, badge: "3" },\n    { id: "profile", label: "Profile", icon: <User /> },\n  ]}\n  value={activeTab}\n  onValueChange={setActiveTab}\n/>`,
+                    "BottomNavigation"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-sm mx-auto space-y-4">
+              <div className="border border-border overflow-hidden rounded-2xl shadow-lg flex flex-col h-[240px] bg-card">
+                <div className="flex-1 p-4 flex flex-col items-center justify-center text-center">
+                  <div className="h-10 w-10 rounded-full bg-teal-500/10 text-teal-600 flex items-center justify-center mb-2">
+                    {bottomNavVal === "home" && <Home className="h-5 w-5" />}
+                    {bottomNavVal === "search" && <Search className="h-5 w-5" />}
+                    {bottomNavVal === "activity" && <Bell className="h-5 w-5" />}
+                    {bottomNavVal === "profile" && <User className="h-5 w-5" />}
+                  </div>
+                  <div className="text-sm font-bold capitalize text-foreground">
+                    {bottomNavVal} Destination
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Touch-friendly targets with active indicator pill.
+                  </p>
+                </div>
+
+                <BottomNavigation
+                  items={[
+                    { id: "home", label: "Home", icon: <Home className="h-4 w-4" /> },
+                    { id: "search", label: "Search", icon: <Search className="h-4 w-4" /> },
+                    { id: "activity", label: "Activity", icon: <Bell className="h-4 w-4" />, badge: "3" },
+                    { id: "profile", label: "Profile", icon: <User className="h-4 w-4" /> },
+                  ]}
+                  value={bottomNavVal}
+                  onValueChange={setBottomNavVal}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 27 · COMMAND MENU */}
+        {activeTab === "command-menu" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Command Menu</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Command palette modal with instant search filtering, keyboard roving focus, categories, and shortcut triggers.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<CommandMenu\n  open={isOpen}\n  onOpenChange={setIsOpen}\n  groups={[\n    {\n      heading: "Navigation",\n      items: [\n        { id: "home", label: "Go to Home", shortcut: "G H" },\n      ],\n    },\n  ]}\n/>`,
+                    "CommandMenu"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-6 text-center">
+              <p className="text-xs text-muted-foreground">
+                Click below to launch the modal command palette or test keyboard shortcuts.
+              </p>
+
+              <Button
+                onClick={() => setCmdOpen(true)}
+                className="mx-auto flex items-center gap-2 h-10 px-6"
+              >
+                <Search className="h-4 w-4" />
+                <span>Open Command Palette</span>
+                <kbd className="ml-2 rounded border border-white/20 bg-white/10 px-1.5 py-0.5 font-mono text-[10px]">
+                  ⌘K
+                </kbd>
+              </Button>
+
+              {cmdResult && (
+                <div className="text-xs text-teal-600 dark:text-teal-400 font-semibold flex items-center justify-center gap-1.5 animate-in fade-in-0">
+                  <Check className="h-4 w-4" />
+                  <span>Executed: {cmdResult}</span>
+                </div>
+              )}
+
+              <CommandMenu
+                open={cmdOpen}
+                onOpenChange={setCmdOpen}
+                groups={[
+                  {
+                    heading: "Navigation",
+                    items: [
+                      {
+                        id: "components",
+                        label: "Go to Component Catalog",
+                        shortcut: "G C",
+                        icon: <Layers className="h-4 w-4" />,
+                        onSelect: () => setCmdResult("Navigated to Components"),
+                      },
+                      {
+                        id: "docs",
+                        label: "View Style Guides",
+                        shortcut: "G S",
+                        icon: <Milestone className="h-4 w-4" />,
+                        onSelect: () => setCmdResult("Opened Style Guides"),
+                      },
+                    ],
+                  },
+                  {
+                    heading: "Quick Actions",
+                    items: [
+                      {
+                        id: "copy-all",
+                        label: "Copy React Import Syntax",
+                        shortcut: "⌘I",
+                        icon: <Copy className="h-4 w-4" />,
+                        onSelect: () => setCmdResult("Copied React Import Syntax"),
+                      },
+                      {
+                        id: "report",
+                        label: "Send User Feedback",
+                        shortcut: "⌘F",
+                        icon: <Sparkles className="h-4 w-4" />,
+                        onSelect: () => setCmdResult("Opened Feedback Modal"),
+                      },
+                    ],
+                  },
+                ]}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 28 · LINK */}
+        {activeTab === "link" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Link</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Polymorphic anchor with automatic external target/rel detection, visual underline styles, and accessible focus rings.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<CustomLink href="/components" variant="default">Documentation</CustomLink>\n<CustomLink href="https://github.com" isExternal showExternalIcon>GitHub</CustomLink>`,
+                    "Link"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-4 text-xs">
+              <div className="flex items-center justify-between p-3 rounded-lg border border-border bg-card">
+                <span className="text-muted-foreground">Default Link:</span>
+                <CustomLink href="#">
+                  Explore Design Tokens
+                </CustomLink>
+              </div>
+
+              <div className="flex items-center justify-between p-3 rounded-lg border border-border bg-card">
+                <span className="text-muted-foreground">Subtle Muted Link:</span>
+                <CustomLink href="#" variant="subtle">
+                  View Project Changelog
+                </CustomLink>
+              </div>
+
+              <div className="flex items-center justify-between p-3 rounded-lg border border-border bg-card">
+                <span className="text-muted-foreground">External Target (_blank):</span>
+                <CustomLink href="https://github.com" isExternal showExternalIcon>
+                  GitHub Repository
+                </CustomLink>
+              </div>
+
+              <div className="flex items-center justify-between p-3 rounded-lg border border-border bg-card">
+                <span className="text-muted-foreground">Always Underlined:</span>
+                <CustomLink href="#" variant="underline" underline="always">
+                  Terms of Service &amp; Licensing
+                </CustomLink>
+              </div>
+
+              <div className="flex items-center justify-between p-3 rounded-lg border border-border bg-card">
+                <span className="text-muted-foreground">Disabled Anchor:</span>
+                <CustomLink href="#" disabled>
+                  Premium Features (Restricted)
+                </CustomLink>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 29 · BACK TO TOP */}
+        {activeTab === "back-to-top" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Back to Top</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Floating action button with scroll threshold visibility, smooth scrolling animation, and accessible label.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<BackToTop threshold={300} smooth position="bottom-right" />`,
+                    "BackToTop"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-4">
+              <p className="text-xs text-muted-foreground">
+                The global <code className="font-mono text-[11px]">&lt;BackToTop /&gt;</code> component monitors window scroll position. Below is an interactive demonstration embedded in a scrollable frame:
+              </p>
+
+              <div className="relative border border-border rounded-xl overflow-hidden shadow-inner bg-card h-48">
+                <div
+                  id="demo-scroll-box"
+                  className="h-full overflow-y-auto p-4 space-y-3 text-xs"
+                >
+                  <div className="p-3 rounded-lg bg-muted/40 border border-border">
+                    <h5 className="font-bold text-foreground">Top of Document</h5>
+                    <p className="text-[11px] text-muted-foreground mt-1">
+                      Scroll down inside this box to trigger the return-to-top button.
+                    </p>
+                  </div>
+
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <div key={i} className="p-3 rounded-lg bg-muted/20 border border-border">
+                      <div className="font-semibold text-foreground">Paragraph Block #{i + 1}</div>
+                      <p className="text-muted-foreground text-[11px]">
+                        Continuous content section testing passive scroll handlers.
+                      </p>
+                    </div>
+                  ))}
+
+                  <div className="p-3 rounded-lg bg-muted/40 border border-border text-center">
+                    <span className="font-semibold text-foreground">End of content</span>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const el = document.getElementById("demo-scroll-box")
+                    el?.scrollTo({ top: 0, behavior: "smooth" })
+                  }}
+                  className="absolute bottom-3 right-3 p-2.5 rounded-full bg-teal-600 text-white shadow-lg hover:bg-teal-700 transition-all flex items-center gap-1.5 text-xs font-bold"
+                  aria-label="Back to top of section"
+                >
+                  <ArrowUp className="h-4 w-4" />
+                  <span>Top</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 30 · PLAYGROUND */}
         {activeTab === "playground" && (
           <div className="space-y-8">
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
