@@ -8,6 +8,7 @@ import {
   CheckCircle2,
   AlertCircle,
   Calendar,
+  Cookie,
   X,
   Plus,
   Info,
@@ -31,17 +32,37 @@ import { FormField } from "@/components/ui/form-field";
 import { DateInput } from "@/components/ui/date-input";
 import { NumberInput } from "@/components/ui/number-input";
 import { Button } from "@/components/ui/button";
+import { Alert } from "@/components/ui/alert";
+import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
+import { AlertDialog } from "@/components/ui/alert-dialog";
+import { LoadingOverlay } from "@/components/ui/loading-overlay";
+import { EmptyState } from "@/components/ui/empty-state";
+import { ErrorState } from "@/components/ui/error-state";
+import { SuccessState } from "@/components/ui/success-state";
+import { Callout } from "@/components/ui/callout";
+import { NotificationCenter } from "@/components/ui/notification-center";
+import { CookieBanner } from "@/components/ui/cookie-banner";
 
 const COMPONENTS_DOCS = [
-  { id: "checkbox", name: "Checkbox", category: "Selection" },
-  { id: "radio-group", name: "Radio Group", category: "Selection" },
-  { id: "select", name: "Select", category: "Selection" },
-  { id: "textarea", name: "Textarea", category: "Text Inputs" },
-  { id: "form", name: "Form", category: "Structure" },
-  { id: "label", name: "Label", category: "Typography" },
-  { id: "form-field", name: "Form Field", category: "Structure" },
-  { id: "date-input", name: "Date Input", category: "Specialized" },
-  { id: "number-input", name: "Number Input", category: "Specialized" },
+  { id: "checkbox", name: "Checkbox", category: "Form" },
+  { id: "radio-group", name: "Radio Group", category: "Form" },
+  { id: "select", name: "Select", category: "Form" },
+  { id: "textarea", name: "Textarea", category: "Form" },
+  { id: "form", name: "Form", category: "Form" },
+  { id: "label", name: "Label", category: "Form" },
+  { id: "form-field", name: "Form Field", category: "Form" },
+  { id: "date-input", name: "Date Input", category: "Form" },
+  { id: "number-input", name: "Number Input", category: "Form" },
+  { id: "alert", name: "Alert / Banner", category: "Feedback" },
+  { id: "confirmation-dialog", name: "Confirmation Dialog", category: "Feedback" },
+  { id: "alert-dialog", name: "Alert Dialog", category: "Feedback" },
+  { id: "loading-overlay", name: "Loading Overlay", category: "Feedback" },
+  { id: "empty-state", name: "Empty State", category: "Feedback" },
+  { id: "error-state", name: "Error State", category: "Feedback" },
+  { id: "success-state", name: "Success State", category: "Feedback" },
+  { id: "callout", name: "Callout", category: "Feedback" },
+  { id: "notification-center", name: "Notification Center", category: "Feedback" },
+  { id: "cookie-banner", name: "Cookie Banner", category: "Feedback" },
   { id: "playground", name: "Full Suite Playground", category: "Integration" },
 ];
 
@@ -64,6 +85,16 @@ export function ComponentsDocumentationShowcase() {
   const [numberVal, setNumberVal] = useState<number | undefined>(24);
   const [numberStepper, setNumberStepper] = useState<"inline" | "buttons">("buttons");
   const [formSubmitted, setFormSubmitted] = useState(false);
+
+  // Batch 2 interactive states
+  const [alertFormat, setAlertFormat] = useState<"card" | "banner">("card");
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [confirmResult, setConfirmResult] = useState<string | null>(null);
+  const [alertModalOpen, setAlertModalOpen] = useState(false);
+  const [loadingActive, setLoadingActive] = useState(false);
+  const [emptyPreset, setEmptyPreset] = useState<"search" | "data" | "inbox" | "generic">("search");
+  const [isRetrying, setIsRetrying] = useState(false);
+  const [cookieConsent, setCookieConsent] = useState<string | null>(null);
 
   const handleCopy = async (code: string, label: string) => {
     const ok = await copyCode(code, label);
@@ -843,7 +874,586 @@ export function ComponentsDocumentationShowcase() {
           </div>
         )}
 
-        {/* 10 · PLAYGROUND */}
+        {/* 10 · ALERT / BANNER */}
+        {activeTab === "alert" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Alert / Banner</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Contextual messaging for informational, success, warning, and destructive situations with dismissibility.
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setAlertFormat(alertFormat === "card" ? "banner" : "card")}
+                >
+                  Format: {alertFormat === "card" ? "Card" : "Banner"}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    handleCopy(
+                      `<Alert\n  variant="info"\n  format="${alertFormat}"\n  title="Update Available"\n  description="New security patches are ready to apply."\n  dismissible\n/>`,
+                      "Alert"
+                    )
+                  }
+                >
+                  {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                  {copied ? "Copied" : "Copy Code"}
+                </Button>
+              </div>
+            </div>
+
+            <div className="space-y-3 max-w-2xl mx-auto">
+              <Alert
+                variant="info"
+                format={alertFormat}
+                title="Informational Notice"
+                description="Your workspace configuration has been backed up to secondary storage."
+                dismissible
+              />
+              <Alert
+                variant="success"
+                format={alertFormat}
+                title="SSL Certificate Issued"
+                description="Wildcard certificate verified and applied across all edge nodes."
+                dismissible
+              />
+              <Alert
+                variant="warning"
+                format={alertFormat}
+                title="Usage Threshold Approaching"
+                description="85% of monthly bandwidth allowance consumed. Quota resets in 4 days."
+                dismissible
+              />
+              <Alert
+                variant="destructive"
+                format={alertFormat}
+                title="Database Connectivity Failure"
+                description="Failed to contact primary replica. Swapping to hot standby pool."
+                dismissible
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 11 · CONFIRMATION DIALOG */}
+        {activeTab === "confirmation-dialog" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Confirmation Dialog</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Modal confirmation flow with focus trapping, backdrop overlay, keyboard Escape, and loading lock.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<ConfirmationDialog\n  trigger={<Button>Publish Changes</Button>}\n  title="Publish to Global CDN?"\n  description="This action will propagate tokens to 25 edge nodes."\n  confirmLabel="Confirm Publish"\n  onConfirm={async () => await syncTokens()}\n/>`,
+                    "ConfirmationDialog"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="grid gap-6 lg:grid-cols-2">
+              <div className="rounded-xl border border-border bg-background p-6 text-center space-y-4">
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground block text-left">
+                  Interactive Trigger
+                </span>
+
+                <div className="py-6">
+                  <ConfirmationDialog
+                    open={confirmOpen}
+                    onOpenChange={setConfirmOpen}
+                    trigger={<Button disabled={isDisabled}>Open Confirmation Flow</Button>}
+                    title="Publish Design System to Production?"
+                    description="This will deploy 35 components across all 25 design styles. Active sessions will automatically receive updated token manifests."
+                    confirmLabel="Yes, Deploy Now"
+                    cancelLabel="Return to Staging"
+                    destructive={isError}
+                    onConfirm={() => {
+                      setConfirmResult("Confirmed! Deployment dispatched at " + new Date().toLocaleTimeString());
+                    }}
+                  />
+                </div>
+
+                {confirmResult && (
+                  <p className="text-xs text-emerald-600 font-medium">
+                    {confirmResult}
+                  </p>
+                )}
+              </div>
+
+              <div className="rounded-xl border border-border bg-muted/20 p-6 space-y-3">
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground">
+                  Focus Management &amp; Semantics
+                </span>
+                <ul className="list-disc pl-5 space-y-1 text-xs text-muted-foreground leading-normal">
+                  <li>Focus is trapped inside the dialog container while open.</li>
+                  <li>Pressing <kbd className="px-1 py-0.5 border rounded bg-background">Escape</kbd> gracefully closes without submission.</li>
+                  <li>Focus returns directly to triggering button upon dismissal.</li>
+                  <li>Submit action disables buttons to prevent accidental double submissions.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 12 · ALERT DIALOG */}
+        {activeTab === "alert-dialog" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Alert Dialog</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Critical modal dialog implementing role=&quot;alertdialog&quot; and safe cancel-first focus default.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<AlertDialog\n  trigger={<Button variant="destructive">Purge Database</Button>}\n  title="Purge Entire Cluster?"\n  description="This action is irreversible and permanently deletes all tokens."\n  confirmLabel="Purge Everything"\n  destructive\n/>`,
+                    "AlertDialog"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="grid gap-6 lg:grid-cols-2">
+              <div className="rounded-xl border border-border bg-background p-6 text-center space-y-4">
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground block text-left">
+                  Destructive Action Simulation
+                </span>
+
+                <div className="py-6">
+                  <AlertDialog
+                    open={alertModalOpen}
+                    onOpenChange={setAlertModalOpen}
+                    trigger={
+                      <Button variant="destructive" disabled={isDisabled}>
+                        Purge Production Cluster
+                      </Button>
+                    }
+                    title="Irreversible Action: Purge Cluster?"
+                    description="Are you absolutely certain? This will delete all 35 component manifests and reset all theme tokens to factory defaults. This action cannot be undone."
+                    confirmLabel="Confirm Permanent Purge"
+                    cancelLabel="Abort Action"
+                    destructive
+                  />
+                </div>
+              </div>
+
+              <div className="rounded-xl border border-border bg-muted/20 p-6 space-y-3">
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground">
+                  WCAG Safe Focus Pattern
+                </span>
+                <p className="text-xs text-muted-foreground leading-normal">
+                  In accordance with W3C guidelines for destructive actions, initial keyboard focus lands on the{" "}
+                  <strong>Cancel button</strong> rather than the Destructive Confirm action, preventing accidental trigger on rapid keystrokes.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 13 · LOADING OVERLAY */}
+        {activeTab === "loading-overlay" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Loading Overlay</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Blocking indicator overlay with spinner, custom messages, aria-busy status, and backdrop blur.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<LoadingOverlay\n  visible={isLoading}\n  message="Reindexing Search Shards..."\n  description="Please wait while document embeddings are regenerated."\n  blur\n/>`,
+                    "LoadingOverlay"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="max-w-xl mx-auto space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-muted-foreground">Interactive Container Simulation</span>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    setLoadingActive(true);
+                    setTimeout(() => setLoadingActive(false), 2500);
+                  }}
+                >
+                  {loadingActive ? "Processing..." : "Trigger 2.5s Loading Overlay"}
+                </Button>
+              </div>
+
+              <div className="relative rounded-xl border border-border bg-background p-6 min-h-[180px] flex flex-col justify-between overflow-hidden shadow-xs">
+                <div>
+                  <h4 className="text-sm font-bold text-foreground">Edge Deployment Cluster</h4>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Nodes: 24 active · Region: Global Anycast · Protocol: HTTP/3 enabled
+                  </p>
+                </div>
+
+                <div className="pt-4 border-t border-border flex items-center justify-between text-xs text-muted-foreground">
+                  <span>Status: Operational</span>
+                  <span className="font-mono text-emerald-600 font-semibold">99.99% SLA</span>
+                </div>
+
+                <LoadingOverlay
+                  visible={loadingActive}
+                  message="Rebuilding Static Artifacts..."
+                  description="Pre-rendering 35 components across 25 design styles."
+                  blur
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 14 · EMPTY STATE */}
+        {activeTab === "empty-state" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Empty State</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Zero-data states for search, datasets, inbox, and first-use onboarding.
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    setEmptyPreset(
+                      emptyPreset === "search" ? "data" : emptyPreset === "data" ? "inbox" : "search"
+                    )
+                  }
+                >
+                  Preset: {emptyPreset.toUpperCase()}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    handleCopy(
+                      `<EmptyState\n  preset="${emptyPreset}"\n  action={<Button size="sm">Create New Entry</Button>}\n/>`,
+                      "EmptyState"
+                    )
+                  }
+                >
+                  {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                  {copied ? "Copied" : "Copy Code"}
+                </Button>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-lg mx-auto">
+              <EmptyState
+                preset={emptyPreset}
+                action={<Button size="sm">Primary Action</Button>}
+                secondaryAction={<Button size="sm" variant="outline">Learn More</Button>}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 15 · ERROR STATE */}
+        {activeTab === "error-state" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Error State</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Failure boundary display with retry CTA, loading retry feedback, and technical diagnostics disclosure.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<ErrorState\n  title="Connection Failure"\n  description="Failed to synchronize style tokens."\n  onRetry={async () => await retrySync()}\n  errorDetails="Error: 504 Gateway Timeout at api/tokens"\n/>`,
+                    "ErrorState"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-lg mx-auto">
+              <ErrorState
+                title="Remote Manifest Unreachable"
+                description="Unable to establish secure handshake with upstream token repository."
+                errorDetails="FetchError: connect ETIMEDOUT 198.51.100.42:443\n  at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1146:16)"
+                isRetrying={isRetrying}
+                onRetry={() => {
+                  setIsRetrying(true);
+                  setTimeout(() => setIsRetrying(false), 1500);
+                }}
+                secondaryAction={<Button size="sm" variant="outline">Status Page</Button>}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 16 · SUCCESS STATE */}
+        {activeTab === "success-state" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Success State</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Positive completion feedback with checkmark visual, receipt key-values, and primary actions.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<SuccessState\n  title="Export Complete"\n  description="35 components ready for download."\n  details={[\n    { label: "Batch", value: "Batch 2 Completed" },\n    { label: "Styles", value: "25 Styles Active" },\n  ]}\n  action={<Button size="sm">Download Bundle</Button>}\n/>`,
+                    "SuccessState"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-lg mx-auto">
+              <SuccessState
+                title="Design System Export Complete"
+                description="All 35 components have been validated, bundled with Tailwind CSS, and verified against WCAG AAA contrast."
+                details={[
+                  { label: "Artifact", value: "ui-hub-batch-2.tar.gz" },
+                  { label: "Components", value: "35 Components" },
+                  { label: "Design Styles", value: "25 Aesthetics" },
+                ]}
+                action={<Button size="sm">Download Package</Button>}
+                secondaryAction={<Button size="sm" variant="outline">Explore Vault</Button>}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 17 · CALLOUT */}
+        {activeTab === "callout" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Callout</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Contextual editorial aside with left accent rule, tips, warning notes, and optional dismiss action.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Callout variant="info" title="Performance Optimization">\n  All components use native CSS variables for zero JavaScript runtime styling overhead.\n</Callout>`,
+                    "Callout"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="space-y-3 max-w-2xl mx-auto">
+              <Callout variant="info" title="Pro-Tip · Zero CSS Overhead">
+                Every style in UI Hub is generated exclusively with utility classes. No external stylesheets or runtime CSS-in-JS dependencies are needed.
+              </Callout>
+
+              <Callout variant="success" title="Production Ready">
+                Components comply with Section 508 and WCAG 2.2 AA / AAA keyboard focus guidelines.
+              </Callout>
+
+              <Callout variant="warning" title="Hydration Notice">
+                When embedding custom dialogs inside server component pages, ensure client boundary declarations are preserved.
+              </Callout>
+
+              <Callout variant="neutral" title="Editorial Note" dismissible>
+                Designed for high readability across both light and dark canvas modes.
+              </Callout>
+            </div>
+          </div>
+        )}
+
+        {/* 18 · NOTIFICATION CENTER */}
+        {activeTab === "notification-center" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Notification Center</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Notification drawer with read/unread tracking, filter tabs (All/Unread), mark all read, and badge counters.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<NotificationCenter\n  notifications={[\n    {\n      id: "1",\n      title: "Tokens Updated",\n      description: "Updated 14 palette tokens.",\n      timestamp: "5m ago",\n      read: false,\n      type: "info",\n    },\n  ]}\n/>`,
+                    "NotificationCenter"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-md mx-auto text-center space-y-4">
+              <span className="text-xs text-muted-foreground block">
+                Click bell trigger to test popover drawer:
+              </span>
+
+              <div className="flex justify-center py-4">
+                <NotificationCenter
+                  notifications={[
+                    {
+                      id: "n-1",
+                      title: "Batch 2 Components Released",
+                      description: "10 new feedback and dialog components now live.",
+                      timestamp: "Just now",
+                      read: false,
+                      type: "success",
+                    },
+                    {
+                      id: "n-2",
+                      title: "Style Manifest Revalidated",
+                      description: "All 25 design styles synchronized across edge nodes.",
+                      timestamp: "12m ago",
+                      read: false,
+                      type: "info",
+                    },
+                    {
+                      id: "n-3",
+                      title: "Bandwidth Threshold Warning",
+                      description: "Approaching 85% of monthly request quota.",
+                      timestamp: "1h ago",
+                      read: true,
+                      type: "warning",
+                    },
+                  ]}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 19 · COOKIE BANNER */}
+        {activeTab === "cookie-banner" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Cookie Banner</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Privacy compliance banner with granular category preferences and persistent localStorage state.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<CookieBanner\n  title="We respect your privacy"\n  description="We use cookies to analyze usage and customize themes."\n  onAcceptAll={(prefs) => console.log(prefs)}\n/>`,
+                    "CookieBanner"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground">
+                <span>Embedded Consent Preview</span>
+                {cookieConsent && (
+                  <button
+                    type="button"
+                    onClick={() => setCookieConsent(null)}
+                    className="underline text-teal-600 font-mono"
+                  >
+                    Reset Storage
+                  </button>
+                )}
+              </div>
+
+              {!cookieConsent ? (
+                <div className="p-4 rounded-xl border border-border bg-card space-y-3">
+                  <div className="flex items-start gap-3">
+                    <span className="p-2 rounded-lg bg-amber-500/10 text-amber-600">
+                      <Cookie className="h-5 w-5" />
+                    </span>
+                    <div>
+                      <h4 className="text-sm font-bold text-foreground">We value your privacy</h4>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        We use essential cookies to maintain secure sessions, plus optional analytics to optimize UI component rendering.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap items-center justify-end gap-2 pt-2 border-t border-border">
+                    <Button size="sm" variant="outline" onClick={() => setCookieConsent("Custom Preferences Saved")}>
+                      Customize
+                    </Button>
+                    <Button size="sm" variant="secondary" onClick={() => setCookieConsent("Essential Only Accepted")}>
+                      Essential Only
+                    </Button>
+                    <Button size="sm" onClick={() => setCookieConsent("All Cookies Accepted")}>
+                      Accept All
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="p-4 rounded-lg border border-emerald-500/30 bg-emerald-50 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-300 text-xs flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="h-4 w-4" />
+                    <span className="font-semibold">{cookieConsent}</span>
+                  </div>
+                  <span className="font-mono text-[11px] opacity-70">localStorage updated</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* 20 · PLAYGROUND */}
         {activeTab === "playground" && (
           <div className="space-y-8">
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">

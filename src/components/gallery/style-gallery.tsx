@@ -39,6 +39,7 @@ import { KINETIC_BUNDLE } from "@/components/styles/kinetic";
 import { TYPOGRAPHY_FIRST_BUNDLE } from "@/components/styles/typography-first";
 import { METROPOLITAN_BUNDLE } from "@/components/styles/metropolitan";
 import { getCommonFormDefs } from "@/components/styles/common-form-defs";
+import { getCommonFeedbackDefs } from "@/components/styles/common-feedback-defs";
 import { Button } from "@/components/ui/button";
 
 const BUNDLES: Partial<Record<StyleSlug, StyleBundle>> = {
@@ -197,9 +198,10 @@ export function StyleGallery({
   const bundle = useMemo(() => {
     if (!baseBundle) return undefined;
     const formDefs = getCommonFormDefs(slug);
+    const feedbackDefs = getCommonFeedbackDefs(slug);
     return {
       ...baseBundle,
-      defs: [...baseBundle.defs, ...formDefs],
+      defs: [...baseBundle.defs, ...formDefs, ...feedbackDefs],
     };
   }, [baseBundle, slug]);
 
