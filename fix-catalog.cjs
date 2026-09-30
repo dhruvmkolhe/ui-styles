@@ -1,0 +1,77 @@
+const fs = require('fs');
+const path = require('path');
+
+const targetPath = path.join(__dirname, 'src/lib/components-catalog.ts');
+let content = fs.readFileSync(targetPath, 'utf8');
+
+// The file currently has:
+// import {\\n  \${existingImports.concat(importsToAdd).join(',\\n  ')}\\n} from "lucide-react";
+// Let's replace the first line entirely
+content = content.replace(/^import.*?from "lucide-react";/s, `import {
+  AlertCircle,
+  AlertTriangle,
+  AlignLeft,
+  Bell,
+  BellRing,
+  Calendar,
+  CheckCircle2,
+  CheckCheck,
+  CheckSquare,
+  ChevronsUpDown,
+  CircleDot,
+  CircleUserRound,
+  ClipboardList,
+  Columns3,
+  Cookie,
+  FolderOpen,
+  Frame,
+  Gauge,
+  Hash,
+  Layers,
+  Lightbulb,
+  List,
+  ListFilter,
+  Loader2,
+  Menu,
+  MessageSquare,
+  MousePointerClick,
+  PanelTop,
+  RectangleEllipsis,
+  RefreshCw,
+  Search,
+  SlidersHorizontal,
+  SquareCheck,
+  Star,
+  ToggleLeft,
+  Settings,
+  MoreVertical,
+  Type,
+  Link,
+  Table,
+  Columns,
+  GripHorizontal,
+  SplitSquareHorizontal,
+  LayoutTemplate,
+  Ratio,
+  Maximize2,
+  Wifi,
+  WifiOff,
+  CloudCog,
+  FileClock,
+  Play,
+  RotateCcw,
+  Check,
+  Sparkles,
+  ImageIcon,
+  LayoutGrid,
+  GalleryHorizontalEnd,
+  Video,
+  Headphones,
+  Maximize,
+  Clapperboard,
+  Code2,
+  FileType2,
+  FileArchive
+} from "lucide-react";`);
+
+fs.writeFileSync(targetPath, content, 'utf8');

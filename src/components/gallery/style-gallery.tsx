@@ -45,6 +45,7 @@ import { getCommonOverlayDefs } from "@/components/styles/common-overlay-defs";
 import { getCommonDataDisplayDefs } from "@/components/styles/common-data-display-defs";
 import { getCommonLayoutDefs } from "@/components/styles/common-layout-defs";
 import { getCommonStatusDefs } from "@/components/styles/common-status-defs";
+import { getCommonMediaDefs } from "@/components/styles/common-media-defs";
 import { Button } from "@/components/ui/button";
 
 const BUNDLES: Partial<Record<StyleSlug, StyleBundle>> = {
@@ -209,6 +210,7 @@ export function StyleGallery({
     const dataDisplayDefs = getCommonDataDisplayDefs(slug);
     const layoutDefs = getCommonLayoutDefs(slug);
     const statusDefs = getCommonStatusDefs(slug);
+    const mediaDefs = getCommonMediaDefs(slug);
     return {
       ...baseBundle,
       defs: [
@@ -220,6 +222,7 @@ export function StyleGallery({
         ...dataDisplayDefs,
         ...layoutDefs,
         ...statusDefs,
+        ...mediaDefs,
       ],
     };
   }, [baseBundle, slug]);
