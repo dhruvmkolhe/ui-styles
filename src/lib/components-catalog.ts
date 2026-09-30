@@ -44,6 +44,14 @@ import {
   Smartphone,
   Split,
   Waypoints,
+  Clock,
+  CalendarDays,
+  LayoutGrid,
+  MessageCircle,
+  MousePointer,
+  PanelRight,
+  Plus,
+  Search,
 } from "lucide-react";
 
 export const COMPONENTS_CATALOG = [
@@ -316,6 +324,66 @@ export const COMPONENTS_CATALOG = [
     name: "Back to Top",
     icon: ArrowUp,
     description: "Floating action button with scroll threshold visibility, smooth scrolling animation, and accessible label.",
+  },
+  {
+    id: "popover",
+    name: "Popover",
+    icon: MessageCircle,
+    description: "Floating contextual panel anchored to a trigger with collision detection and focus management.",
+  },
+  {
+    id: "context-menu",
+    name: "Context Menu",
+    icon: MousePointer,
+    description: "Pointer-positioned right-click context menu with keyboard shortcuts, submenus, and boundary checks.",
+  },
+  {
+    id: "hover-card",
+    name: "Hover Card",
+    icon: MessageSquare,
+    description: "Supplementary preview popover with enter/leave delay throttling and keyboard focus support.",
+  },
+  {
+    id: "drawer",
+    name: "Drawer / Sheet",
+    icon: PanelRight,
+    description: "Sliding modal panel anchored to any viewport edge (left, right, top, bottom) with focus trap.",
+  },
+  {
+    id: "command-palette",
+    name: "Command Palette",
+    icon: Search,
+    description: "Quick launcher modal with category filtering, command descriptions, and keyboard navigation.",
+  },
+  {
+    id: "date-picker",
+    name: "Date Picker",
+    icon: Calendar,
+    description: "Interactive date selection input with calendar popup, today jump, and formatting.",
+  },
+  {
+    id: "time-picker",
+    name: "Time Picker",
+    icon: Clock,
+    description: "Configurable time input with hours, minutes, AM/PM stepper, and quick selection presets.",
+  },
+  {
+    id: "calendar",
+    name: "Calendar",
+    icon: CalendarDays,
+    description: "Monthly grid calendar with day states, month navigation, and accessible date labels.",
+  },
+  {
+    id: "mega-menu",
+    name: "Mega Menu",
+    icon: LayoutGrid,
+    description: "Enterprise-grade multi-column navigation menu with categorised columns and featured banners.",
+  },
+  {
+    id: "floating-action-button",
+    name: "Floating Action Button",
+    icon: Plus,
+    description: "Corner-docked primary action trigger with extended labels and expandable speed-dial actions.",
   },
 ] as const;
 

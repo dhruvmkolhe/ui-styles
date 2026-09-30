@@ -41,6 +41,7 @@ import { METROPOLITAN_BUNDLE } from "@/components/styles/metropolitan";
 import { getCommonFormDefs } from "@/components/styles/common-form-defs";
 import { getCommonFeedbackDefs } from "@/components/styles/common-feedback-defs";
 import { getCommonNavigationDefs } from "@/components/styles/common-navigation-defs";
+import { getCommonOverlayDefs } from "@/components/styles/common-overlay-defs";
 import { Button } from "@/components/ui/button";
 
 const BUNDLES: Partial<Record<StyleSlug, StyleBundle>> = {
@@ -201,9 +202,10 @@ export function StyleGallery({
     const formDefs = getCommonFormDefs(slug);
     const feedbackDefs = getCommonFeedbackDefs(slug);
     const navigationDefs = getCommonNavigationDefs(slug);
+    const overlayDefs = getCommonOverlayDefs(slug);
     return {
       ...baseBundle,
-      defs: [...baseBundle.defs, ...formDefs, ...feedbackDefs, ...navigationDefs],
+      defs: [...baseBundle.defs, ...formDefs, ...feedbackDefs, ...navigationDefs, ...overlayDefs],
     };
   }, [baseBundle, slug]);
 

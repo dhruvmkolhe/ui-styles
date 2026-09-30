@@ -7,7 +7,7 @@ import {
   Copy,
   CheckCircle2,
   AlertCircle,
-  Calendar,
+  Calendar as CalendarIcon,
   Cookie,
   X,
   Plus,
@@ -73,24 +73,55 @@ import { Stepper } from "@/components/ui/stepper";
 import { BottomNavigation } from "@/components/ui/bottom-navigation";
 import { CommandMenu } from "@/components/ui/command-menu";
 import { Link as CustomLink } from "@/components/ui/link";
-import { BackToTop } from "@/components/ui/back-to-top";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+} from "@/components/ui/context-menu";
+import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/ui/hover-card";
+import {
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerClose,
+} from "@/components/ui/drawer";
+import { CommandPalette } from "@/components/ui/command-palette";
+import { DatePicker, formatDate } from "@/components/ui/date-picker";
+import { TimePicker } from "@/components/ui/time-picker";
+import { Calendar } from "@/components/ui/calendar";
+import { MegaMenu } from "@/components/ui/mega-menu";
+import { FloatingActionButton } from "@/components/ui/floating-action-button";
 import {
   ArrowLeft,
   ArrowRight,
   ArrowUp,
   Bell,
+  Clock,
+  CalendarDays,
   Compass,
   FolderKanban,
   Home,
   LayoutGrid,
   ListOrdered,
   Milestone,
+  MousePointer,
   PanelLeftClose,
   PanelLeftOpen,
+  PanelRight,
   Search,
   Settings,
+  Share2,
+  Sliders,
   Smartphone,
   Split,
+  Trash2,
   User,
   Waypoints,
   ExternalLink,
@@ -126,6 +157,16 @@ const COMPONENTS_DOCS = [
   { id: "command-menu", name: "Command Menu", category: "Navigation" },
   { id: "link", name: "Link", category: "Navigation" },
   { id: "back-to-top", name: "Back to Top", category: "Navigation" },
+  { id: "popover", name: "Popover", category: "Overlays" },
+  { id: "context-menu", name: "Context Menu", category: "Overlays" },
+  { id: "hover-card", name: "Hover Card", category: "Overlays" },
+  { id: "drawer", name: "Drawer / Sheet", category: "Overlays" },
+  { id: "command-palette", name: "Command Palette", category: "Overlays" },
+  { id: "date-picker", name: "Date Picker", category: "Overlays" },
+  { id: "time-picker", name: "Time Picker", category: "Overlays" },
+  { id: "calendar", name: "Calendar", category: "Overlays" },
+  { id: "mega-menu", name: "Mega Menu", category: "Overlays" },
+  { id: "floating-action-button", name: "Floating Action Button", category: "Overlays" },
   { id: "playground", name: "Full Suite Playground", category: "Integration" },
 ];
 
@@ -171,6 +212,18 @@ export function ComponentsDocumentationShowcase() {
   const [cmdResult, setCmdResult] = useState<string | null>(null);
   const [navMenuVal, setNavMenuVal] = useState<string | null>(null);
   const [menuBarAction, setMenuBarAction] = useState<string | null>(null);
+
+  // Batch 4 Overlays interactive states
+  const [popoverW, setPopoverW] = useState("1280");
+  const [popoverH, setPopoverH] = useState("800");
+  const [contextAction, setContextAction] = useState<string | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  const [paletteAction, setPaletteAction] = useState<string | null>(null);
+  const [showcaseDate, setShowcaseDate] = useState<Date | undefined>(() => new Date(2026, 9, 24));
+  const [showcaseTime, setShowcaseTime] = useState("02:30 PM");
+  const [showcaseCalDate, setShowcaseCalDate] = useState<Date | undefined>(() => new Date(2026, 9, 24));
+  const [fabAction, setFabAction] = useState<string | null>(null);
 
   const handleCopy = async (code: string, label: string) => {
     const ok = await copyCode(code, label);
@@ -2326,7 +2379,639 @@ export function ComponentsDocumentationShowcase() {
           </div>
         )}
 
-        {/* 30 · PLAYGROUND */}
+        {/* 30 · POPOVER */}
+        {activeTab === "popover" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Popover</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Floating contextual panel anchored to a trigger with collision detection and focus management.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Popover>\n  <PopoverTrigger asChild>\n    <Button variant="outline">Open Settings</Button>\n  </PopoverTrigger>\n  <PopoverContent className="w-80">\n    <h4 className="font-semibold text-xs">Dimensions</h4>\n  </PopoverContent>\n</Popover>`,
+                    "Popover"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-6">
+              <div className="flex justify-center p-8 rounded-xl border border-border bg-card">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button variant="default" className="flex items-center gap-2">
+                      <Sliders className="h-4 w-4" />
+                      <span>Canvas Dimensions</span>
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-72 p-4 space-y-3 shadow-xl">
+                    <div className="space-y-1">
+                      <h4 className="font-bold text-xs text-foreground">Canvas Settings</h4>
+                      <p className="text-[11px] text-muted-foreground">Configure resolution viewport boundaries.</p>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-mono text-muted-foreground">WIDTH (PX)</label>
+                        <input
+                          type="text"
+                          value={popoverW}
+                          onChange={(e) => setPopoverW(e.target.value)}
+                          className="w-full px-2 py-1 border rounded text-xs"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-mono text-muted-foreground">HEIGHT (PX)</label>
+                        <input
+                          type="text"
+                          value={popoverH}
+                          onChange={(e) => setPopoverH(e.target.value)}
+                          className="w-full px-2 py-1 border rounded text-xs"
+                        />
+                      </div>
+                    </div>
+
+                    <Button size="sm" className="w-full text-xs" onClick={() => alert(`Saved ${popoverW}x${popoverH}`)}>
+                      Save Settings
+                    </Button>
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+              <div className="rounded-lg border border-border bg-muted/20 p-4 text-xs space-y-2">
+                <div className="font-semibold text-foreground">Accessibility Specifications:</div>
+                <ul className="list-disc list-inside text-muted-foreground space-y-1">
+                  <li>Trigger exposes <code className="font-mono text-[11px]">aria-haspopup=&quot;dialog&quot;</code> and <code className="font-mono text-[11px]">aria-expanded</code>.</li>
+                  <li>Dismissible via click outside or pressing the <code className="font-mono text-[11px]">Escape</code> key.</li>
+                  <li>Focus is restored cleanly to the trigger button upon closing.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 31 · CONTEXT MENU */}
+        {activeTab === "context-menu" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Context Menu</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Pointer-positioned right-click context menu with keyboard shortcuts, submenus, and boundary checks.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<ContextMenu>\n  <ContextMenuTrigger className="p-8 border border-dashed">\n    Right-click here\n  </ContextMenuTrigger>\n  <ContextMenuContent>\n    <ContextMenuItem shortcut="⌘D">Duplicate</ContextMenuItem>\n  </ContextMenuContent>\n</ContextMenu>`,
+                    "ContextMenu"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-6">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-3">
+                <span>Interactive Target</span>
+                <span>Action: <strong className="text-foreground">{contextAction || "None"}</strong></span>
+              </div>
+
+              <ContextMenu>
+                <ContextMenuTrigger className="p-12 border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center gap-2 cursor-context-menu text-center bg-muted/10 hover:border-teal-500 transition-colors">
+                  <MousePointer className="h-6 w-6 text-teal-600 dark:text-teal-400" />
+                  <div className="text-xs font-bold text-foreground">
+                    Right-click inside this container
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">
+                    Menu spawns dynamically at cursor coordinates with boundary safety.
+                  </p>
+                </ContextMenuTrigger>
+
+                <ContextMenuContent className="w-52">
+                  <ContextMenuItem
+                    shortcut="⌘D"
+                    icon={<Copy className="h-3.5 w-3.5" />}
+                    onClick={() => setContextAction("Duplicated Component")}
+                  >
+                    Duplicate
+                  </ContextMenuItem>
+                  <ContextMenuItem
+                    shortcut="⌘C"
+                    icon={<Layers className="h-3.5 w-3.5" />}
+                    onClick={() => setContextAction("Copied Tokens")}
+                  >
+                    Copy Tokens
+                  </ContextMenuItem>
+                  <ContextMenuSeparator />
+                  <ContextMenuItem
+                    shortcut="⌫"
+                    icon={<Trash2 className="h-3.5 w-3.5" />}
+                    onClick={() => setContextAction("Deleted Item")}
+                    className="text-rose-500"
+                  >
+                    Delete
+                  </ContextMenuItem>
+                </ContextMenuContent>
+              </ContextMenu>
+            </div>
+          </div>
+        )}
+
+        {/* 32 · HOVER CARD */}
+        {activeTab === "hover-card" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Hover Card</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Supplementary preview popover with enter/leave delay throttling and keyboard focus support.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<HoverCard openDelay={200}>\n  <HoverCardTrigger asChild>\n    <a href="#">@ada_lovelace</a>\n  </HoverCardTrigger>\n  <HoverCardContent>\n    <p>Lead Systems Architect</p>\n  </HoverCardContent>\n</HoverCard>`,
+                    "HoverCard"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-8 max-w-2xl mx-auto flex items-center justify-center text-xs">
+              <p className="leading-relaxed text-muted-foreground">
+                Maintained with care by{" "}
+                <HoverCard openDelay={150} closeDelay={150}>
+                  <HoverCardTrigger asChild>
+                    <span className="font-bold underline text-teal-600 dark:text-teal-400 cursor-pointer">
+                      @ada_lovelace
+                    </span>
+                  </HoverCardTrigger>
+                  <HoverCardContent className="w-80 space-y-3">
+                    <div className="flex items-start gap-3">
+                      <div className="h-10 w-10 rounded-full bg-teal-600 text-white font-bold flex items-center justify-center shrink-0">
+                        AL
+                      </div>
+                      <div className="space-y-0.5 min-w-0 flex-1">
+                        <h5 className="font-bold text-xs text-foreground">Ada Lovelace</h5>
+                        <div className="text-[11px] font-mono text-muted-foreground">@ada_lovelace</div>
+                        <p className="text-[11px] text-muted-foreground mt-1">
+                          Pioneer of computational algorithms &amp; UI token architectures.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4 text-[11px] text-muted-foreground pt-2 border-t border-border">
+                      <div><strong className="text-foreground">55</strong> Components</div>
+                      <div><strong className="text-foreground">25</strong> Styles</div>
+                      <div><strong className="text-foreground">100%</strong> Accessible</div>
+                    </div>
+                  </HoverCardContent>
+                </HoverCard>
+                {" "}across 25 authentic design styles.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* 33 · DRAWER / SHEET */}
+        {activeTab === "drawer" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Drawer / Sheet</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Sliding modal panel anchored to any viewport edge (left, right, top, bottom) with focus trap.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Drawer open={isOpen} onOpenChange={setIsOpen}>\n  <DrawerTrigger asChild>\n    <Button>Open Sheet</Button>\n  </DrawerTrigger>\n  <DrawerContent side="right">\n    <DrawerHeader>\n      <DrawerTitle>Settings</DrawerTitle>\n    </DrawerHeader>\n  </DrawerContent>\n</Drawer>`,
+                    "Drawer"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-8 max-w-2xl mx-auto flex flex-col items-center justify-center gap-4 text-center">
+              <p className="text-xs text-muted-foreground">
+                Triggers an animated edge sheet with backdrop blur and focus locking.
+              </p>
+
+              <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+                <DrawerTrigger asChild>
+                  <Button className="flex items-center gap-2">
+                    <PanelRight className="h-4 w-4" />
+                    <span>Open Side Sheet</span>
+                  </Button>
+                </DrawerTrigger>
+
+                <DrawerContent side="right">
+                  <DrawerHeader>
+                    <DrawerTitle>Workspace Configuration</DrawerTitle>
+                    <DrawerDescription>
+                      Configure your component repository and continuous integration deployment hooks.
+                    </DrawerDescription>
+                  </DrawerHeader>
+
+                  <div className="space-y-4 py-4 text-xs">
+                    <div className="space-y-1.5">
+                      <Label>Target Framework</Label>
+                      <input
+                        type="text"
+                        defaultValue="Next.js 16 (Turbopack)"
+                        className="w-full px-3 py-2 border rounded-md text-xs bg-muted/20"
+                        readOnly
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label>Output Directory</Label>
+                      <input
+                        type="text"
+                        defaultValue="src/components/ui"
+                        className="w-full px-3 py-2 border rounded-md text-xs font-mono bg-muted/20"
+                        readOnly
+                      />
+                    </div>
+                  </div>
+
+                  <DrawerFooter>
+                    <DrawerClose asChild>
+                      <Button variant="outline" size="sm">Cancel</Button>
+                    </DrawerClose>
+                    <Button size="sm" onClick={() => setDrawerOpen(false)}>Save Settings</Button>
+                  </DrawerFooter>
+                </DrawerContent>
+              </Drawer>
+            </div>
+          </div>
+        )}
+
+        {/* 34 · COMMAND PALETTE */}
+        {activeTab === "command-palette" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Command Palette</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Quick launcher modal with category filtering, command descriptions, and keyboard navigation.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<CommandPalette\n  open={isOpen}\n  onOpenChange={setIsOpen}\n  groups={[\n    {\n      category: "Navigation",\n      items: [{ id: "c1", label: "Components", shortcut: "G C" }],\n    },\n  ]}\n/>`,
+                    "CommandPalette"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-8 max-w-2xl mx-auto flex flex-col items-center justify-center gap-4 text-center">
+              <Button onClick={() => setPaletteOpen(true)} className="flex items-center gap-2 h-10 px-6">
+                <Search className="h-4 w-4" />
+                <span>Search Commands...</span>
+                <kbd className="ml-2 rounded border border-white/20 bg-white/10 px-1.5 py-0.5 font-mono text-[10px]">
+                  ⌘K
+                </kbd>
+              </Button>
+
+              {paletteAction && (
+                <div className="text-xs text-teal-600 dark:text-teal-400 font-semibold flex items-center gap-1.5 animate-in fade-in-0">
+                  <Check className="h-3.5 w-3.5" />
+                  <span>Selected: {paletteAction}</span>
+                </div>
+              )}
+
+              <CommandPalette
+                open={paletteOpen}
+                onOpenChange={setPaletteOpen}
+                groups={[
+                  {
+                    category: "Navigation",
+                    items: [
+                      {
+                        id: "pal-comp",
+                        label: "Browse Components",
+                        description: "Open the 55 components catalog",
+                        shortcut: "G C",
+                        icon: <Layers className="h-4 w-4" />,
+                        onSelect: () => setPaletteAction("Opened Components Catalog"),
+                      },
+                      {
+                        id: "pal-styles",
+                        label: "Explore Design Styles",
+                        description: "Switch between 25 curated aesthetics",
+                        shortcut: "G S",
+                        icon: <LayoutGrid className="h-4 w-4" />,
+                        onSelect: () => setPaletteAction("Opened Styles Explorer"),
+                      },
+                    ],
+                  },
+                  {
+                    category: "Actions",
+                    items: [
+                      {
+                        id: "pal-copy",
+                        label: "Copy React Import",
+                        description: "Quickly copy import statement to clipboard",
+                        shortcut: "⌘C",
+                        icon: <Copy className="h-4 w-4" />,
+                        onSelect: () => setPaletteAction("Copied React Import"),
+                      },
+                      {
+                        id: "pal-dark",
+                        label: "Toggle Color Scheme",
+                        description: "Switch between light and dark preview modes",
+                        shortcut: "⌘T",
+                        icon: <Sparkles className="h-4 w-4" />,
+                        onSelect: () => setPaletteAction("Toggled Theme"),
+                      },
+                    ],
+                  },
+                ]}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 35 · DATE PICKER */}
+        {activeTab === "date-picker" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Date Picker</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Interactive date selection input with calendar popup, today jump, and formatting.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<DatePicker\n  value={selectedDate}\n  onValueChange={setSelectedDate}\n  placeholder="Choose a date..."\n/>`,
+                    "DatePicker"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-6">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-3">
+                <span>Selected Date: <strong className="text-foreground">{formatDate(showcaseDate) || "None"}</strong></span>
+                {showcaseDate && (
+                  <Button size="sm" variant="ghost" onClick={() => setShowcaseDate(undefined)} className="h-6 text-xs">
+                    Reset
+                  </Button>
+                )}
+              </div>
+
+              <div className="p-8 rounded-xl border border-border bg-card flex flex-col items-center">
+                <div className="w-full max-w-xs space-y-1.5">
+                  <Label>Scheduled Delivery</Label>
+                  <DatePicker
+                    value={showcaseDate}
+                    onValueChange={setShowcaseDate}
+                    disabled={isDisabled}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 36 · TIME PICKER */}
+        {activeTab === "time-picker" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Time Picker</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Configurable time input with hours, minutes, AM/PM stepper, and quick selection presets.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<TimePicker\n  value={time}\n  onValueChange={setTime}\n  format="12h"\n  minuteStep={15}\n/>`,
+                    "TimePicker"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-6">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-3">
+                <span>Selected Time: <strong className="text-foreground">{showcaseTime}</strong></span>
+              </div>
+
+              <div className="p-8 rounded-xl border border-border bg-card flex flex-col items-center">
+                <div className="w-full max-w-xs space-y-1.5">
+                  <Label>Meeting Time</Label>
+                  <TimePicker
+                    value={showcaseTime}
+                    onValueChange={setShowcaseTime}
+                    disabled={isDisabled}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 37 · CALENDAR */}
+        {activeTab === "calendar" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Calendar</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Monthly grid calendar with day states, month navigation, and accessible date labels.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Calendar\n  value={selectedDate}\n  onValueChange={setSelectedDate}\n/>`,
+                    "Calendar"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-6">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-3">
+                <span>Picked: <strong className="text-foreground">{formatDate(showcaseCalDate)}</strong></span>
+              </div>
+
+              <div className="p-6 rounded-xl border border-border bg-card flex justify-center">
+                <Calendar
+                  value={showcaseCalDate}
+                  onValueChange={setShowcaseCalDate}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 38 · MEGA MENU */}
+        {activeTab === "mega-menu" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Mega Menu</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Enterprise-grade multi-column navigation menu with categorized columns and featured banners.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<MegaMenu\n  label="Products"\n  columns={[\n    {\n      heading: "Core",\n      items: [{ title: "UI Components", href: "/components" }],\n    },\n  ]}\n  featured={{\n    title: "Version 3.0",\n    description: "All 55 components live",\n    ctaText: "Explore",\n    href: "/explore",\n  }}\n/>`,
+                    "MegaMenu"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-6">
+              <div className="p-4 rounded-xl border border-border bg-card flex items-center justify-between">
+                <span className="text-xs font-bold text-foreground">UI HUB</span>
+                <MegaMenu
+                  label="Explore Directory"
+                  columns={[
+                    {
+                      heading: "Component Batches",
+                      items: [
+                        { title: "Inputs & Forms", description: "Form fields, switches, steppers", href: "#" },
+                        { title: "Feedback & Dialogs", description: "Modals, alerts, drawers", href: "#" },
+                        { title: "Navigation Systems", description: "Breadcrumbs, pagination, menus", href: "#" },
+                      ],
+                    },
+                    {
+                      heading: "Design Systems",
+                      items: [
+                        { title: "Japandi", description: "Warm minimalism & quiet balance", href: "#" },
+                        { title: "Glassmorphism", description: "Translucent frosted depth", href: "#" },
+                        { title: "Brutalist", description: "Bold borders and raw contrast", href: "#" },
+                      ],
+                    },
+                  ]}
+                  featured={{
+                    title: "Zero Dependencies",
+                    description: "Built strictly on semantic HTML and Tailwind CSS.",
+                    ctaText: "All 25 Styles",
+                    href: "/explore",
+                    tag: "PRO",
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 39 · FLOATING ACTION BUTTON */}
+        {activeTab === "floating-action-button" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Floating Action Button (FAB)</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Corner-docked primary action trigger with extended labels and expandable speed-dial actions.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<FloatingActionButton\n  label="Create"\n  position="bottom-right"\n  actions={[\n    { id: "share", label: "Share", icon: <Share2 />, onClick: () => {} },\n  ]}\n/>`,
+                    "FloatingActionButton"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-6">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-3">
+                <span>Speed Dial Demonstration</span>
+                <span>Action: <strong className="text-foreground">{fabAction || "None"}</strong></span>
+              </div>
+
+              <div className="relative border border-border rounded-xl p-8 bg-card h-56 flex flex-col justify-between overflow-hidden shadow-inner">
+                <div>
+                  <h5 className="font-bold text-xs text-foreground">Canvas Area</h5>
+                  <p className="text-[11px] text-muted-foreground mt-0.5">
+                    Click the action button below to trigger the speed dial overlay.
+                  </p>
+                </div>
+
+                <div className="self-end">
+                  <FloatingActionButton
+                    position="inline"
+                    label="Quick Actions"
+                    actions={[
+                      { id: "edit", label: "Edit Layer", icon: <Sliders className="h-4 w-4" />, onClick: () => setFabAction("Edit Layer") },
+                      { id: "share", label: "Share Spec", icon: <Share2 className="h-4 w-4" />, onClick: () => setFabAction("Share Spec") },
+                    ]}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 40 · PLAYGROUND */}
         {activeTab === "playground" && (
           <div className="space-y-8">
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
