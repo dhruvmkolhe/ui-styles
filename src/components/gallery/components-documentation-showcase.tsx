@@ -99,6 +99,29 @@ import { Calendar } from "@/components/ui/calendar";
 import { MegaMenu } from "@/components/ui/mega-menu";
 import { FloatingActionButton } from "@/components/ui/floating-action-button";
 import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableRow,
+  TableHead,
+  TableCell,
+} from "@/components/ui/table";
+import { DataTable, type DataTableColumn } from "@/components/ui/data-table";
+import { List, ListItem, ListHeader, ListDivider } from "@/components/ui/list";
+import { Timeline, TimelineItem } from "@/components/ui/timeline";
+import { StatCard } from "@/components/ui/stat-card";
+import { Rating } from "@/components/ui/rating";
+import { Chip } from "@/components/ui/chip";
+import {
+  DescriptionList,
+  DescriptionItem,
+  DescriptionTerm,
+  DescriptionDetails,
+} from "@/components/ui/description-list";
+import { KeyValueList, KeyValueRow } from "@/components/ui/key-value-list";
+import { DataGrid, type DataGridColumn } from "@/components/ui/data-grid";
+import {
   ArrowLeft,
   ArrowRight,
   ArrowUp,
@@ -123,8 +146,20 @@ import {
   Split,
   Trash2,
   User,
+  Users,
   Waypoints,
   ExternalLink,
+  DollarSign,
+  TrendingUp,
+  TrendingDown,
+  Server,
+  Star,
+  Table as TableIcon,
+  History,
+  BarChart3,
+  AlignJustify,
+  KeyRound,
+  Grid3X3,
 } from "lucide-react";
 
 const COMPONENTS_DOCS = [
@@ -167,6 +202,16 @@ const COMPONENTS_DOCS = [
   { id: "calendar", name: "Calendar", category: "Overlays" },
   { id: "mega-menu", name: "Mega Menu", category: "Overlays" },
   { id: "floating-action-button", name: "Floating Action Button", category: "Overlays" },
+  { id: "table", name: "Table", category: "Data Display" },
+  { id: "data-table", name: "Data Table", category: "Data Display" },
+  { id: "list", name: "List", category: "Data Display" },
+  { id: "timeline", name: "Timeline", category: "Data Display" },
+  { id: "stat-card", name: "Stat / Metric Card", category: "Data Display" },
+  { id: "rating", name: "Rating", category: "Data Display" },
+  { id: "chip", name: "Chip", category: "Data Display" },
+  { id: "description-list", name: "Description List", category: "Data Display" },
+  { id: "key-value-list", name: "Key-Value List", category: "Data Display" },
+  { id: "data-grid", name: "Data Grid", category: "Data Display" },
   { id: "playground", name: "Full Suite Playground", category: "Integration" },
 ];
 
@@ -225,6 +270,18 @@ export function ComponentsDocumentationShowcase() {
   const [showcaseCalDate, setShowcaseCalDate] = useState<Date | undefined>(() => new Date(2026, 9, 24));
   const [fabAction, setFabAction] = useState<string | null>(null);
 
+  // Batch 5 Data Display interactive states
+  const [tableSelect, setTableSelect] = useState<string>("INV-102");
+  const [dataTableIds, setDataTableIds] = useState<(string | number)[]>(["usr-1"]);
+  const [listSelect, setListSelect] = useState("item-1");
+  const [timelineStep, setTimelineStep] = useState(2);
+  const [ratingVal, setRatingVal] = useState(4);
+  const [ratingFeedback, setRatingFeedback] = useState<string | null>(null);
+  const [chipSelected, setChipSelected] = useState("all");
+  const [chipTags, setChipTags] = useState(["TypeScript", "TailwindCSS", "Next.js", "Radix Primitives"]);
+  const [dlLayout, setDlLayout] = useState<"horizontal" | "grid">("horizontal");
+  const [gridFocusCell, setGridFocusCell] = useState<{ r: number; c: number; v: string }>({ r: 0, c: 1, v: "$124,500" });
+
   const handleCopy = async (code: string, label: string) => {
     const ok = await copyCode(code, label);
     if (ok) {
@@ -243,10 +300,10 @@ export function ComponentsDocumentationShowcase() {
               Interactive Component Documentation &amp; Showcase
             </span>
             <h2 className="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl text-foreground">
-              Form Components Suite
+              Production Component Suites
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Test states, variants, keyboard accessibility, and copy production React code.
+              Test states, variants, keyboard accessibility, and copy production React code across all 65 components.
             </p>
           </div>
 
@@ -3011,7 +3068,659 @@ export function ComponentsDocumentationShowcase() {
           </div>
         )}
 
-        {/* 40 · PLAYGROUND */}
+        {/* 40 · TABLE */}
+        {activeTab === "table" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Table</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Semantic tabular layout with headers, hover row states, alignments, and footer calculations.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Table>\n  <TableHeader>\n    <TableRow>\n      <TableHead>Invoice</TableHead>\n      <TableHead>Status</TableHead>\n      <TableHead align="right">Amount</TableHead>\n    </TableRow>\n  </TableHeader>\n  <TableBody>\n    <TableRow>\n      <TableCell>INV-001</TableCell>\n      <TableCell>Paid</TableCell>\n      <TableCell align="right">$1,250</TableCell>\n    </TableRow>\n  </TableBody>\n</Table>`,
+                    "Table"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Invoices &amp; Billings</span>
+                <span>Selected: <strong className="text-foreground">{tableSelect}</strong></span>
+              </div>
+
+              <div className="rounded-lg border border-border overflow-hidden bg-card shadow-xs">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-24">Invoice</TableHead>
+                      <TableHead>Client</TableHead>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead align="right">Amount</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {[
+                      { id: "INV-101", client: "Acme Logistics", date: "Sep 28, 2026", status: "Paid", amount: "$1,450.00" },
+                      { id: "INV-102", client: "Vanguard Studio", date: "Sep 25, 2026", status: "Pending", amount: "$2,890.50" },
+                      { id: "INV-103", client: "Hyperion Labs", date: "Sep 21, 2026", status: "Paid", amount: "$840.00" },
+                      { id: "INV-104", client: "Solis Dynamics", date: "Sep 14, 2026", status: "Overdue", amount: "$3,120.00" },
+                    ].map((inv) => (
+                      <TableRow
+                        key={inv.id}
+                        isSelected={tableSelect === inv.id}
+                        onClick={() => setTableSelect(inv.id)}
+                        className="cursor-pointer"
+                      >
+                        <TableCell className="font-mono font-bold">{inv.id}</TableCell>
+                        <TableCell className="font-medium">{inv.client}</TableCell>
+                        <TableCell className="text-muted-foreground">{inv.date}</TableCell>
+                        <TableCell>
+                          <span
+                            className={cn(
+                              "inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold",
+                              inv.status === "Paid" && "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300",
+                              inv.status === "Pending" && "bg-amber-500/15 text-amber-700 dark:text-amber-300",
+                              inv.status === "Overdue" && "bg-rose-500/15 text-rose-700 dark:text-rose-300"
+                            )}
+                          >
+                            {inv.status}
+                          </span>
+                        </TableCell>
+                        <TableCell align="right" className="font-mono font-semibold">{inv.amount}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                  <TableFooter>
+                    <TableRow>
+                      <TableCell colSpan={4} className="font-semibold">Total Outstanding</TableCell>
+                      <TableCell align="right" className="font-mono font-bold">$8,300.50</TableCell>
+                    </TableRow>
+                  </TableFooter>
+                </Table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 41 · DATA TABLE */}
+        {activeTab === "data-table" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Data Table</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Full-featured client table with real-time text filtering, multi-column sorting, selection, and pagination.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<DataTable\n  data={data}\n  columns={[\n    { id: "name", header: "Name", accessorKey: "name", sortable: true },\n    { id: "role", header: "Role", accessorKey: "role", sortable: true },\n  ]}\n  searchable\n  selectable\n  pageSize={5}\n/>`,
+                    "DataTable"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Interactive Directory</span>
+                <span>Selected: <strong className="text-foreground">{dataTableIds.length}</strong> row(s)</span>
+              </div>
+
+              <DataTable
+                data={[
+                  { id: "usr-1", name: "Elena Rostova", role: "Principal Architect", team: "Core Platform", status: "Active" },
+                  { id: "usr-2", name: "Marcus Vance", role: "Systems Engineer", team: "Infrastructure", status: "Active" },
+                  { id: "usr-3", name: "Sarah Chen", role: "Product Designer", team: "Design Systems", status: "Away" },
+                  { id: "usr-4", name: "Lucas Duarte", role: "Frontend Lead", team: "Web Client", status: "Active" },
+                  { id: "usr-5", name: "Aria Thorne", role: "Security Engineer", team: "SecOps", status: "Offline" },
+                  { id: "usr-6", name: "Devon Miller", role: "QA Engineer", team: "Verification", status: "Active" },
+                ]}
+                columns={[
+                  { id: "name", header: "Member", accessorKey: "name", sortable: true },
+                  { id: "role", header: "Role", accessorKey: "role", sortable: true },
+                  { id: "team", header: "Team", accessorKey: "team", sortable: true },
+                  {
+                    id: "status",
+                    header: "Status",
+                    accessorKey: "status",
+                    sortable: true,
+                    cell: (item: any) => (
+                      <span className={cn(
+                        "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold",
+                        item.status === "Active" ? "bg-emerald-500/15 text-emerald-600" : "bg-muted text-muted-foreground"
+                      )}>
+                        {item.status}
+                      </span>
+                    ),
+                  },
+                ]}
+                selectable
+                selectedIds={dataTableIds}
+                onSelectionChange={setDataTableIds}
+                pageSize={4}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 42 · LIST */}
+        {activeTab === "list" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">List</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Bordered and divided item list with leading avatars, descriptive subtext, and status chips.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<List variant="bordered">\n  <ListHeader>Recent Activity</ListHeader>\n  <ListItem\n    interactive\n    title="Elena Rostova"\n    description="Merged branch main"\n    trailing="5m ago"\n  />\n</List>`,
+                    "List"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-xl mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Interactive Items List</span>
+                <span>Active: <strong className="text-foreground">{listSelect}</strong></span>
+              </div>
+
+              <div className="rounded-lg border border-border overflow-hidden bg-card">
+                <ListHeader action={<span className="text-[10px] font-mono">LIVE FEED</span>}>
+                  Deployment Events
+                </ListHeader>
+                <List variant="divided">
+                  {[
+                    { id: "item-1", init: "ER", title: "Elena Rostova pushed commit 8f3b92a", desc: "Production release v2.4.0 verified across all clusters.", time: "5m ago", tag: "Release" },
+                    { id: "item-2", init: "MV", title: "Marcus Vance merged branch feat/tokens", desc: "Updated design system primitives and responsive token registry.", time: "22m ago", tag: "PR #348" },
+                    { id: "item-3", init: "SC", title: "Sarah Chen commented on issue #412", desc: "Requested higher contrast ratio for dark-mode toggle components.", time: "1h ago", tag: "Review" },
+                  ].map((it) => (
+                    <ListItem
+                      key={it.id}
+                      interactive
+                      selected={listSelect === it.id}
+                      onClick={() => setListSelect(it.id)}
+                      leading={
+                        <div className="h-7 w-7 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-bold">
+                          {it.init}
+                        </div>
+                      }
+                      title={<span className="text-xs font-semibold">{it.title}</span>}
+                      description={<span className="text-[11px] text-muted-foreground">{it.desc}</span>}
+                      trailing={
+                        <div className="flex flex-col items-end gap-1">
+                          <span className="text-[10px] font-mono text-muted-foreground">{it.time}</span>
+                          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-muted border border-border/50">{it.tag}</span>
+                        </div>
+                      }
+                    />
+                  ))}
+                </List>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 43 · TIMELINE */}
+        {activeTab === "timeline" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Timeline</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Chronological event pipeline with completed, active, and upcoming step indicators.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Timeline>\n  <TimelineItem status="completed" title="Build Succeeded" timestamp="14:02 UTC" />\n  <TimelineItem status="current" title="Canary Deploy" timestamp="Running" />\n  <TimelineItem status="upcoming" title="Cache Invalidation" isLast />\n</Timeline>`,
+                    "Timeline"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-xl mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Release Pipeline</span>
+                <button
+                  type="button"
+                  onClick={() => setTimelineStep((s) => (s >= 3 ? 0 : s + 1))}
+                  className="px-2.5 py-1 text-xs rounded border border-border bg-card hover:bg-muted font-medium transition-colors"
+                >
+                  Advance Step ({timelineStep + 1}/4)
+                </button>
+              </div>
+
+              <div className="rounded-lg border border-border p-5 bg-card">
+                <Timeline>
+                  {[
+                    { title: "Source Build", desc: "Compiled Next.js application artifacts with 0 errors.", time: "14:02 UTC" },
+                    { title: "Automated Test Suite", desc: "Ran 48 unit and integration tests successfully.", time: "14:05 UTC" },
+                    { title: "Canary Deployment", desc: "Routing 10% live traffic to canary pod instances.", time: "14:08 UTC" },
+                    { title: "Global CDN Edge Propagation", desc: "Invalidate edge cache across 32 geographic points of presence.", time: "Pending" },
+                  ].map((st, i) => (
+                    <TimelineItem
+                      key={i}
+                      status={i < timelineStep ? "completed" : i === timelineStep ? "current" : "upcoming"}
+                      title={st.title}
+                      description={st.desc}
+                      timestamp={st.time}
+                      isLast={i === 3}
+                    />
+                  ))}
+                </Timeline>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 44 · STAT / METRIC CARD */}
+        {activeTab === "stat-card" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Stat / Metric Card</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  KPI telemetry card displaying metric values, directional trend pills, and subtext context.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<StatCard\n  label="Total Revenue"\n  value="$84,250"\n  trend={{ value: "+14.2%", direction: "up" }}\n  description="vs previous month"\n/>`,
+                    "StatCard"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Dashboard Metrics Grid</span>
+                <span>Live Refresh</span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <StatCard
+                  label="Total Revenue"
+                  value="$84,250"
+                  icon={<DollarSign className="h-4 w-4" />}
+                  trend={{ value: "+14.2%", direction: "up" }}
+                  description="+$10.4k vs previous mo."
+                />
+                <StatCard
+                  label="Active Users"
+                  value="14,890"
+                  icon={<Users className="h-4 w-4" />}
+                  trend={{ value: "+8.6%", direction: "up" }}
+                  description="In 52 geographic regions"
+                />
+                <StatCard
+                  label="Avg Latency"
+                  value="42ms"
+                  icon={<Server className="h-4 w-4" />}
+                  trend={{ value: "-4.1%", direction: "down" }}
+                  description="P99 response time"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 45 · RATING */}
+        {activeTab === "rating" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Rating</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Accessible star scoring component with fractional precision, hover preview, and keyboard control.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Rating\n  value={score}\n  onChange={setScore}\n  size="lg"\n  showValue\n/>`,
+                    "Rating"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-md mx-auto space-y-5 text-center">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Interactive Feedback Rating</span>
+                {ratingFeedback && (
+                  <span className="text-emerald-600 font-semibold animate-in fade-in-0">
+                    {ratingFeedback}
+                  </span>
+                )}
+              </div>
+
+              <div className="space-y-1">
+                <h4 className="text-sm font-bold text-foreground">How would you rate this component release?</h4>
+                <p className="text-xs text-muted-foreground">Click a star or use keyboard arrow keys.</p>
+              </div>
+
+              <div className="flex justify-center py-2">
+                <Rating
+                  value={ratingVal}
+                  onChange={(val) => {
+                    setRatingVal(val)
+                    setRatingFeedback(`Rated ${val} out of 5 stars!`)
+                    setTimeout(() => setRatingFeedback(null), 2500)
+                  }}
+                  size="lg"
+                  showValue
+                />
+              </div>
+
+              <div className="pt-3 border-t border-border flex items-center justify-between text-xs">
+                <span className="text-muted-foreground">Read-only Benchmark:</span>
+                <div className="flex items-center gap-1.5">
+                  <Rating value={4.8} precision={0.5} readOnly size="sm" />
+                  <span className="font-mono font-bold text-xs">4.8 (1,420 reviews)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 46 · CHIP */}
+        {activeTab === "chip" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Chip</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Interactive tags and filter pills with selectable states, custom avatars, and dismissible remove buttons.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Chip selected={isSelected} onClick={toggle}>Design Systems</Chip>\n<Chip variant="outline" removable onRemove={handleRemove}>Next.js</Chip>`,
+                    "Chip"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-lg mx-auto space-y-5">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Filter Chips &amp; Tag Cloud</span>
+                {chipTags.length < 4 && (
+                  <button
+                    type="button"
+                    onClick={() => setChipTags(["TypeScript", "TailwindCSS", "Next.js", "Radix Primitives"])}
+                    className="text-primary hover:underline font-semibold"
+                  >
+                    Reset tags
+                  </button>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <div className="text-xs font-semibold text-muted-foreground">Selectable Category Filter:</div>
+                <div className="flex flex-wrap gap-1.5">
+                  {["all", "frontend", "backend", "cloud"].map((f) => (
+                    <Chip
+                      key={f}
+                      selected={chipSelected === f}
+                      onClick={() => setChipSelected(f)}
+                    >
+                      {f.toUpperCase()}
+                    </Chip>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-2 pt-3 border-t border-border">
+                <div className="text-xs font-semibold text-muted-foreground">Dismissible Tags:</div>
+                <div className="flex flex-wrap gap-1.5">
+                  {chipTags.map((tag) => (
+                    <Chip
+                      key={tag}
+                      variant="outline"
+                      removable
+                      onRemove={() => setChipTags((prev) => prev.filter((t) => t !== tag))}
+                    >
+                      {tag}
+                    </Chip>
+                  ))}
+                  {chipTags.length === 0 && (
+                    <span className="text-xs text-muted-foreground italic">No tags remaining. Click reset above.</span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 47 · DESCRIPTION LIST */}
+        {activeTab === "description-list" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Description List</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Semantic term-definition pairs with responsive horizontal, vertical, and grid alignments.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<DescriptionList layout="horizontal">\n  <DescriptionItem>\n    <DescriptionTerm>Cluster</DescriptionTerm>\n    <DescriptionDetails>us-east-prod</DescriptionDetails>\n  </DescriptionItem>\n</DescriptionList>`,
+                    "DescriptionList"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-lg mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Cluster Configuration</span>
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => setDlLayout("horizontal")}
+                    className={cn("px-2 py-0.5 rounded text-xs", dlLayout === "horizontal" ? "bg-primary text-primary-foreground font-semibold" : "hover:bg-muted")}
+                  >
+                    Horizontal
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setDlLayout("grid")}
+                    className={cn("px-2 py-0.5 rounded text-xs", dlLayout === "grid" ? "bg-primary text-primary-foreground font-semibold" : "hover:bg-muted")}
+                  >
+                    Grid
+                  </button>
+                </div>
+              </div>
+
+              <div className="rounded-lg border border-border p-5 bg-card">
+                <DescriptionList layout={dlLayout} columns={2}>
+                  <DescriptionItem layout={dlLayout === "grid" ? "vertical" : "horizontal"}>
+                    <DescriptionTerm>Cluster Name</DescriptionTerm>
+                    <DescriptionDetails className="font-mono font-semibold">us-east-prod-04</DescriptionDetails>
+                  </DescriptionItem>
+                  <DescriptionItem layout={dlLayout === "grid" ? "vertical" : "horizontal"}>
+                    <DescriptionTerm>Runtime Engine</DescriptionTerm>
+                    <DescriptionDetails>Node.js v20.12 (Turbopack)</DescriptionDetails>
+                  </DescriptionItem>
+                  <DescriptionItem layout={dlLayout === "grid" ? "vertical" : "horizontal"}>
+                    <DescriptionTerm>Security Status</DescriptionTerm>
+                    <DescriptionDetails className="text-emerald-600 font-semibold">
+                      Zero Vulnerabilities
+                    </DescriptionDetails>
+                  </DescriptionItem>
+                  <DescriptionItem layout={dlLayout === "grid" ? "vertical" : "horizontal"}>
+                    <DescriptionTerm>Public IP Range</DescriptionTerm>
+                    <DescriptionDetails className="font-mono text-xs">198.51.100.0/24</DescriptionDetails>
+                  </DescriptionItem>
+                </DescriptionList>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 48 · KEY-VALUE LIST */}
+        {activeTab === "key-value-list" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Key-Value List</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Metadata and diagnostics list featuring monospace formatting and instant one-click clipboard copying.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<KeyValueList\n  items={[\n    { key: "API Endpoint", value: "https://api.hub.dev", mono: true, copyable: true },\n  ]}\n/>`,
+                    "KeyValueList"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-lg mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>API Credentials &amp; Variables</span>
+                <span>Click 📋 to copy</span>
+              </div>
+
+              <KeyValueList
+                items={[
+                  { key: "Project ID", value: "prj_hub_9042a8b", mono: true, copyable: true, copyText: "prj_hub_9042a8b" },
+                  { key: "API Endpoint", value: "https://api.hub.dev/v2/stream", mono: true, copyable: true, copyText: "https://api.hub.dev/v2/stream" },
+                  { key: "Environment Key", value: "sk_live_9f02••••••••••3b", mono: true, copyable: true, copyText: "sk_live_9f02b1c4e9083b" },
+                  {
+                    key: "Access Tier",
+                    value: "Enterprise Dedicated",
+                    badge: <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/10 text-primary">Verified</span>,
+                  },
+                ]}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 49 · DATA GRID */}
+        {activeTab === "data-grid" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Data Grid</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Spreadsheet-style 2D matrix featuring roving tabindex, active cell outline, and full directional keyboard arrow navigation.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<DataGrid\n  data={matrix}\n  columns={[\n    { id: "region", header: "Region", accessorKey: "region" },\n    { id: "q1", header: "Q1", accessorKey: "q1", align: "right" },\n  ]}\n  caption="Financial Performance Matrix"\n/>`,
+                    "DataGrid"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Roving Tabindex Keyboard Matrix</span>
+                <span>Active: <strong className="text-foreground">Row {gridFocusCell.r + 1}, Col {gridFocusCell.c + 1} ({gridFocusCell.v})</strong></span>
+              </div>
+
+              <DataGrid
+                data={[
+                  { region: "North America", q1: "$124,500", q2: "$138,200", q3: "$149,000", q4: "$162,400" },
+                  { region: "Europe / EMEA", q1: "$89,200", q2: "$94,100", q3: "$102,600", q4: "$114,000" },
+                  { region: "Asia Pacific", q1: "$68,400", q2: "$78,900", q3: "$91,500", q4: "$106,200" },
+                  { region: "Latin America", q1: "$32,100", q2: "$36,400", q3: "$41,000", q4: "$48,900" },
+                ]}
+                columns={[
+                  { id: "region", header: "Region", accessorKey: "region", width: "160px" },
+                  { id: "q1", header: "Q1", accessorKey: "q1", align: "right" },
+                  { id: "q2", header: "Q2", accessorKey: "q2", align: "right" },
+                  { id: "q3", header: "Q3", accessorKey: "q3", align: "right" },
+                  { id: "q4", header: "Q4", accessorKey: "q4", align: "right" },
+                ]}
+                onCellClick={(r, c, item: any) => {
+                  const keys = ["region", "q1", "q2", "q3", "q4"]
+                  setGridFocusCell({ r, c, v: String(item[keys[c]] ?? "") })
+                }}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 50 · PLAYGROUND */}
         {activeTab === "playground" && (
           <div className="space-y-8">
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">

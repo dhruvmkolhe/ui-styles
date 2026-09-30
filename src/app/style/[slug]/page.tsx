@@ -56,7 +56,7 @@ export default async function StylePage({ params }: { params: Promise<{ slug: st
             }
           >
             <span className={live ? "h-1.5 w-1.5 rounded-full bg-emerald-400" : "h-1.5 w-1.5 rounded-full bg-amber-400"} />
-            {live ? "Live · 55 components" : "Coming soon"}
+            {live ? "Live · 65 components" : "Coming soon"}
           </span>
         </div>
 

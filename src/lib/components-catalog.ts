@@ -52,6 +52,14 @@ import {
   PanelRight,
   Plus,
   Search,
+  Table as TableIcon,
+  TableProperties,
+  History,
+  BarChart3,
+  Star,
+  AlignJustify,
+  KeyRound,
+  Grid3X3,
 } from "lucide-react";
 
 export const COMPONENTS_CATALOG = [
@@ -384,6 +392,66 @@ export const COMPONENTS_CATALOG = [
     name: "Floating Action Button",
     icon: Plus,
     description: "Corner-docked primary action trigger with extended labels and expandable speed-dial actions.",
+  },
+  {
+    id: "table",
+    name: "Table",
+    icon: TableIcon,
+    description: "Semantic tabular data presentation with headers, alignments, and styled rows.",
+  },
+  {
+    id: "data-table",
+    name: "Data Table",
+    icon: TableProperties,
+    description: "Full-featured data table with live column sorting, search filtering, row selection, and pagination.",
+  },
+  {
+    id: "list",
+    name: "List",
+    icon: List,
+    description: "Interactive and bordered list layouts with leading icons, status indicators, and actions.",
+  },
+  {
+    id: "timeline",
+    name: "Timeline",
+    icon: History,
+    description: "Vertical chronological activity feed with status icons, connector lines, and timestamps.",
+  },
+  {
+    id: "stat-card",
+    name: "Stat / Metric Card",
+    icon: BarChart3,
+    description: "KPI metric display card with primary number, trend indicators, and supporting context.",
+  },
+  {
+    id: "rating",
+    name: "Rating",
+    icon: Star,
+    description: "Accessible interactive star rating with hover preview, half-star granularity, and keyboard controls.",
+  },
+  {
+    id: "chip",
+    name: "Chip",
+    icon: Tag,
+    description: "Compact filter and tag chips with interactive selection, avatars, and dismissible remove buttons.",
+  },
+  {
+    id: "description-list",
+    name: "Description List",
+    icon: AlignJustify,
+    description: "Semantic key-value pairs formatted as definition lists with horizontal and grid alignments.",
+  },
+  {
+    id: "key-value-list",
+    name: "Key-Value List",
+    icon: KeyRound,
+    description: "Metadata inspection list with monospace value formatting and instant clipboard copy buttons.",
+  },
+  {
+    id: "data-grid",
+    name: "Data Grid",
+    icon: Grid3X3,
+    description: "Spreadsheet-style 2D data matrix featuring roving tabindex and directional arrow-key cell navigation.",
   },
 ] as const;
 
