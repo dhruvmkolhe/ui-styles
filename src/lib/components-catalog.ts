@@ -67,6 +67,14 @@ import {
   ScrollText,
   GripVertical,
   GalleryVerticalEnd,
+  PlayCircle,
+  Activity,
+  CircleDashed,
+  Sparkle,
+  Wifi,
+  TextQuote,
+  Percent,
+  Cpu,
 } from "lucide-react";
 
 export const COMPONENTS_CATALOG = [
@@ -519,6 +527,66 @@ export const COMPONENTS_CATALOG = [
     name: "Masonry",
     icon: GalleryVerticalEnd,
     description: "Responsive Pinterest-style waterfall layout for variable-height cards and items.",
+  },
+  {
+    id: "spinner",
+    name: "Spinner / Loader",
+    icon: Loader2,
+    description: "Indeterminate SVG spinner with size variants, color themes, accessible status labels, and reduced-motion handling.",
+  },
+  {
+    id: "loading-button",
+    name: "Loading Button",
+    icon: PlayCircle,
+    description: "Interactive button with built-in spinner, loading label, duplicate-click prevention, and dimension stability.",
+  },
+  {
+    id: "status-indicator",
+    name: "Status Indicator",
+    icon: Activity,
+    description: "System status badge with color coding, animated pulse ping, accessible text labels, and semantic states.",
+  },
+  {
+    id: "step-progress",
+    name: "Step Progress",
+    icon: ListOrdered,
+    description: "Multi-step progress tracker with horizontal/vertical layouts, completed checks, and active step highlights.",
+  },
+  {
+    id: "circular-progress",
+    name: "Circular Progress",
+    icon: CircleDashed,
+    description: "Radial progress ring supporting determinate percentages, indeterminate spinning, and custom center content.",
+  },
+  {
+    id: "shimmer",
+    name: "Shimmer",
+    icon: Sparkle,
+    description: "Content placeholder with smooth gradient sweep animation, preserving layout geometry during data loads.",
+  },
+  {
+    id: "connection-status",
+    name: "Connection Status",
+    icon: Wifi,
+    description: "Network connectivity monitor indicating online, offline, reconnecting, and error states with latency tags.",
+  },
+  {
+    id: "skeleton-text",
+    name: "Skeleton Text",
+    icon: TextQuote,
+    description: "Text placeholder with configurable line count, typography-aligned heights, and realistic last-line tapering.",
+  },
+  {
+    id: "loading-bar",
+    name: "Loading Bar",
+    icon: Percent,
+    description: "Horizontal progress bar supporting determinate percentages, sliding indeterminate beams, and value labels.",
+  },
+  {
+    id: "processing-indicator",
+    name: "Processing Indicator",
+    icon: Cpu,
+    description: "Async operation state manager with active, success, error, and idle states, progress bars, and retry hooks.",
   },
 ] as const;
 

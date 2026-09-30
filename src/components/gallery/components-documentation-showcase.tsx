@@ -139,6 +139,16 @@ import {
   ResizableHandle,
 } from "@/components/ui/resizable-panel";
 import { Masonry } from "@/components/ui/masonry";
+import { Spinner } from "@/components/ui/spinner";
+import { LoadingButton } from "@/components/ui/loading-button";
+import { StatusIndicator, type StatusType } from "@/components/ui/status-indicator";
+import { StepProgress } from "@/components/ui/step-progress";
+import { CircularProgress } from "@/components/ui/circular-progress";
+import { Shimmer } from "@/components/ui/shimmer";
+import { ConnectionStatus, type ConnectionState } from "@/components/ui/connection-status";
+import { SkeletonText } from "@/components/ui/skeleton-text";
+import { LoadingBar } from "@/components/ui/loading-bar";
+import { ProcessingIndicator, type ProcessingStatus } from "@/components/ui/processing-indicator";
 import {
   ArrowLeft,
   ArrowRight,
@@ -244,6 +254,16 @@ const COMPONENTS_DOCS = [
   { id: "scroll-area", name: "Scroll Area", category: "Layout" },
   { id: "resizable-panel", name: "Resizable Panel", category: "Layout" },
   { id: "masonry", name: "Masonry", category: "Layout" },
+  { id: "spinner", name: "Spinner / Loader", category: "Loading & Status" },
+  { id: "loading-button", name: "Loading Button", category: "Loading & Status" },
+  { id: "status-indicator", name: "Status Indicator", category: "Loading & Status" },
+  { id: "step-progress", name: "Step Progress", category: "Loading & Status" },
+  { id: "circular-progress", name: "Circular Progress", category: "Loading & Status" },
+  { id: "shimmer", name: "Shimmer", category: "Loading & Status" },
+  { id: "connection-status", name: "Connection Status", category: "Loading & Status" },
+  { id: "skeleton-text", name: "Skeleton Text", category: "Loading & Status" },
+  { id: "loading-bar", name: "Loading Bar", category: "Loading & Status" },
+  { id: "processing-indicator", name: "Processing Indicator", category: "Loading & Status" },
   { id: "playground", name: "Full Suite Playground", category: "Integration" },
 ];
 
@@ -323,6 +343,19 @@ export function ComponentsDocumentationShowcase() {
   const [splitPanePos, setSplitPanePos] = useState(50);
   const [aspectRatioChoice, setAspectRatioChoice] = useState<AspectRatioPreset>("16:9");
 
+  // Batch 7 Loading & Status interactive states
+  const [spinnerSizeChoice, setSpinnerSizeChoice] = useState<"xs" | "sm" | "md" | "lg" | "xl">("md");
+  const [btnLoading, setBtnLoading] = useState(false);
+  const [btnSuccess, setBtnSuccess] = useState(false);
+  const [statusVal, setStatusVal] = useState<StatusType>("online");
+  const [stepIdx, setStepIdx] = useState(1);
+  const [circVal, setCircVal] = useState(68);
+  const [circIndeterminate, setCircIndeterminate] = useState(false);
+  const [connState, setConnState] = useState<ConnectionState>("connected");
+  const [loadingBarValue, setLoadingBarValue] = useState(64);
+  const [loadingBarIndet, setLoadingBarIndet] = useState(false);
+  const [procStatus, setProcStatus] = useState<ProcessingStatus>("processing");
+
   const handleCopy = async (code: string, label: string) => {
     const ok = await copyCode(code, label);
     if (ok) {
@@ -344,7 +377,7 @@ export function ComponentsDocumentationShowcase() {
               Production Component Suites
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Test states, variants, keyboard accessibility, and copy production React code across all 75 components.
+              Test states, variants, keyboard accessibility, and copy production React code across all 85 components.
             </p>
           </div>
 
@@ -4409,7 +4442,648 @@ export function ComponentsDocumentationShowcase() {
           </div>
         )}
 
-        {/* 60 · PLAYGROUND */}
+        {/* 60 · SPINNER */}
+        {activeTab === "spinner" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Spinner / Loader</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Indeterminate SVG spinner with configurable sizes, semantic role="status", and reduced-motion handling.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Spinner size="${spinnerSizeChoice}" variant="primary" label="Loading data..." showLabel />`,
+                    "Spinner"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-lg mx-auto space-y-6">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Size Variants</span>
+                <div className="flex gap-1">
+                  {(["xs", "sm", "md", "lg", "xl"] as const).map((s) => (
+                    <button
+                      key={s}
+                      type="button"
+                      onClick={() => setSpinnerSizeChoice(s)}
+                      className={cn(
+                        "px-2 py-0.5 rounded text-xs transition-colors",
+                        spinnerSizeChoice === s ? "bg-primary text-primary-foreground font-semibold" : "hover:bg-muted"
+                      )}
+                    >
+                      {s.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex flex-col items-center justify-center p-8 rounded-xl border border-dashed border-border bg-muted/10 space-y-3">
+                <Spinner size={spinnerSizeChoice} variant="primary" />
+                <span className="text-xs font-mono text-muted-foreground">
+                  Active size: {spinnerSizeChoice}
+                </span>
+              </div>
+
+              <div className="p-3.5 rounded-lg border border-border bg-card flex items-center justify-between">
+                <Spinner size="sm" label="Synchronizing database records..." showLabel />
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-muted text-muted-foreground">
+                  POLLING
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 61 · LOADING BUTTON */}
+        {activeTab === "loading-button" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Loading Button</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Async action trigger that disables duplicate submissions, preserves dimensions, and renders inline spinners.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<LoadingButton\n  loading={${btnLoading}}\n  loadingText="Deploying Microservice..."\n  onClick={handleDeploy}\n>\n  Deploy Cluster Node\n</LoadingButton>`,
+                    "LoadingButton"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-md mx-auto space-y-5">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Interactive Submission State</span>
+                <span>Click to trigger async lock</span>
+              </div>
+
+              <LoadingButton
+                loading={btnLoading}
+                loadingText="Deploying Microservice..."
+                disabled={isDisabled}
+                onClick={() => {
+                  setBtnLoading(true);
+                  setBtnSuccess(false);
+                  setTimeout(() => {
+                    setBtnLoading(false);
+                    setBtnSuccess(true);
+                    setTimeout(() => setBtnSuccess(false), 3000);
+                  }, 2000);
+                }}
+                className="w-full"
+              >
+                {btnSuccess ? (
+                  <>
+                    <Check className="h-4 w-4 mr-1 text-emerald-300" />
+                    Deployed Successfully!
+                  </>
+                ) : (
+                  "Deploy Cluster Node"
+                )}
+              </LoadingButton>
+
+              <div className="flex items-center justify-between text-xs text-muted-foreground pt-1">
+                <span>State: <strong className="text-foreground">{btnLoading ? "Processing (Locked)" : btnSuccess ? "Succeeded" : "Idle"}</strong></span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setBtnLoading(false);
+                    setBtnSuccess(false);
+                  }}
+                  className="hover:underline text-[11px]"
+                >
+                  Reset State
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 62 · STATUS INDICATOR */}
+        {activeTab === "status-indicator" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Status Indicator</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Semantic dot badge featuring animated ping ripples, accessible text descriptors, and color-independent states.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<StatusIndicator status="${statusVal}" label="System Operational" pulse showLabel />`,
+                    "StatusIndicator"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-lg mx-auto space-y-6">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Active Status Filter</span>
+                <span className="font-mono uppercase">{statusVal}</span>
+              </div>
+
+              <div className="grid grid-cols-3 gap-2">
+                {(["online", "active", "pending", "warning", "error", "offline"] as const).map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => setStatusVal(s)}
+                    className={cn(
+                      "p-2 rounded-lg border text-xs capitalize transition-colors flex items-center justify-center",
+                      statusVal === s ? "border-primary bg-primary/10 font-bold" : "hover:bg-muted"
+                    )}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+
+              <div className="p-4 rounded-xl border border-border bg-card flex items-center justify-between">
+                <StatusIndicator status={statusVal} size="lg" />
+                <span className="text-[10px] font-mono text-muted-foreground px-2 py-0.5 rounded bg-muted">
+                  role="status"
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 63 · STEP PROGRESS */}
+        {activeTab === "step-progress" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Step Progress</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Multi-phase workflow visualizer with completed checkmarks, current step rings, and connecting progress line.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<StepProgress\n  steps={[\n    { id: 1, label: "Account", description: "Identity" },\n    { id: 2, label: "Capacity", description: "Node count" },\n    { id: 3, label: "Review", description: "Confirm" },\n  ]}\n  currentStep={${stepIdx}}\n/>`,
+                    "StepProgress"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-xl mx-auto space-y-6">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Phase Progress Matrix</span>
+                <span>Step {stepIdx + 1} of 3</span>
+              </div>
+
+              <StepProgress
+                steps={[
+                  { id: 1, label: "Identity", description: "Account keys" },
+                  { id: 2, label: "Cluster Spec", description: "Workers & RAM" },
+                  { id: 3, label: "Deployment", description: "Launch" },
+                ]}
+                currentStep={stepIdx}
+                onStepClick={(i) => setStepIdx(i)}
+              />
+
+              <div className="flex items-center justify-between pt-3 border-t text-xs">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={stepIdx === 0}
+                  onClick={() => setStepIdx((p) => Math.max(0, p - 1))}
+                >
+                  Previous
+                </Button>
+                <Button
+                  size="sm"
+                  disabled={stepIdx === 2}
+                  onClick={() => setStepIdx((p) => Math.min(2, p + 1))}
+                >
+                  Continue
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 64 · CIRCULAR PROGRESS */}
+        {activeTab === "circular-progress" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Circular Progress</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Radial SVG progress meter supporting determinate percentages, indeterminate rotation, and custom centers.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<CircularProgress\n  value={${circIndeterminate ? "undefined" : circVal}}\n  size="lg"\n  showValue\n  variant="default"\n/>`,
+                    "CircularProgress"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-lg mx-auto space-y-6">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Radial Metric Display</span>
+                <label className="flex items-center gap-1.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={circIndeterminate}
+                    onChange={(e) => setCircIndeterminate(e.target.checked)}
+                    className="rounded text-xs"
+                  />
+                  Indeterminate
+                </label>
+              </div>
+
+              <div className="flex items-center justify-around gap-4 py-4">
+                <div className="flex flex-col items-center gap-2">
+                  <CircularProgress
+                    value={circIndeterminate ? undefined : circVal}
+                    size="md"
+                    showValue
+                    variant="default"
+                  />
+                  <span className="text-[11px] text-muted-foreground">Default</span>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <CircularProgress
+                    value={circIndeterminate ? undefined : circVal}
+                    size="md"
+                    showValue
+                    variant="success"
+                  />
+                  <span className="text-[11px] text-muted-foreground">Success</span>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <CircularProgress
+                    value={circIndeterminate ? undefined : circVal}
+                    size="lg"
+                    showValue
+                    variant="default"
+                  />
+                  <span className="text-[11px] text-muted-foreground">Large</span>
+                </div>
+              </div>
+
+              {!circIndeterminate && (
+                <div className="space-y-1.5 border-t border-border pt-3">
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>Adjust Percentage:</span>
+                    <span className="font-mono font-bold text-foreground">{circVal}%</span>
+                  </div>
+                  <input
+                    type="range"
+                    min={0}
+                    max={100}
+                    value={circVal}
+                    onChange={(e) => setCircVal(Number(e.target.value))}
+                    className="w-full h-1.5 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* 65 · SHIMMER */}
+        {activeTab === "shimmer" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Shimmer</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Content-preserving loading placeholder with smooth gradient sweep animation to prevent cumulative layout shifts.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<div className="space-y-3">\n  <Shimmer variant="avatar" className="h-10 w-10" />\n  <Shimmer variant="text" height={16} width="80%" />\n  <Shimmer variant="block" height={90} />\n</div>`,
+                    "Shimmer"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-md mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Card Mockup Placeholder</span>
+                <span>CLS: 0.00</span>
+              </div>
+
+              <div className="p-4 rounded-xl border border-border bg-card space-y-4 shadow-xs">
+                <div className="flex items-center gap-3">
+                  <Shimmer variant="avatar" className="h-10 w-10" />
+                  <div className="space-y-1.5 flex-1">
+                    <Shimmer variant="text" height={14} width="70%" />
+                    <Shimmer variant="text" height={10} width="40%" />
+                  </div>
+                </div>
+                <Shimmer variant="block" height={80} className="w-full" />
+                <div className="flex gap-2">
+                  <Shimmer variant="block" height={22} width={64} rounded="sm" />
+                  <Shimmer variant="block" height={22} width={64} rounded="sm" />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 66 · CONNECTION STATUS */}
+        {activeTab === "connection-status" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Connection Status</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Real-time transport monitor supporting connected, connecting, disconnected, and offline states with latency readouts.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<ConnectionStatus\n  status="${connState}"\n  latency={${connState === "connected" ? '"18ms"' : "undefined"}}\n  onRetry={() => {}}\n  variant="card"\n/>`,
+                    "ConnectionStatus"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-lg mx-auto space-y-5">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Select Simulated State</span>
+                <div className="flex gap-1">
+                  {(["connected", "reconnecting", "offline"] as const).map((s) => (
+                    <button
+                      key={s}
+                      type="button"
+                      onClick={() => setConnState(s)}
+                      className={cn(
+                        "px-2 py-0.5 rounded text-xs capitalize transition-colors",
+                        connState === s ? "bg-primary text-primary-foreground font-semibold" : "hover:bg-muted"
+                      )}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <ConnectionStatus
+                status={connState}
+                latency={connState === "connected" ? "18ms" : undefined}
+                onRetry={() => setConnState("connected")}
+                variant="card"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 67 · SKELETON TEXT */}
+        {activeTab === "skeleton-text" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Skeleton Text</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Multi-line typography placeholders with natural last-line width shortening and typography-matching line heights.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<div className="space-y-4">\n  <SkeletonText lines={1} variant="heading" widths={["80%"]} />\n  <SkeletonText lines={3} variant="paragraph" lastLineWidth="55%" />\n</div>`,
+                    "SkeletonText"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-md mx-auto space-y-5">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Typography Skeleton Presets</span>
+                <span>Proportional Height</span>
+              </div>
+
+              <div className="p-4 rounded-xl border border-border bg-card space-y-4">
+                <div className="space-y-2">
+                  <span className="text-[10px] font-mono uppercase text-muted-foreground">Title Line</span>
+                  <SkeletonText lines={1} variant="heading" widths={["82%"]} />
+                </div>
+                <div className="space-y-2 pt-2 border-t border-border">
+                  <span className="text-[10px] font-mono uppercase text-muted-foreground">Article Paragraph</span>
+                  <SkeletonText lines={3} variant="paragraph" lastLineWidth="58%" />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 68 · LOADING BAR */}
+        {activeTab === "loading-bar" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Loading Bar</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Horizontal progress bar supporting determinate percentages, sliding indeterminate beams, and label readouts.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<LoadingBar\n  value={${loadingBarIndet ? "undefined" : loadingBarValue}}\n  label="Database Migration"\n  showValue\n  size="md"\n  variant="default"\n/>`,
+                    "LoadingBar"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-lg mx-auto space-y-5">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Track Visual Variants</span>
+                <label className="flex items-center gap-1.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={loadingBarIndet}
+                    onChange={(e) => setLoadingBarIndet(e.target.checked)}
+                    className="rounded text-xs"
+                  />
+                  Indeterminate
+                </label>
+              </div>
+
+              <div className="space-y-4">
+                <LoadingBar
+                  value={loadingBarIndet ? undefined : loadingBarValue}
+                  label="Asset Bundle Compression"
+                  showValue
+                  size="md"
+                  variant="default"
+                />
+                <LoadingBar
+                  value={loadingBarIndet ? undefined : loadingBarValue}
+                  label="Memory Cache Optimization"
+                  showValue
+                  size="sm"
+                  variant="success"
+                />
+                <LoadingBar
+                  value={loadingBarIndet ? undefined : loadingBarValue}
+                  label="Telemetry Stream Transcoding"
+                  showValue
+                  size="lg"
+                  variant="gradient"
+                />
+              </div>
+
+              {!loadingBarIndet && (
+                <div className="space-y-1 pt-2 border-t border-border">
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>Progress:</span>
+                    <span className="font-mono font-bold text-foreground">{loadingBarValue}%</span>
+                  </div>
+                  <input
+                    type="range"
+                    min={0}
+                    max={100}
+                    value={loadingBarValue}
+                    onChange={(e) => setLoadingBarValue(Number(e.target.value))}
+                    className="w-full h-1.5 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* 69 · PROCESSING INDICATOR */}
+        {activeTab === "processing-indicator" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Processing Indicator</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Async background state manager handling idle, active, completed, and error states with progress bar and retry buttons.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<ProcessingIndicator\n  status="${procStatus}"\n  title="Optimizing media assets..."\n  description="48 of 64 files processed."\n  progress={${procStatus === "processing" ? "75" : "undefined"}}\n  onRetry={() => {}}\n  onCancel={() => {}}\n  variant="card"\n/>`,
+                    "ProcessingIndicator"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-lg mx-auto space-y-5">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Task State Switcher</span>
+                <div className="flex gap-1">
+                  {(["idle", "processing", "success", "error"] as const).map((s) => (
+                    <button
+                      key={s}
+                      type="button"
+                      onClick={() => setProcStatus(s)}
+                      className={cn(
+                        "px-2 py-0.5 rounded text-xs capitalize transition-colors",
+                        procStatus === s ? "bg-primary text-primary-foreground font-semibold" : "hover:bg-muted"
+                      )}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <ProcessingIndicator
+                status={procStatus}
+                title={
+                  procStatus === "processing"
+                    ? "Syncing Cloud Storage"
+                    : procStatus === "success"
+                    ? "Data Synchronized"
+                    : procStatus === "error"
+                    ? "Transfer Interrupted"
+                    : "Worker Ready"
+                }
+                description="Secure automated backup archive transfer in progress."
+                progress={procStatus === "processing" ? 75 : undefined}
+                onRetry={() => setProcStatus("processing")}
+                onCancel={() => setProcStatus("idle")}
+                variant="card"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 70 · PLAYGROUND */}
         {activeTab === "playground" && (
           <div className="space-y-8">
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
