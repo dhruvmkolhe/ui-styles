@@ -199,7 +199,7 @@ export function HoverCardPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }
       </div>
 
       <div className={cn("p-8 border flex items-center justify-center text-xs", k.panel, k.radius)}>
-        <p className={cn("leading-relaxed", k.muted)}>
+        <div className={cn("leading-relaxed", k.muted)}>
           Designed by{" "}
           <HoverCard openDelay={150} closeDelay={150}>
             <HoverCardTrigger asChild>
@@ -223,14 +223,14 @@ export function HoverCardPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }
               </div>
 
               <div className="flex items-center gap-4 text-[11px] pt-2 border-t border-current/10">
-                <div><strong className={k.strong}>55</strong> Components</div>
+                <div><strong className={k.strong}>65</strong> Components</div>
                 <div><strong className={k.strong}>25</strong> Styles</div>
                 <div><strong className={k.strong}>100%</strong> Free</div>
               </div>
             </HoverCardContent>
           </HoverCard>
           {" "}with full accessibility compliance.
-        </p>
+        </div>
       </div>
     </div>
   )

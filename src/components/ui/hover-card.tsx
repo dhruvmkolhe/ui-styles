@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
 import { cn } from "@/lib/utils"
 
 interface HoverCardContextValue {
@@ -60,30 +61,31 @@ export function HoverCard({
     <HoverCardContext.Provider
       value={{ open, setOpen, openWithDelay, closeWithDelay }}
     >
-      <div
+      <span
         className="relative inline-block"
         onMouseEnter={openWithDelay}
         onMouseLeave={closeWithDelay}
       >
         {children}
-      </div>
+      </span>
     </HoverCardContext.Provider>
   )
 }
 
 export interface HoverCardTriggerProps
-  extends React.HTMLAttributes<HTMLSpanElement> {
+  extends React.HTMLAttributes<HTMLElement> {
   asChild?: boolean
 }
 
 export const HoverCardTrigger = React.forwardRef<
-  HTMLSpanElement,
+  HTMLElement,
   HoverCardTriggerProps
->(({ className, children, ...props }, ref) => {
+>(({ className, children, asChild = false, ...props }, ref) => {
   const { open, setOpen, openWithDelay, closeWithDelay } = useHoverCard()
+  const Comp = asChild ? Slot : "span"
 
   return (
-    <span
+    <Comp
       ref={ref}
       tabIndex={0}
       role="button"
@@ -93,13 +95,14 @@ export const HoverCardTrigger = React.forwardRef<
       onBlur={closeWithDelay}
       onClick={() => setOpen(!open)}
       className={cn(
-        "inline-flex cursor-pointer underline-offset-4 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-xs",
+        !asChild &&
+          "inline-flex cursor-pointer underline-offset-4 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-xs",
         className
       )}
       {...props}
     >
       {children}
-    </span>
+    </Comp>
   )
 })
 HoverCardTrigger.displayName = "HoverCardTrigger"

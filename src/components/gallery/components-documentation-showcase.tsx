@@ -2614,7 +2614,7 @@ export function ComponentsDocumentationShowcase() {
             </div>
 
             <div className="rounded-xl border border-border bg-background p-8 max-w-2xl mx-auto flex items-center justify-center text-xs">
-              <p className="leading-relaxed text-muted-foreground">
+              <div className="leading-relaxed text-muted-foreground">
                 Maintained with care by{" "}
                 <HoverCard openDelay={150} closeDelay={150}>
                   <HoverCardTrigger asChild>
@@ -2636,14 +2636,14 @@ export function ComponentsDocumentationShowcase() {
                       </div>
                     </div>
                     <div className="flex items-center gap-4 text-[11px] text-muted-foreground pt-2 border-t border-border">
-                      <div><strong className="text-foreground">55</strong> Components</div>
+                      <div><strong className="text-foreground">65</strong> Components</div>
                       <div><strong className="text-foreground">25</strong> Styles</div>
                       <div><strong className="text-foreground">100%</strong> Accessible</div>
                     </div>
                   </HoverCardContent>
                 </HoverCard>
                 {" "}across 25 authentic design styles.
-              </p>
+              </div>
             </div>
           </div>
         )}

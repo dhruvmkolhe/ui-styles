@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
 import { cn } from "@/lib/utils"
 
 export type PopoverPlacement = "top" | "bottom" | "left" | "right"
@@ -76,7 +77,7 @@ export interface PopoverTriggerProps
 }
 
 export const PopoverTrigger = React.forwardRef<HTMLButtonElement, PopoverTriggerProps>(
-  ({ className, onClick, children, disabled, ...props }, ref) => {
+  ({ className, onClick, children, disabled, asChild = false, ...props }, ref) => {
     const { open, setOpen, triggerRef, contentId } = usePopover()
 
     const combinedRef = (node: HTMLButtonElement | null) => {
@@ -85,28 +86,31 @@ export const PopoverTrigger = React.forwardRef<HTMLButtonElement, PopoverTrigger
       else if (ref) (ref as React.MutableRefObject<HTMLButtonElement | null>).current = node
     }
 
+    const Comp = asChild ? Slot : "button"
+
     return (
-      <button
+      <Comp
         ref={combinedRef}
-        type="button"
+        {...(!asChild ? { type: "button" } : {})}
         aria-haspopup="dialog"
         aria-expanded={open}
         aria-controls={open ? contentId : undefined}
         disabled={disabled}
-        onClick={(e) => {
+        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
           if (disabled) return
           onClick?.(e)
           setOpen(!open)
         }}
         className={cn(
-          "inline-flex items-center justify-center outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+          !asChild &&
+            "inline-flex items-center justify-center outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
           disabled && "opacity-50 pointer-events-none cursor-not-allowed",
           className
         )}
         {...props}
       >
         {children}
-      </button>
+      </Comp>
     )
   }
 )
