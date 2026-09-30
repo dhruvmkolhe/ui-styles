@@ -60,6 +60,13 @@ import {
   AlignJustify,
   KeyRound,
   Grid3X3,
+  SeparatorHorizontal,
+  Box,
+  Columns2,
+  Ratio,
+  ScrollText,
+  GripVertical,
+  GalleryVerticalEnd,
 } from "lucide-react";
 
 export const COMPONENTS_CATALOG = [
@@ -452,6 +459,66 @@ export const COMPONENTS_CATALOG = [
     name: "Data Grid",
     icon: Grid3X3,
     description: "Spreadsheet-style 2D data matrix featuring roving tabindex and directional arrow-key cell navigation.",
+  },
+  {
+    id: "collapsible",
+    name: "Collapsible",
+    icon: ChevronsUpDown,
+    description: "Expandable disclosure section with smooth height transition and keyboard controls.",
+  },
+  {
+    id: "divider",
+    name: "Divider / Separator",
+    icon: SeparatorHorizontal,
+    description: "Visual separator for horizontal, vertical, labeled, and decorative content division.",
+  },
+  {
+    id: "container",
+    name: "Container",
+    icon: Box,
+    description: "Responsive centered wrapper with fluid width constraints and padding presets.",
+  },
+  {
+    id: "grid",
+    name: "Grid",
+    icon: LayoutGrid,
+    description: "CSS Grid layout primitive with responsive column configurations and auto-fit repeat.",
+  },
+  {
+    id: "stack",
+    name: "Stack",
+    icon: Layers,
+    description: "Flexbox linear layout primitive supporting horizontal, vertical, gap, and wrapping.",
+  },
+  {
+    id: "split-pane",
+    name: "Split Pane",
+    icon: Columns2,
+    description: "Two-panel layout with draggable separator, keyboard adjustment, and min/max limits.",
+  },
+  {
+    id: "aspect-ratio",
+    name: "Aspect Ratio",
+    icon: Ratio,
+    description: "Container maintaining fixed aspect proportions (16:9, 4:3, 1:1, 21:9) across screen sizes.",
+  },
+  {
+    id: "scroll-area",
+    name: "Scroll Area",
+    icon: ScrollText,
+    description: "Custom-styled scrollable view supporting directional overflow and keyboard focus.",
+  },
+  {
+    id: "resizable-panel",
+    name: "Resizable Panel",
+    icon: GripVertical,
+    description: "Multi-panel group with draggable resize handles, constraints, and touch support.",
+  },
+  {
+    id: "masonry",
+    name: "Masonry",
+    icon: GalleryVerticalEnd,
+    description: "Responsive Pinterest-style waterfall layout for variable-height cards and items.",
   },
 ] as const;
 

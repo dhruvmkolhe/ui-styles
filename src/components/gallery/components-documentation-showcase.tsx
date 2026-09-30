@@ -122,6 +122,24 @@ import {
 import { KeyValueList, KeyValueRow } from "@/components/ui/key-value-list";
 import { DataGrid, type DataGridColumn } from "@/components/ui/data-grid";
 import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@/components/ui/collapsible";
+import { Divider, Separator } from "@/components/ui/divider";
+import { Container } from "@/components/ui/container";
+import { Grid, GridItem } from "@/components/ui/grid";
+import { Stack } from "@/components/ui/stack";
+import { SplitPane } from "@/components/ui/split-pane";
+import { AspectRatio, type AspectRatioPreset } from "@/components/ui/aspect-ratio";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from "@/components/ui/resizable-panel";
+import { Masonry } from "@/components/ui/masonry";
+import {
   ArrowLeft,
   ArrowRight,
   ArrowUp,
@@ -160,6 +178,10 @@ import {
   AlignJustify,
   KeyRound,
   Grid3X3,
+  Columns2,
+  Terminal,
+  GripHorizontal,
+  GripVertical,
 } from "lucide-react";
 
 const COMPONENTS_DOCS = [
@@ -212,6 +234,16 @@ const COMPONENTS_DOCS = [
   { id: "description-list", name: "Description List", category: "Data Display" },
   { id: "key-value-list", name: "Key-Value List", category: "Data Display" },
   { id: "data-grid", name: "Data Grid", category: "Data Display" },
+  { id: "collapsible", name: "Collapsible", category: "Layout" },
+  { id: "divider", name: "Divider / Separator", category: "Layout" },
+  { id: "container", name: "Container", category: "Layout" },
+  { id: "grid", name: "Grid", category: "Layout" },
+  { id: "stack", name: "Stack", category: "Layout" },
+  { id: "split-pane", name: "Split Pane", category: "Layout" },
+  { id: "aspect-ratio", name: "Aspect Ratio", category: "Layout" },
+  { id: "scroll-area", name: "Scroll Area", category: "Layout" },
+  { id: "resizable-panel", name: "Resizable Panel", category: "Layout" },
+  { id: "masonry", name: "Masonry", category: "Layout" },
   { id: "playground", name: "Full Suite Playground", category: "Integration" },
 ];
 
@@ -282,6 +314,15 @@ export function ComponentsDocumentationShowcase() {
   const [dlLayout, setDlLayout] = useState<"horizontal" | "grid">("horizontal");
   const [gridFocusCell, setGridFocusCell] = useState<{ r: number; c: number; v: string }>({ r: 0, c: 1, v: "$124,500" });
 
+  // Batch 6 Layout interactive states
+  const [collapsibleOpen, setCollapsibleOpen] = useState(true);
+  const [containerSize, setContainerSize] = useState<"sm" | "md" | "lg" | "xl">("md");
+  const [gridColsCount, setGridColsCount] = useState<number>(3);
+  const [stackDirection, setStackDirection] = useState<"horizontal" | "vertical">("horizontal");
+  const [stackWithDivider, setStackWithDivider] = useState(true);
+  const [splitPanePos, setSplitPanePos] = useState(50);
+  const [aspectRatioChoice, setAspectRatioChoice] = useState<AspectRatioPreset>("16:9");
+
   const handleCopy = async (code: string, label: string) => {
     const ok = await copyCode(code, label);
     if (ok) {
@@ -303,7 +344,7 @@ export function ComponentsDocumentationShowcase() {
               Production Component Suites
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Test states, variants, keyboard accessibility, and copy production React code across all 65 components.
+              Test states, variants, keyboard accessibility, and copy production React code across all 75 components.
             </p>
           </div>
 
@@ -3720,7 +3761,655 @@ export function ComponentsDocumentationShowcase() {
           </div>
         )}
 
-        {/* 50 · PLAYGROUND */}
+        {/* 50 · COLLAPSIBLE */}
+        {activeTab === "collapsible" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Collapsible</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Interactive disclosure panel with smooth height transition and accessible aria-expanded attributes.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Collapsible open={isOpen} onOpenChange={setIsOpen}>\n  <CollapsibleTrigger asChild>\n    <Button variant="ghost">Toggle Details</Button>\n  </CollapsibleTrigger>\n  <CollapsibleContent>\n    <p>Expanded metrics and cluster details.</p>\n  </CollapsibleContent>\n</Collapsible>`,
+                    "Collapsible"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-md mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Disclosure Component</span>
+                <span>State: <strong className="text-foreground">{collapsibleOpen ? "Expanded" : "Collapsed"}</strong></span>
+              </div>
+
+              <Collapsible
+                open={collapsibleOpen}
+                onOpenChange={setCollapsibleOpen}
+                className="rounded-lg border border-border bg-card overflow-hidden shadow-xs"
+              >
+                <div className="p-4 flex items-center justify-between">
+                  <div>
+                    <h4 className="text-xs font-bold text-foreground">Cluster Telemetry &amp; Logs</h4>
+                    <p className="text-[11px] text-muted-foreground">Click chevron to toggle resource details.</p>
+                  </div>
+                  <CollapsibleTrigger asChild>
+                    <button
+                      type="button"
+                      className="p-1.5 rounded border border-border hover:bg-muted transition-colors outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    >
+                      <ChevronDown
+                        className={cn(
+                          "h-4 w-4 transition-transform duration-200",
+                          collapsibleOpen && "rotate-180"
+                        )}
+                      />
+                      <span className="sr-only">Toggle cluster telemetry</span>
+                    </button>
+                  </CollapsibleTrigger>
+                </div>
+
+                <CollapsibleContent>
+                  <div className="px-4 pb-4 pt-2 border-t border-border text-xs space-y-2 bg-muted/20">
+                    <div className="flex items-center justify-between">
+                      <span className="text-muted-foreground">Cache Hit Ratio</span>
+                      <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">99.4%</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-muted-foreground">Active Node Workers</span>
+                      <span className="font-mono font-bold text-foreground">64 nodes</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-muted-foreground">Response Latency</span>
+                      <span className="font-mono font-bold text-foreground">28ms</span>
+                    </div>
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+            </div>
+          </div>
+        )}
+
+        {/* 51 · DIVIDER / SEPARATOR */}
+        {activeTab === "divider" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Divider / Separator</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Visual division component supporting horizontal, vertical, labeled, and decorative modes.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Divider label="OR CONTINUE WITH" />\n<div className="flex items-center gap-3">\n  <span>Left</span>\n  <Divider orientation="vertical" className="h-4" />\n  <span>Right</span>\n</div>`,
+                    "Divider"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-lg mx-auto space-y-6">
+              <div className="space-y-2">
+                <div className="text-xs font-semibold text-muted-foreground">Horizontal with Centered Label:</div>
+                <Divider label="Deployment Stages" spacing="sm" />
+              </div>
+
+              <div className="space-y-2">
+                <div className="text-xs font-semibold text-muted-foreground">Vertical Inline Toolbar Separator:</div>
+                <div className="flex items-center gap-3 text-xs p-2.5 rounded-lg border border-border bg-card">
+                  <span className="font-semibold text-foreground">Overview</span>
+                  <Divider orientation="vertical" spacing="none" className="h-4" />
+                  <span className="text-muted-foreground">Analytics</span>
+                  <Divider orientation="vertical" spacing="none" className="h-4" />
+                  <span className="text-muted-foreground">Settings</span>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="text-xs font-semibold text-muted-foreground">Subtle Decorative Separator:</div>
+                <Divider spacing="sm" decorative />
+                <p className="text-[11px] text-muted-foreground">
+                  Decorative separators maintain semantic presentation without creating accessibility noise for screen readers.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 52 · CONTAINER */}
+        {activeTab === "container" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Container</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Responsive centered layout wrapper providing max-width constraints and horizontal padding presets.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Container size="${containerSize}">\n  <h3>Bound Viewport Box</h3>\n  <p>Standardized responsive padding across viewports.</p>\n</Container>`,
+                    "Container"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Container Width Presets</span>
+                <div className="flex items-center gap-1.5">
+                  {(["sm", "md", "lg", "xl"] as const).map((s) => (
+                    <button
+                      key={s}
+                      type="button"
+                      onClick={() => setContainerSize(s)}
+                      className={cn(
+                        "px-2 py-0.5 rounded text-xs transition-colors",
+                        containerSize === s ? "bg-primary text-primary-foreground font-semibold" : "hover:bg-muted"
+                      )}
+                    >
+                      {s.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="border border-dashed border-border p-4 rounded-xl bg-muted/10">
+                <Container size={containerSize} className="border border-border rounded-lg p-6 bg-card shadow-sm transition-all duration-300">
+                  <div className="flex items-center justify-between border-b border-border pb-3">
+                    <div>
+                      <h4 className="text-sm font-bold text-foreground">Centered Container Box</h4>
+                      <p className="text-xs text-muted-foreground">Target size: {containerSize.toUpperCase()}</p>
+                    </div>
+                    <span className="font-mono text-xs px-2 py-0.5 rounded bg-muted text-muted-foreground">
+                      mx-auto
+                    </span>
+                  </div>
+                  <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                    Containers enforce standard responsive horizontal padding across mobile (16px), tablet (24px), and desktop (32px).
+                  </p>
+                </Container>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 53 · GRID */}
+        {activeTab === "grid" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Grid</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  CSS Grid layout primitive with responsive column configurations, gap tokens, and auto-fit support.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Grid cols={{ default: 1, sm: 2, md: 3 }} gap="md">\n  <GridItem>Tile 1</GridItem>\n  <GridItem>Tile 2</GridItem>\n  <GridItem>Tile 3</GridItem>\n</Grid>`,
+                    "Grid"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Column Count</span>
+                <div className="flex items-center gap-1.5">
+                  {[2, 3, 4].map((c) => (
+                    <button
+                      key={c}
+                      type="button"
+                      onClick={() => setGridColsCount(c)}
+                      className={cn(
+                        "px-2.5 py-0.5 text-xs rounded border transition-colors",
+                        gridColsCount === c ? "bg-primary text-primary-foreground font-semibold" : "hover:bg-muted"
+                      )}
+                    >
+                      {c} Cols
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <Grid cols={gridColsCount as any} gap="sm" className="w-full">
+                {Array.from({ length: 6 }).map((_, idx) => (
+                  <GridItem
+                    key={idx}
+                    className="p-4 border border-border rounded-lg bg-card shadow-xs flex flex-col justify-between gap-2"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-mono font-bold text-muted-foreground">0{idx + 1}</span>
+                      <LayoutGrid className="h-3.5 w-3.5 text-muted-foreground/60" />
+                    </div>
+                    <div className="text-xs font-semibold text-foreground">Matrix Tile {idx + 1}</div>
+                    <div className="text-[10px] font-mono text-muted-foreground">Auto Gap &middot; Aligned</div>
+                  </GridItem>
+                ))}
+              </Grid>
+            </div>
+          </div>
+        )}
+
+        {/* 54 · STACK */}
+        {activeTab === "stack" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Stack</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Linear Flexbox layout primitive supporting horizontal, vertical, gap tokens, and optional dividers.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Stack direction="horizontal" gap="md" align="center" divider={<span>•</span>}>\n  <div>Step 1</div>\n  <div>Step 2</div>\n  <div>Step 3</div>\n</Stack>`,
+                    "Stack"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-xl mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Layout Direction</span>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setStackDirection((d) => (d === "horizontal" ? "vertical" : "horizontal"))}
+                    className="px-2.5 py-1 rounded border border-border bg-card text-xs hover:bg-muted font-medium transition-colors"
+                  >
+                    Direction: {stackDirection === "horizontal" ? "Row" : "Column"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setStackWithDivider(!stackWithDivider)}
+                    className={cn(
+                      "px-2.5 py-1 rounded border text-xs transition-colors",
+                      stackWithDivider ? "bg-primary text-primary-foreground font-semibold" : "hover:bg-muted"
+                    )}
+                  >
+                    Divider: {stackWithDivider ? "ON" : "OFF"}
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-5 border border-border rounded-lg bg-card">
+                <Stack
+                  direction={stackDirection}
+                  gap="sm"
+                  align="center"
+                  divider={stackWithDivider ? <span className="text-muted-foreground/50 font-mono text-xs">•</span> : undefined}
+                  className="w-full"
+                >
+                  <div className="p-3 border border-border rounded-md bg-muted/20 flex-1 text-xs min-w-0">
+                    <span className="font-bold text-foreground block truncate">Step 1: Ingest</span>
+                    <span className="text-[11px] text-muted-foreground block truncate">Stream event payload</span>
+                  </div>
+                  <div className="p-3 border border-border rounded-md bg-muted/20 flex-1 text-xs min-w-0">
+                    <span className="font-bold text-foreground block truncate">Step 2: Transform</span>
+                    <span className="text-[11px] text-muted-foreground block truncate">Normalize token keys</span>
+                  </div>
+                  <div className="p-3 border border-border rounded-md bg-muted/20 flex-1 text-xs min-w-0">
+                    <span className="font-bold text-foreground block truncate">Step 3: Publish</span>
+                    <span className="text-[11px] text-muted-foreground block truncate">Broadcast to edge</span>
+                  </div>
+                </Stack>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 55 · SPLIT PANE */}
+        {activeTab === "split-pane" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Split Pane</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Two-panel layout with draggable separator, keyboard resizing, pointer capture, and min/max limits.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<SplitPane\n  direction="horizontal"\n  initialSize={50}\n  primaryPanel={<div>Editor</div>}\n  secondaryPanel={<div>Preview</div>}\n/>`,
+                    "SplitPane"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-3">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Draggable Splitter</span>
+                <span className="font-mono">
+                  Primary: {Math.round(splitPanePos)}% | Secondary: {100 - Math.round(splitPanePos)}%
+                </span>
+              </div>
+
+              <SplitPane
+                direction="horizontal"
+                initialSize={50}
+                onSizeChange={setSplitPanePos}
+                className="h-64 shadow-xs"
+                primaryPanel={
+                  <div className="p-4 h-full flex flex-col justify-between text-xs space-y-2">
+                    <div>
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-foreground">
+                        <Terminal className="h-3.5 w-3.5 text-teal-600" />
+                        <span>Source Markdown</span>
+                      </div>
+                      <p className="text-[11px] text-muted-foreground mt-1.5 leading-relaxed">
+                        Drag the central handle or use arrow keys when focused to adjust pane widths.
+                      </p>
+                    </div>
+                    <div className="font-mono text-[10px] text-muted-foreground bg-muted/40 p-2 rounded">
+                      width: {Math.round(splitPanePos)}%
+                    </div>
+                  </div>
+                }
+                secondaryPanel={
+                  <div className="p-4 h-full flex flex-col justify-between text-xs bg-muted/10 space-y-2">
+                    <div>
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-foreground">
+                        <Sparkles className="h-3.5 w-3.5 text-amber-500" />
+                        <span>Live HTML Preview</span>
+                      </div>
+                      <p className="text-[11px] text-muted-foreground mt-1.5 leading-relaxed">
+                        Automatic min-size constraints (20%) prevent panels from collapsing out of view.
+                      </p>
+                    </div>
+                    <div className="font-mono text-[10px] text-muted-foreground bg-muted/40 p-2 rounded">
+                      width: {100 - Math.round(splitPanePos)}%
+                    </div>
+                  </div>
+                }
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 56 · ASPECT RATIO */}
+        {activeTab === "aspect-ratio" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Aspect Ratio</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Container maintaining strict visual proportions across viewport widths with native CSS aspect-ratio.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<AspectRatio ratio="${aspectRatioChoice}">\n  <img src="/photo.jpg" alt="Preview" className="w-full h-full object-cover" />\n</AspectRatio>`,
+                    "AspectRatio"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-md mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Select Ratio Preset</span>
+                <div className="flex items-center gap-1.5">
+                  {(["16:9", "4:3", "1:1", "21:9"] as const).map((r) => (
+                    <button
+                      key={r}
+                      type="button"
+                      onClick={() => setAspectRatioChoice(r)}
+                      className={cn(
+                        "px-2 py-0.5 text-xs rounded border transition-colors",
+                        aspectRatioChoice === r ? "bg-primary text-primary-foreground font-semibold" : "hover:bg-muted"
+                      )}
+                    >
+                      {r}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="border border-border/80 p-4 rounded-xl bg-muted/10">
+                <AspectRatio ratio={aspectRatioChoice} className="border border-border rounded-lg bg-card shadow-inner">
+                  <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center space-y-1">
+                    <span className="font-mono text-sm font-bold text-foreground">{aspectRatioChoice}</span>
+                    <span className="text-xs text-muted-foreground">Native CSS aspect-ratio</span>
+                  </div>
+                </AspectRatio>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 57 · SCROLL AREA */}
+        {activeTab === "scroll-area" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Scroll Area</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Keyboard-accessible scrollable region featuring custom thin scrollbars and directional overflow constraints.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<ScrollArea maxHeight={180}>\n  <div>Long content logs...</div>\n</ScrollArea>`,
+                    "ScrollArea"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-lg mx-auto space-y-3">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Terminal Log Stream</span>
+                <span className="font-mono">max-height: 180px</span>
+              </div>
+
+              <div className="rounded-lg border border-border bg-card overflow-hidden">
+                <div className="px-4 py-2 border-b border-border bg-muted/30 flex items-center justify-between text-xs font-semibold">
+                  <span>Server Execution Logs</span>
+                  <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400">● LIVE</span>
+                </div>
+                <ScrollArea maxHeight={180} className="p-4 space-y-2">
+                  {[
+                    { time: "21:30:01", msg: "Initialized Turbopack compilation daemon." },
+                    { time: "21:30:04", msg: "Verified 25 design style kits and tokens." },
+                    { time: "21:30:08", msg: "Mounted responsive Container & Grid system." },
+                    { time: "21:30:12", msg: "Registered PointerCapture on SplitPane handle." },
+                    { time: "21:30:15", msg: "Synthesized CSS aspect-ratio constraints." },
+                    { time: "21:30:19", msg: "Initialized keyboard roving focus on ScrollArea." },
+                    { time: "21:30:24", msg: "Resolved hydration tree with 0 nesting errors." },
+                    { time: "21:30:28", msg: "Production cluster ready for edge distribution." },
+                  ].map((log, i) => (
+                    <div key={i} className="flex items-baseline gap-2 font-mono text-xs">
+                      <span className="text-muted-foreground/60 select-none text-[11px]">{log.time}</span>
+                      <span className="text-foreground">{log.msg}</span>
+                    </div>
+                  ))}
+                </ScrollArea>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 58 · RESIZABLE PANEL */}
+        {activeTab === "resizable-panel" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Resizable Panel</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Multi-panel group with drag handles, touch event support, minimum/maximum constraints, and keyboard controls.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<ResizablePanelGroup direction="horizontal">\n  <ResizablePanel defaultSize={35}>Nav</ResizablePanel>\n  <ResizableHandle withHandle />\n  <ResizablePanel defaultSize={65}>Content</ResizablePanel>\n</ResizablePanelGroup>`,
+                    "ResizablePanel"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-3">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Multi-Panel Resizing</span>
+                <span>Drag handle or focus &amp; use arrow keys</span>
+              </div>
+
+              <ResizablePanelGroup
+                direction="horizontal"
+                className="h-64 shadow-xs"
+              >
+                <ResizablePanel defaultSize={35} minSize={20} maxSize={50} className="p-4 border-r border-border/40">
+                  <div className="space-y-1">
+                    <h5 className="text-xs font-bold text-foreground">Navigation Tree</h5>
+                    <p className="text-[11px] text-muted-foreground">Components suite &amp; styles.</p>
+                  </div>
+                  <div className="mt-4 space-y-1 text-xs">
+                    <div className="p-1 rounded bg-muted/60 font-mono text-[11px]">📁 src/components</div>
+                    <div className="p-1 pl-4 text-muted-foreground text-[11px]">📄 layout.tsx</div>
+                    <div className="p-1 pl-4 text-muted-foreground text-[11px]">📄 container.tsx</div>
+                  </div>
+                </ResizablePanel>
+
+                <ResizableHandle withHandle />
+
+                <ResizablePanel defaultSize={65} minSize={50} maxSize={80} className="p-4 bg-muted/10">
+                  <div className="space-y-1">
+                    <h5 className="text-xs font-bold text-foreground">Document Surface</h5>
+                    <p className="text-[11px] text-muted-foreground">Active working buffer area with dynamic sizing.</p>
+                  </div>
+                  <div className="mt-4 p-3 border border-border rounded bg-card font-mono text-xs text-muted-foreground">
+                    // ResizablePanel automatically synchronizes sibling sizes.
+                  </div>
+                </ResizablePanel>
+              </ResizablePanelGroup>
+            </div>
+          </div>
+        )}
+
+        {/* 59 · MASONRY */}
+        {activeTab === "masonry" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Masonry</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Responsive multi-column waterfall layout placing variable-height cards with zero vertical gaps.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Masonry cols={{ default: 1, sm: 2, md: 3 }} gap="md">\n  <div className="h-32">Card 1</div>\n  <div className="h-48">Card 2</div>\n  <div className="h-24">Card 3</div>\n</Masonry>`,
+                    "Masonry"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Waterfall Card Wall</span>
+                <span>Columns: 1 (mobile) &rarr; 2 (tablet) &rarr; 3 (desktop)</span>
+              </div>
+
+              <Masonry cols={{ default: 1, sm: 2, md: 3 }} gap="sm" className="w-full">
+                {[
+                  { title: "Design Principles", height: "h-28", desc: "Establishing strict typography hierarchies." },
+                  { title: "Responsive Tokens", height: "h-40", desc: "Coordinating breakpoints across phone, tablet, laptop, and ultra-wide monitor screens." },
+                  { title: "Color Contrast", height: "h-24", desc: "AA/AAA WCAG accessibility ratings." },
+                  { title: "Animation Physics", height: "h-36", desc: "Spring constants and cubic bezier transition rates for interactive triggers." },
+                  { title: "Zero Layout Shift", height: "h-32", desc: "Preventing cumulative layout shift with aspect-ratio placeholders." },
+                  { title: "Edge Performance", height: "h-24", desc: "Instant hydration and zero bundle bloat." },
+                ].map((item, idx) => (
+                  <div
+                    key={idx}
+                    className={cn(
+                      "p-4 border border-border rounded-lg bg-card shadow-xs flex flex-col justify-between",
+                      item.height
+                    )}
+                  >
+                    <div>
+                      <span className="text-[10px] font-mono text-muted-foreground">ENTRY 0{idx + 1}</span>
+                      <h5 className="text-xs font-bold mt-0.5 text-foreground">{item.title}</h5>
+                      <p className="text-[11px] text-muted-foreground mt-1 line-clamp-2">{item.desc}</p>
+                    </div>
+                    <span className="text-[9px] font-mono text-muted-foreground self-end">VERIFIED</span>
+                  </div>
+                ))}
+              </Masonry>
+            </div>
+          </div>
+        )}
+
+        {/* 60 · PLAYGROUND */}
         {activeTab === "playground" && (
           <div className="space-y-8">
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
