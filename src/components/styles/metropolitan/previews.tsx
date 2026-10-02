@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import type { Mode } from "@/lib/styles/types";
 import { metropolitan } from "./kit";
 
@@ -16,6 +16,14 @@ function XIcon() {
   return (
     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  );
+}
+
+function MenuIcon() {
+  return (
+    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
     </svg>
   );
 }
@@ -63,22 +71,43 @@ export function CardPreview({ mode }: { mode: Mode }) {
 
 export function NavbarPreview({ mode }: { mode: Mode }) {
   const mkt = metropolitan(mode);
+  const [open, setOpen] = useState(false);
   return (
-    <header className={`${mkt.bar} flex items-center justify-between px-6 py-4 w-full`}>
-      <div className="flex items-center gap-3">
-        <div className="w-6 h-6 bg-blue-600 text-white font-mono font-bold text-xs flex items-center justify-center">
-          M
+    <header className={`${mkt.bar} flex flex-col justify-center px-4 py-3 sm:px-6 sm:py-4 w-full transition-all`}>
+      <div className="flex items-center justify-between gap-3 w-full">
+        <div className="flex items-center gap-2.5 shrink-0">
+          <div className="w-6 h-6 bg-blue-600 text-white font-mono font-bold text-xs flex items-center justify-center">
+            M
+          </div>
+          <a href="#" className="font-bold text-xs sm:text-sm uppercase tracking-tight text-blue-600">METRO_NET</a>
         </div>
-        <a href="#" className="font-bold text-sm uppercase tracking-tight text-blue-600">METRO_NET</a>
+
+        <nav className="hidden md:flex nav-desktop-links items-center gap-6 sm:gap-8 font-mono text-xs uppercase tracking-wider font-bold">
+          <a href="#" className="text-blue-600 border-b-2 border-blue-600 pb-0.5">01. LINES</a>
+          <a href="#" className={`${mkt.muted} hover:text-blue-600`}>02. SCHEDULES</a>
+          <a href="#" className={`${mkt.muted} hover:text-blue-600`}>03. FARES</a>
+        </nav>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <button className={`${mkt.btnPrimarySm} text-xs px-2.5 py-1.5`}>BUY PASS</button>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="md:hidden nav-mobile-toggle p-1.5 border border-blue-600/40 text-blue-600 hover:bg-blue-600/10 transition-colors"
+            aria-label="Toggle menu"
+          >
+            {open ? <XIcon /> : <MenuIcon />}
+          </button>
+        </div>
       </div>
 
-      <nav className="hidden md:flex items-center gap-8 font-mono text-xs uppercase tracking-wider font-bold">
-        <a href="#" className="text-blue-600 border-b-2 border-blue-600 pb-0.5">01. LINES</a>
-        <a href="#" className={`${mkt.muted} hover:text-blue-600`}>02. SCHEDULES</a>
-        <a href="#" className={`${mkt.muted} hover:text-blue-600`}>03. FARES</a>
-      </nav>
-
-      <button className={mkt.btnPrimarySm}>BUY PASS</button>
+      {open && (
+        <nav className="pt-3 mt-3 border-t border-blue-600/20 flex flex-col gap-2 font-mono text-xs uppercase tracking-wider font-bold animate-in fade-in-0">
+          <a href="#" className="py-1 text-blue-600">01. LINES</a>
+          <a href="#" className={`py-1 ${mkt.muted} hover:text-blue-600`}>02. SCHEDULES</a>
+          <a href="#" className={`py-1 ${mkt.muted} hover:text-blue-600`}>03. FARES</a>
+        </nav>
+      )}
     </header>
   );
 }
@@ -87,8 +116,18 @@ export function InputPreview({ mode }: { mode: Mode }) {
   const mkt = metropolitan(mode);
   return (
     <div className="w-full max-w-sm space-y-1.5">
-      <label className={mkt.label}>DESTINATION STATION CODE</label>
-      <input type="text" placeholder="NYC-GCT-409" className={mkt.input} defaultValue="" />
+      <label className={mkt.label} htmlFor="metro-station-code">DESTINATION STATION CODE</label>
+      <input
+        id="metro-station-code"
+        name="destinationStationCode"
+        aria-label="Destination Station Code"
+        type="text"
+        autoComplete="off"
+        suppressHydrationWarning
+        placeholder="NYC-GCT-409"
+        className={mkt.input}
+        defaultValue=""
+      />
       <p className={`font-mono text-[10px] ${mkt.muted}`}>Enter 6-character terminal identifier</p>
     </div>
   );

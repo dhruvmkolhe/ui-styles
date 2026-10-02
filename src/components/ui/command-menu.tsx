@@ -162,6 +162,11 @@ export function CommandMenu({
           <input
             ref={inputRef}
             type="text"
+            id="command-menu-search"
+            name="commandMenuSearch"
+            aria-label="Type a command or search"
+            autoComplete="off"
+            suppressHydrationWarning
             role="combobox"
             aria-expanded="true"
             aria-controls="command-list"

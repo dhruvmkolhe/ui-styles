@@ -10,13 +10,13 @@ export const linkVariants = cva(
     variants: {
       variant: {
         default:
-          "text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 underline-offset-4 hover:underline",
+          "text-primary hover:text-primary/80 underline-offset-4 hover:underline",
         subtle:
           "text-muted-foreground hover:text-foreground underline-offset-4 hover:underline",
         underline:
           "text-foreground underline underline-offset-4 hover:opacity-80",
         ghost:
-          "text-foreground hover:text-teal-600 dark:hover:text-teal-400",
+          "text-foreground hover:text-primary",
         destructive:
           "text-destructive hover:text-destructive/80 underline-offset-4 hover:underline",
       },
@@ -61,13 +61,17 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
     },
     ref
   ) => {
+    // Sanitize unsafe protocols (e.g. javascript:, data:, vbscript:) to prevent XSS
+    const isUnsafeProtocol = /^(javascript|data|vbscript):/i.test(href.trim())
+    const sanitizedHref = isUnsafeProtocol ? "#" : href
+
     // Detect external link if not explicitly provided
     const external =
       isExternal !== undefined
         ? isExternal
-        : href.startsWith("http://") ||
-          href.startsWith("https://") ||
-          href.startsWith("//")
+        : sanitizedHref.startsWith("http://") ||
+          sanitizedHref.startsWith("https://") ||
+          sanitizedHref.startsWith("//")
 
     const finalTarget = external ? (target || "_blank") : target
     const finalRel = external
@@ -75,7 +79,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
       : rel
 
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-      if (disabled) {
+      if (disabled || isUnsafeProtocol) {
         e.preventDefault()
         return
       }
@@ -88,6 +92,9 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
         {external && showExternalIcon && (
           <ExternalLink className="h-3.5 w-3.5 shrink-0 opacity-70" aria-hidden="true" />
         )}
+        {finalTarget === "_blank" && (
+          <span className="sr-only"> (opens in a new tab)</span>
+        )}
       </>
     )
 
@@ -97,16 +104,16 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
       disabled && "opacity-50 pointer-events-none cursor-not-allowed select-none"
     )
 
-    if (external || href.startsWith("#") || disabled) {
+    if (external || sanitizedHref.startsWith("#") || disabled || isUnsafeProtocol) {
       return (
         <a
           ref={ref}
-          href={disabled ? undefined : href}
+          href={disabled ? undefined : sanitizedHref}
           target={finalTarget}
           rel={finalRel}
           aria-current={isActive ? "page" : undefined}
           aria-disabled={disabled ? "true" : undefined}
-          tabIndex={disabled ? -1 : 0}
+          tabIndex={disabled ? -1 : props.tabIndex}
           onClick={handleClick}
           className={classes}
           {...props}
@@ -119,10 +126,10 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
     return (
       <NextLink
         ref={ref}
-        href={href}
+        href={sanitizedHref}
         aria-current={isActive ? "page" : undefined}
         aria-disabled={disabled ? "true" : undefined}
-        tabIndex={disabled ? -1 : 0}
+        tabIndex={disabled ? -1 : props.tabIndex}
         onClick={handleClick}
         className={classes}
         {...props}

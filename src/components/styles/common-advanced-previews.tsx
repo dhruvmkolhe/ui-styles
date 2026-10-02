@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
+import { cn } from "@/lib/utils"
 import type { Mode, StyleSlug } from "@/lib/styles/types"
 import { getStyleFormKit } from "./common-form-kit"
 import { CommandPalette } from "@/components/ui/command-palette"
@@ -255,7 +256,7 @@ export function ColorPickerPreview({ slug, mode }: { slug: StyleSlug; mode: Mode
   const [color, setColor] = useState("#3b82f6")
 
   return (
-    <div className={`p-6 ${k.panel} ${k.radius} border space-y-4 max-w-md mx-auto flex flex-col items-center`}>
+    <div className={cn("p-6 border space-y-4 max-w-md mx-auto flex flex-col items-center min-h-[290px] justify-start", k.panel, k.radius)}>
       <ColorPicker
         value={color}
         onChange={setColor}
@@ -263,7 +264,7 @@ export function ColorPickerPreview({ slug, mode }: { slug: StyleSlug; mode: Mode
         className={k.radius}
       />
       <div
-        className="w-full h-8 rounded-lg border shadow-inner transition-colors"
+        className="w-full h-8 rounded-lg border shadow-inner transition-colors mt-2"
         style={{ backgroundColor: color }}
       />
     </div>
@@ -283,7 +284,7 @@ export function ComboboxPreview({ slug, mode }: { slug: StyleSlug; mode: Mode })
   ]
 
   return (
-    <div className={`p-6 ${k.panel} ${k.radius} border space-y-4 max-w-md mx-auto`}>
+    <div className={cn("p-6 border space-y-4 max-w-md mx-auto min-h-[300px] flex flex-col justify-start", k.panel, k.radius)}>
       <Combobox
         options={frameworks}
         value={selected}
@@ -312,7 +313,7 @@ export function MultiSelectPreview({ slug, mode }: { slug: StyleSlug; mode: Mode
   ]
 
   return (
-    <div className={`p-6 ${k.panel} ${k.radius} border space-y-4 max-w-md mx-auto`}>
+    <div className={cn("p-6 border space-y-4 max-w-md mx-auto min-h-[300px] flex flex-col justify-start", k.panel, k.radius)}>
       <MultiSelect
         options={techStack}
         value={selected}

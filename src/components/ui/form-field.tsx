@@ -81,7 +81,20 @@ const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
               {label}
             </Label>
           )}
-          {children}
+          {React.isValidElement(children)
+            ? React.cloneElement(children as React.ReactElement<any>, {
+                id: (children.props as any).id || id,
+                name: (children.props as any).name || name,
+                "aria-describedby": error
+                  ? errorId
+                  : description
+                  ? descriptionId
+                  : (children.props as any)["aria-describedby"],
+                "aria-invalid": error ? true : (children.props as any)["aria-invalid"],
+                required: required || (children.props as any).required,
+                disabled: disabled || (children.props as any).disabled,
+              })
+            : children}
           {description && !error && (
             <p
               id={descriptionId}

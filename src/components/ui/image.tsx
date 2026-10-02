@@ -22,6 +22,7 @@ export const Image = React.forwardRef<HTMLImageElement, ImageProps>(
             <span className="text-xs">{fallbackText}</span>
           </div>
         ) : (
+          // eslint-disable-next-line @next/next/no-img-element
           <img
             ref={ref}
             alt={alt || "Image"}

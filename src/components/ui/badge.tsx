@@ -9,11 +9,11 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default:
-          "border border-teal-500/20 bg-teal-50 text-teal-700 dark:bg-teal-950/40 dark:text-teal-300",
+          "border border-primary/20 bg-primary/10 text-primary",
         teal:
           "border border-teal-500/25 bg-teal-50 text-teal-700 dark:bg-teal-950/50 dark:text-teal-300",
         solidTeal:
-          "border-transparent bg-teal-600 text-white font-medium",
+          "border-transparent bg-primary text-primary-foreground font-medium",
         secondary:
           "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
         destructive:

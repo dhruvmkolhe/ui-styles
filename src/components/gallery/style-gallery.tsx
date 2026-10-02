@@ -1,8 +1,25 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Copy, Moon, Sun, TerminalSquare } from "lucide-react";
+import {
+  ArrowLeft,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Copy,
+  Maximize2,
+  Minimize2,
+  Moon,
+  Monitor,
+  Search,
+  Smartphone,
+  Sun,
+  Tablet,
+  TerminalSquare,
+  X,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import type {
   ComponentDef,
@@ -13,6 +30,9 @@ import type {
 } from "@/lib/styles/types";
 import { copyCode } from "@/lib/copy";
 import { CodeBlock } from "@/components/gallery/code-block";
+import { Button } from "@/components/ui/button";
+import { ComingSoon } from "@/components/shell/coming-soon";
+
 import { GLASSMORPHISM_BUNDLE } from "@/components/styles/glassmorphism";
 import { JAPANDI_BUNDLE } from "@/components/styles/japandi";
 import { BRUTALIST_BUNDLE } from "@/components/styles/brutalist";
@@ -38,6 +58,7 @@ import { GRADIENT_MODERN_BUNDLE } from "@/components/styles/gradient-modern";
 import { KINETIC_BUNDLE } from "@/components/styles/kinetic";
 import { TYPOGRAPHY_FIRST_BUNDLE } from "@/components/styles/typography-first";
 import { METROPOLITAN_BUNDLE } from "@/components/styles/metropolitan";
+
 import { getCommonFormDefs } from "@/components/styles/common-form-defs";
 import { getCommonFeedbackDefs } from "@/components/styles/common-feedback-defs";
 import { getCommonNavigationDefs } from "@/components/styles/common-navigation-defs";
@@ -47,7 +68,6 @@ import { getCommonLayoutDefs } from "@/components/styles/common-layout-defs";
 import { getCommonStatusDefs } from "@/components/styles/common-status-defs";
 import { getCommonMediaDefs } from "@/components/styles/common-media-defs";
 import { getCommonAdvancedDefs } from "@/components/styles/common-advanced-defs";
-import { Button } from "@/components/ui/button";
 
 const BUNDLES: Partial<Record<StyleSlug, StyleBundle>> = {
   glassmorphism: GLASSMORPHISM_BUNDLE,
@@ -77,7 +97,292 @@ const BUNDLES: Partial<Record<StyleSlug, StyleBundle>> = {
   metropolitan: METROPOLITAN_BUNDLE,
 };
 
+/* ------------------------------------------------------------------ */
 
+type ViewportSize = "full" | "desktop" | "tablet" | "mobile";
+
+const VIEWPORT_CONTAINER_WIDTHS: Record<ViewportSize, string> = {
+  full: "w-full max-w-6xl",
+  desktop: "w-full max-w-4xl",
+  tablet: "w-full max-w-2xl",
+  mobile: "w-full max-w-sm",
+};
+
+function FullScreenPreviewOverlay({
+  defs,
+  currentIndex,
+  bundle,
+  styleName,
+  initialMode,
+  onClose,
+  onNavigate,
+}: {
+  defs: ComponentDef[];
+  currentIndex: number;
+  bundle: StyleBundle;
+  styleName: string;
+  initialMode: Mode;
+  onClose: () => void;
+  onNavigate: (newIndex: number) => void;
+}) {
+  const [viewport, setViewport] = useState<ViewportSize>("desktop");
+  const [previewMode, setPreviewMode] = useState<Mode>(initialMode);
+  const [copied, setCopied] = useState(false);
+
+  const def = defs[currentIndex] || defs[0];
+  const Preview = def?.Preview;
+  const Decor = bundle.Decor;
+  const code = useMemo(() => (def ? def.code(previewMode) : ""), [def, previewMode]);
+
+  const handleCopy = async () => {
+    if (!def) return;
+    const ok = await copyCode(code, `${styleName} · ${def.name}`);
+    if (ok) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  // Keyboard navigation & Esc to close
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onClose();
+      } else if (e.key === "ArrowLeft" && currentIndex > 0) {
+        e.preventDefault();
+        onNavigate(currentIndex - 1);
+      } else if (e.key === "ArrowRight" && currentIndex < defs.length - 1) {
+        e.preventDefault();
+        onNavigate(currentIndex + 1);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [currentIndex, defs.length, onClose, onNavigate]);
+
+  // Lock background scroll
+  useEffect(() => {
+    const original = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = original;
+    };
+  }, []);
+
+  if (!def || !Preview) return null;
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={`Full screen preview for ${def.name}`}
+      className="fixed inset-0 z-50 flex flex-col bg-background/95 backdrop-blur-md text-foreground transition-all duration-200"
+    >
+      {/* Top Navbar */}
+      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border/80 bg-background/80 px-4 py-3 sm:px-6">
+        {/* Left: Component Info */}
+        <div className="flex items-center gap-3">
+          <span className="inline-flex items-center rounded-md border border-border bg-muted/60 px-2 py-0.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+            {styleName}
+          </span>
+          <div className="flex items-baseline gap-2">
+            <span className="font-mono text-xs text-muted-foreground/70">
+              {String(currentIndex + 1).padStart(2, "0")}
+            </span>
+            <h2 className="text-base font-bold tracking-tight text-foreground sm:text-lg">
+              {def.name}
+            </h2>
+          </div>
+        </div>
+
+        {/* Center: Viewport & Mode Controls */}
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Viewport switchers */}
+          <div className="hidden sm:flex items-center rounded-lg border border-border bg-muted/40 p-1">
+            <button
+              type="button"
+              onClick={() => setViewport("mobile")}
+              className={cn(
+                "inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition-colors",
+                viewport === "mobile" ? "bg-background text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
+              )}
+              title="Mobile width (384px)"
+            >
+              <Smartphone className="h-3.5 w-3.5" />
+              <span className="hidden md:inline">Mobile</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewport("tablet")}
+              className={cn(
+                "inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition-colors",
+                viewport === "tablet" ? "bg-background text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
+              )}
+              title="Tablet width (672px)"
+            >
+              <Tablet className="h-3.5 w-3.5" />
+              <span className="hidden md:inline">Tablet</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewport("desktop")}
+              className={cn(
+                "inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition-colors",
+                viewport === "desktop" ? "bg-background text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
+              )}
+              title="Desktop width (896px)"
+            >
+              <Monitor className="h-3.5 w-3.5" />
+              <span className="hidden md:inline">Desktop</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewport("full")}
+              className={cn(
+                "inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition-colors",
+                viewport === "full" ? "bg-background text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
+              )}
+              title="Full width (1152px)"
+            >
+              <Maximize2 className="h-3.5 w-3.5" />
+              <span className="hidden md:inline">Full</span>
+            </button>
+          </div>
+
+          {/* Mode Switcher */}
+          <div className="flex items-center rounded-lg border border-border bg-muted/40 p-1">
+            <button
+              type="button"
+              onClick={() => setPreviewMode("light")}
+              className={cn(
+                "inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition-colors",
+                previewMode === "light" ? "bg-background text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <Sun className="h-3.5 w-3.5" /> Light
+            </button>
+            <button
+              type="button"
+              onClick={() => setPreviewMode("dark")}
+              className={cn(
+                "inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition-colors",
+                previewMode === "dark" ? "bg-background text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <Moon className="h-3.5 w-3.5" /> Dark
+            </button>
+          </div>
+        </div>
+
+        {/* Right: Navigation & Actions */}
+        <div className="flex items-center gap-2">
+          {/* Prev / Next controls */}
+          <div className="flex items-center rounded-lg border border-border bg-muted/30 p-0.5">
+            <Button
+              variant="ghost"
+              size="icon"
+              disabled={currentIndex === 0}
+              onClick={() => onNavigate(currentIndex - 1)}
+              className="h-7 w-7 rounded-md p-0"
+              title="Previous component (←)"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <span className="px-2 font-mono text-[11px] text-muted-foreground">
+              {currentIndex + 1} / {defs.length}
+            </span>
+            <Button
+              variant="ghost"
+              size="icon"
+              disabled={currentIndex === defs.length - 1}
+              onClick={() => onNavigate(currentIndex + 1)}
+              className="h-7 w-7 rounded-md p-0"
+              title="Next component (→)"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={handleCopy}
+            className={cn("h-8 text-xs", copied && "border-emerald-500 text-emerald-500")}
+          >
+            {copied ? <Check className="h-3.5 w-3.5 mr-1 text-emerald-500" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+            {copied ? "Copied!" : "Copy Code"}
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onClose}
+            className="h-8 text-xs text-muted-foreground hover:text-foreground"
+            title="Close full screen (Esc)"
+          >
+            <X className="h-4 w-4 sm:mr-1" />
+            <span className="hidden sm:inline">Close</span>
+          </Button>
+        </div>
+      </header>
+
+      {/* Main Canvas Viewport */}
+      <div className="relative flex-1 overflow-y-auto p-4 sm:p-8 md:p-12 flex items-center justify-center">
+        <div
+          data-viewport={viewport}
+          className={cn(
+            "relative transition-all duration-300 rounded-2xl border border-border/80 shadow-2xl min-h-[380px] flex flex-col items-center justify-center overflow-hidden",
+            VIEWPORT_CONTAINER_WIDTHS[viewport],
+            previewMode === "dark" ? "dark" : "light",
+            bundle.stage(previewMode)
+          )}
+        >
+          {/* Subtle Canvas Dot Grid Background */}
+          <div
+            className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl opacity-40 dark:opacity-25"
+            style={{
+              backgroundImage:
+                previewMode === "dark"
+                  ? "radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px)"
+                  : "radial-gradient(rgba(0, 0, 0, 0.12) 1px, transparent 1px)",
+              backgroundSize: "16px 16px",
+            }}
+          />
+
+          {Decor && (
+            <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
+              <Decor mode={previewMode} />
+            </div>
+          )}
+
+          <div
+            className={cn(
+              "relative w-full flex items-center justify-center transition-colors duration-300 overflow-x-auto max-w-full",
+              viewport === "mobile" ? "p-3 sm:p-4" : "p-4 sm:p-8 md:p-12",
+              bundle.text(previewMode)
+            )}
+          >
+            <div className="w-full flex items-center justify-center max-w-full">
+              <Preview mode={previewMode} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Hint Bar */}
+      <footer className="border-t border-border/60 bg-background/80 px-4 py-2 text-center text-[11px] text-muted-foreground flex items-center justify-between sm:px-6">
+        <p className="truncate text-left max-w-xl">
+          <span className="font-semibold text-foreground">{def.name}:</span> {def.description}
+        </p>
+        <div className="hidden sm:flex items-center gap-3 font-mono text-[10px] text-muted-foreground/80 shrink-0">
+          <span>← / → Switch component</span>
+          <span>ESC Close</span>
+        </div>
+      </footer>
+    </div>
+  );
+}
 
 /* ------------------------------------------------------------------ */
 
@@ -89,6 +394,7 @@ function GallerySection({
   mode,
   isOpen,
   onToggleCode,
+  onFullScreen,
 }: {
   def: ComponentDef;
   index: number;
@@ -97,14 +403,16 @@ function GallerySection({
   mode: Mode;
   isOpen: boolean;
   onToggleCode: () => void;
+  onFullScreen: () => void;
 }) {
   const [copied, setCopied] = useState(false);
-  const code = useMemo(() => def.code(mode), [def, mode]);
+  const code = useMemo(() => (isOpen ? def.code(mode) : ""), [isOpen, def, mode]);
   const Preview = def.Preview;
   const Decor = bundle.Decor;
 
   const handleCopy = async () => {
-    const ok = await copyCode(code, `${styleName} · ${def.name}`);
+    const textToCopy = code || def.code(mode);
+    const ok = await copyCode(textToCopy, `${styleName} · ${def.name}`);
     if (ok) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
@@ -112,58 +420,98 @@ function GallerySection({
   };
 
   return (
-    <section id={def.id} className="scroll-mt-40">
+    <section id={def.id} className="scroll-mt-36">
       {/* header */}
       <div className="mb-2 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-baseline gap-3">
+        <div className="flex items-baseline gap-2.5">
           <span className="font-mono text-xs text-muted-foreground/70">
             {String(index + 1).padStart(2, "0")}
           </span>
-          <h3 className="text-lg font-semibold tracking-tight">{def.name}</h3>
+          <h3 className="text-lg font-bold tracking-tight text-foreground">{def.name}</h3>
         </div>
         <div className="flex items-center gap-2">
           <Button
             variant="ghost"
             size="sm"
-            onClick={onToggleCode}
-            className="text-muted-foreground hover:text-foreground"
+            onClick={onFullScreen}
+            className="h-8 text-xs text-muted-foreground hover:text-foreground"
+            title="Full screen preview"
           >
-            <TerminalSquare className="h-3.5 w-3.5" />
+            <Maximize2 className="h-3.5 w-3.5 mr-1" />
+            Full screen
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onToggleCode}
+            className="h-8 text-xs text-muted-foreground hover:text-foreground"
+          >
+            <TerminalSquare className="h-3.5 w-3.5 mr-1" />
             {isOpen ? "Hide code" : "View code"}
           </Button>
           <Button
             size="sm"
-            variant="secondary"
+            variant="outline"
             onClick={handleCopy}
             className={cn(
-              "transition-all",
-              copied && "bg-emerald-500 text-white hover:bg-emerald-500"
+              "h-8 text-xs transition-all",
+              copied && "border-emerald-500 text-emerald-500"
             )}
           >
-            {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+            {copied ? <Check className="h-3.5 w-3.5 mr-1 text-emerald-500" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
             {copied ? "Copied!" : "Copy Code"}
           </Button>
         </div>
       </div>
-      <p className="mb-5 text-sm leading-relaxed text-muted-foreground">
+      <p className="mb-4 text-xs leading-relaxed text-muted-foreground">
         {def.description}
       </p>
 
       {/* preview stage */}
       <div
         className={cn(
-          "relative overflow-hidden rounded-2xl border border-border",
+          "group/stage relative rounded-2xl border border-border/80 shadow-xs overflow-hidden",
+          mode === "dark" ? "dark" : "light",
           bundle.stage(mode)
         )}
       >
-        {Decor && <Decor mode={mode} />}
+        {/* Subtle Canvas Dot Grid Background */}
+        <div
+          className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl opacity-40 dark:opacity-25"
+          style={{
+            backgroundImage:
+              mode === "dark"
+                ? "radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px)"
+                : "radial-gradient(rgba(0, 0, 0, 0.12) 1px, transparent 1px)",
+            backgroundSize: "16px 16px",
+          }}
+        />
+
+        {/* Quick floating full-screen button */}
+        <button
+          type="button"
+          onClick={onFullScreen}
+          aria-label={`Full screen preview for ${def.name}`}
+          className="absolute top-3 right-3 z-10 inline-flex items-center justify-center h-7 w-7 rounded-md border border-border/60 bg-background/60 backdrop-blur-xs text-muted-foreground hover:text-foreground hover:bg-background/90 opacity-60 group-hover/stage:opacity-100 transition-all shadow-xs"
+          title="Full screen preview"
+        >
+          <Maximize2 className="h-3.5 w-3.5" />
+        </button>
+
+        {Decor && (
+          <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
+            <Decor mode={mode} />
+          </div>
+        )}
         <div
           className={cn(
-            "relative min-h-[180px] p-5 transition-colors duration-300 sm:p-10",
+            "relative min-h-[220px] p-4 sm:p-8 md:p-12 flex items-center justify-center transition-colors duration-300 overflow-x-auto max-w-full",
             bundle.text(mode)
           )}
         >
-          <Preview mode={mode} />
+          <div className="w-full max-w-2xl flex items-center justify-center max-w-full">
+            <Preview mode={mode} />
+          </div>
         </div>
       </div>
 
@@ -192,8 +540,6 @@ function GallerySection({
 
 /* ------------------------------------------------------------------ */
 
-import { ComingSoon } from "@/components/shell/coming-soon";
-
 export function StyleGallery({
   slug,
   meta,
@@ -213,25 +559,82 @@ export function StyleGallery({
     const statusDefs = getCommonStatusDefs(slug);
     const mediaDefs = getCommonMediaDefs(slug);
     const advancedDefs = getCommonAdvancedDefs(slug);
+    const allDefs = [
+      ...baseBundle.defs,
+      ...formDefs,
+      ...feedbackDefs,
+      ...navigationDefs,
+      ...overlayDefs,
+      ...dataDisplayDefs,
+      ...layoutDefs,
+      ...statusDefs,
+      ...mediaDefs,
+      ...advancedDefs,
+    ];
+    const seen = new Set<string>();
+    const uniqueDefs = allDefs.filter((d) => {
+      if (seen.has(d.id)) return false;
+      seen.add(d.id);
+      return true;
+    });
+
     return {
       ...baseBundle,
-      defs: [
-        ...baseBundle.defs,
-        ...formDefs,
-        ...feedbackDefs,
-        ...navigationDefs,
-        ...overlayDefs,
-        ...dataDisplayDefs,
-        ...layoutDefs,
-        ...statusDefs,
-        ...mediaDefs,
-        ...advancedDefs,
-      ],
+      defs: uniqueDefs,
     };
   }, [baseBundle, slug]);
 
   const [mode, setMode] = useState<Mode>(meta.defaultMode);
   const [openCode, setOpenCode] = useState<Record<string, boolean>>({});
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeId, setActiveId] = useState<string>(bundle?.defs[0]?.id || "");
+  const [fullScreenIndex, setFullScreenIndex] = useState<number | null>(null);
+
+  // Scroll spy tracking active component in viewport with IntersectionObserver
+  useEffect(() => {
+    if (!bundle?.defs?.length) return;
+
+    if (typeof window === "undefined" || !("IntersectionObserver" in window)) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const intersecting = entries.filter((e) => e.isIntersecting);
+        if (intersecting.length > 0) {
+          intersecting.sort(
+            (a, b) =>
+              Math.abs(a.boundingClientRect.top - 160) -
+              Math.abs(b.boundingClientRect.top - 160)
+          );
+          setActiveId(intersecting[0].target.id);
+        }
+      },
+      {
+        rootMargin: "-120px 0px -50% 0px",
+        threshold: [0, 0.2],
+      }
+    );
+
+    bundle.defs.forEach((d) => {
+      const el = document.getElementById(d.id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [bundle?.defs]);
+
+  const filteredDefs = useMemo(() => {
+    if (!bundle?.defs) return [];
+    if (!searchQuery.trim()) return bundle.defs;
+    const q = searchQuery.toLowerCase().trim();
+    return bundle.defs.filter(
+      (d) =>
+        d.name.toLowerCase().includes(q) ||
+        d.id.toLowerCase().includes(q) ||
+        d.description?.toLowerCase().includes(q)
+    );
+  }, [bundle?.defs, searchQuery]);
 
   if (!bundle) return <ComingSoon meta={meta} />;
 
@@ -244,100 +647,275 @@ export function StyleGallery({
       mode === m ? "text-foreground" : "text-muted-foreground hover:text-foreground"
     );
 
+  const activeIndex = bundle.defs.findIndex((d) => d.id === activeId);
+  const activeDef = bundle.defs[activeIndex] || bundle.defs[0];
+  const activeNumberStr = String(Math.max(1, activeIndex + 1)).padStart(2, "0");
+
   return (
-    <div>
-      {/* ---- sticky toolbar: light/dark preview toggle ---- */}
-      <div className="sticky top-16 z-40 -mx-4 mb-10 border-b border-border/70 bg-background/95 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6">
-        <div className="container flex items-center justify-between gap-4 !px-0">
-          <p className="hidden items-center gap-2 text-xs text-muted-foreground sm:flex">
-            <TerminalSquare className="h-3.5 w-3.5" />
-            {bundle.defs.length} components · rendered live · copy-ready HTML + Tailwind
-          </p>
-          <div className="flex items-center gap-3">
-            <span className="hidden text-xs text-muted-foreground sm:inline">
-              Preview mode
+    <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+      <div className="flex gap-8 lg:gap-12 items-start">
+        {/* ================================================================== */}
+        {/* LEFT SIDEBAR: Sticky from top to bottom (Desktop)                   */}
+        {/* ================================================================== */}
+        <aside className="hidden lg:flex w-64 xl:w-72 shrink-0 flex-col sticky top-20 h-[calc(100vh-5.5rem)] pb-4 pr-6 border-r border-border/40">
+          {/* Search Filter Box */}
+          <div className="relative mb-3">
+            <label htmlFor="component-filter-search" className="sr-only">Filter components</label>
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground/60 pointer-events-none" />
+            <input
+              id="component-filter-search"
+              name="componentFilter"
+              aria-label="Filter components"
+              type="text"
+              autoComplete="off"
+              suppressHydrationWarning
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Filter components (e.g. Button)"
+              className="w-full rounded-lg border border-border/70 bg-card/60 pl-8 pr-7 py-1.5 text-xs text-foreground placeholder:text-muted-foreground/60 outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/40 transition-all"
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                aria-label="Clear filter"
+                onClick={() => setSearchQuery("")}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] text-muted-foreground hover:text-foreground"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+
+          {/* Directory Count Header */}
+          <div className="flex items-center justify-between pb-2 mb-2 border-b border-border/40">
+            <span className="text-xs font-semibold text-foreground/90">Component Directory</span>
+            <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-muted/60 text-muted-foreground">
+              {filteredDefs.length} items
             </span>
-            <div className="inline-flex items-center rounded-lg border border-border bg-card p-1">
-              <button onClick={() => setMode("light")} className={modeBtn("light")}>
-                {mode === "light" && (
-                  <motion.span
-                    layoutId="mode-pill"
-                    className="absolute inset-0 rounded-md bg-accent"
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
-                  />
-                )}
-                <span className="relative z-10 flex items-center gap-1.5">
-                  <Sun className="h-3.5 w-3.5" /> Light
-                </span>
-              </button>
-              <button onClick={() => setMode("dark")} className={modeBtn("dark")}>
-                {mode === "dark" && (
-                  <motion.span
-                    layoutId="mode-pill"
-                    className="absolute inset-0 rounded-md bg-accent"
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
-                  />
-                )}
-                <span className="relative z-10 flex items-center gap-1.5">
-                  <Moon className="h-3.5 w-3.5" /> Dark
-                </span>
-              </button>
+          </div>
+
+          {/* Section Category Header */}
+          <div className="flex items-center justify-between mb-1.5 px-1">
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground">
+              Components
+            </span>
+            <span className="text-[9px] font-mono text-muted-foreground/60 uppercase">
+              {searchQuery ? "FILTERED" : "ALL"}
+            </span>
+          </div>
+
+          {/* Scrollable Component List */}
+          <nav className="flex-1 overflow-y-auto space-y-0.5 pr-1 scrollbar-thin">
+            {filteredDefs.map((d) => {
+              const originalIndex = bundle.defs.findIndex((item) => item.id === d.id);
+              const isActive = d.id === activeId;
+
+              return (
+                <a
+                  key={d.id}
+                  href={`#${d.id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const el = document.getElementById(d.id);
+                    if (el) {
+                      el.scrollIntoView({ behavior: "smooth", block: "start" });
+                      setActiveId(d.id);
+                    }
+                  }}
+                  className={cn(
+                    "group flex items-center justify-between gap-2 rounded-lg px-2.5 py-1.5 text-xs transition-all",
+                    isActive
+                      ? "bg-accent text-accent-foreground font-semibold border border-border/60 shadow-xs"
+                      : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
+                  )}
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span
+                      className={cn(
+                        "w-4 font-mono text-[10px]",
+                        isActive ? "text-foreground font-bold" : "text-muted-foreground/60"
+                      )}
+                    >
+                      {String(originalIndex + 1).padStart(2, "0")}
+                    </span>
+                    <span className="truncate">{d.name}</span>
+                  </div>
+                </a>
+              );
+            })}
+            {filteredDefs.length === 0 && (
+              <div className="p-4 text-center text-xs text-muted-foreground">
+                No components match &quot;{searchQuery}&quot;
+              </div>
+            )}
+          </nav>
+
+          {/* Bottom Status Pill: Closest to viewport */}
+          <div className="pt-3 border-t border-border/40 mt-auto flex items-center justify-between text-xs">
+            <div className="flex items-center gap-1.5 text-muted-foreground text-[11px]">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
+              <span>Closest to viewport</span>
+            </div>
+            <span className="font-mono text-[10px] font-semibold px-2 py-0.5 rounded bg-muted/60 text-muted-foreground border border-border/40 uppercase truncate max-w-[120px]">
+              {activeNumberStr}. {activeDef?.name || "BUTTON"}
+            </span>
+          </div>
+        </aside>
+
+        {/* ================================================================== */}
+        {/* RIGHT COLUMN: Header, Toolbar, & Component Showcase                */}
+        {/* ================================================================== */}
+        <main className="flex-1 min-w-0 pb-20">
+          {/* Header */}
+          <div className="pb-8">
+            <Link
+              href="/explore"
+              className="inline-flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground mb-4"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
+              All styles
+            </Link>
+
+            <div className="flex flex-wrap items-center gap-3">
+              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl text-foreground">
+                {meta.name}
+              </h1>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/25 px-3 py-1 text-xs font-semibold text-emerald-400">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                Live · {bundle.defs.length} Components
+              </span>
+            </div>
+
+            <p className="mt-2 text-base sm:text-lg font-medium text-foreground/90">{meta.tagline}</p>
+            <p className="mt-2 max-w-2xl text-xs sm:text-sm leading-relaxed text-muted-foreground">
+              {meta.description}
+            </p>
+
+            {/* Vibe tags + Palette */}
+            <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
+              <div className="flex flex-wrap gap-2">
+                {meta.tags.map((t) => (
+                  <span
+                    key={t}
+                    className="rounded-full border border-border/70 bg-card/60 px-3 py-1 text-xs text-muted-foreground"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                {meta.palette.map((hex) => (
+                  <span key={hex} className="group/pal relative">
+                    <span
+                      className="block h-5 w-5 rounded-full border border-border/80 shadow-xs"
+                      style={{ backgroundColor: hex }}
+                      title={hex}
+                    />
+                    <span className="pointer-events-none absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-popover px-1.5 py-0.5 font-mono text-[9px] text-popover-foreground opacity-0 shadow transition-opacity group-hover/pal:opacity-100">
+                      {hex}
+                    </span>
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div className="container grid gap-10 !px-0 lg:grid-cols-[210px_1fr] lg:gap-14">
-        {/* ---- sidebar nav (desktop) ---- */}
-        <aside className="hidden lg:block">
-          <nav className="sticky top-36 space-y-0.5">
-            <p className="mb-3 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-              Components
-            </p>
-            {bundle.defs.map((d, i) => (
+          {/* Sticky Toolbar: Preview mode Light/Dark toggle */}
+          <div className="sticky top-16 z-30 -mx-4 mb-10 border-y border-border/70 bg-background/95 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6">
+            <div className="flex items-center justify-between gap-4">
+              <p className="flex items-center gap-2 text-xs text-muted-foreground">
+                <TerminalSquare className="h-3.5 w-3.5 shrink-0" />
+                <span>
+                  {bundle.defs.length} components · rendered live · copy-ready HTML + Tailwind
+                </span>
+              </p>
+              <div className="flex items-center gap-2.5 shrink-0">
+                <span className="hidden text-xs text-muted-foreground sm:inline">
+                  Preview mode
+                </span>
+                <div className="inline-flex items-center rounded-lg border border-border bg-card p-1">
+                  <button onClick={() => setMode("light")} className={modeBtn("light")}>
+                    {mode === "light" && (
+                      <motion.span
+                        layoutId="mode-pill"
+                        className="absolute inset-0 rounded-md bg-accent"
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
+                      />
+                    )}
+                    <span className="relative z-10 flex items-center gap-1.5">
+                      <Sun className="h-3.5 w-3.5" /> Light
+                    </span>
+                  </button>
+                  <button onClick={() => setMode("dark")} className={modeBtn("dark")}>
+                    {mode === "dark" && (
+                      <motion.span
+                        layoutId="mode-pill"
+                        className="absolute inset-0 rounded-md bg-accent"
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
+                      />
+                    )}
+                    <span className="relative z-10 flex items-center gap-1.5">
+                      <Moon className="h-3.5 w-3.5" /> Dark
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile chips */}
+          <div className="code-scroll -mx-2 mb-8 flex gap-2 overflow-x-auto px-2 pb-1 lg:hidden">
+            {bundle.defs.map((d) => (
               <a
                 key={d.id}
                 href={`#${d.id}`}
-                className="flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-[13px] text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                className={cn(
+                  "whitespace-nowrap rounded-full border px-3 py-1 text-xs transition-colors",
+                  d.id === activeId
+                    ? "border-primary bg-primary text-primary-foreground font-semibold"
+                    : "border-border bg-card text-muted-foreground hover:text-foreground"
+                )}
               >
-                <span className="w-4 font-mono text-[10px] text-muted-foreground/60">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
                 {d.name}
               </a>
             ))}
-          </nav>
-        </aside>
+          </div>
 
-        {/* ---- mobile chips ---- */}
-        <div className="code-scroll -mx-1 flex gap-2 overflow-x-auto px-1 pb-1 lg:hidden">
-          {bundle.defs.map((d) => (
-            <a
-              key={d.id}
-              href={`#${d.id}`}
-              className="whitespace-nowrap rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {d.name}
-            </a>
-          ))}
-        </div>
-
-        {/* ---- component sections ---- */}
-        <div className="min-w-0 space-y-16 lg:col-start-2 lg:row-start-1">
-          {bundle.defs.map((d, i) => (
-            <GallerySection
-              key={d.id}
-              def={d}
-              index={i}
-              bundle={bundle}
-              styleName={meta.name}
-              mode={mode}
-              isOpen={Boolean(openCode[d.id])}
-              onToggleCode={() => toggleCode(d.id)}
-            />
-          ))}
-        </div>
+          {/* Component Showcase Sections */}
+          <div className="min-w-0 space-y-14">
+            {bundle.defs.map((d, i) => (
+              <GallerySection
+                key={d.id}
+                def={d}
+                index={i}
+                bundle={bundle}
+                styleName={meta.name}
+                mode={mode}
+                isOpen={Boolean(openCode[d.id])}
+                onToggleCode={() => toggleCode(d.id)}
+                onFullScreen={() => setFullScreenIndex(i)}
+              />
+            ))}
+          </div>
+        </main>
       </div>
+
+      {/* Full Screen Preview Modal */}
+      {fullScreenIndex !== null && (
+        <FullScreenPreviewOverlay
+          defs={bundle.defs}
+          currentIndex={fullScreenIndex}
+          bundle={bundle}
+          styleName={meta.name}
+          initialMode={mode}
+          onClose={() => setFullScreenIndex(null)}
+          onNavigate={(newIndex) => setFullScreenIndex(newIndex)}
+        />
+      )}
     </div>
   );
 }

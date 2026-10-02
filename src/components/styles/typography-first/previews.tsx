@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import type { Mode } from "@/lib/styles/types";
 import { typographyFirst } from "./kit";
 
@@ -16,6 +16,14 @@ function XIcon() {
   return (
     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  );
+}
+
+function MenuIcon() {
+  return (
+    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
     </svg>
   );
 }
@@ -60,20 +68,41 @@ export function CardPreview({ mode }: { mode: Mode }) {
 
 export function NavbarPreview({ mode }: { mode: Mode }) {
   const t = typographyFirst(mode);
+  const [open, setOpen] = useState(false);
   return (
-    <header className={`${t.bar} flex items-center justify-between px-6 py-4 w-full`}>
-      <div className="flex items-baseline gap-3">
-        <a href="#" className="font-serif text-lg font-bold tracking-tight">VERBUM.</a>
-        <span className={`font-sans text-[10px] uppercase tracking-widest ${t.muted}`}>JOURNAL</span>
+    <header className={`${t.bar} flex flex-col justify-center px-4 py-3 sm:px-6 sm:py-4 w-full transition-all`}>
+      <div className="flex items-center justify-between gap-3 w-full">
+        <div className="flex items-baseline gap-2 shrink-0">
+          <a href="#" className="font-serif text-base sm:text-lg font-bold tracking-tight">VERBUM.</a>
+          <span className={`font-sans text-[9px] sm:text-[10px] uppercase tracking-widest ${t.muted}`}>JOURNAL</span>
+        </div>
+
+        <nav className="hidden md:flex nav-desktop-links items-center gap-6 sm:gap-8 font-sans text-xs uppercase tracking-widest font-medium">
+          <a href="#" className={`${t.text} border-b border-current pb-0.5`}>01. ESSAYS</a>
+          <a href="#" className={`${t.muted} hover:${t.text}`}>02. MONOGRAPHS</a>
+          <a href="#" className={`${t.muted} hover:${t.text}`}>03. ARCHIVE</a>
+        </nav>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <button className={`${t.btnPrimarySm} text-xs px-2.5 py-1.5`}>SUBSCRIBE</button>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="md:hidden nav-mobile-toggle p-1.5 border border-current/30 hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+            aria-label="Toggle menu"
+          >
+            {open ? <XIcon /> : <MenuIcon />}
+          </button>
+        </div>
       </div>
 
-      <nav className="hidden md:flex items-center gap-8 font-sans text-xs uppercase tracking-widest font-medium">
-        <a href="#" className={`${t.text} border-b border-current pb-0.5`}>01. ESSAYS</a>
-        <a href="#" className={`${t.muted} hover:${t.text}`}>02. MONOGRAPHS</a>
-        <a href="#" className={`${t.muted} hover:${t.text}`}>03. ARCHIVE</a>
-      </nav>
-
-      <button className={t.btnPrimarySm}>SUBSCRIBE</button>
+      {open && (
+        <nav className="pt-3 mt-3 border-t border-current/15 flex flex-col gap-2 font-sans text-xs uppercase tracking-widest font-medium animate-in fade-in-0">
+          <a href="#" className={`py-1 ${t.text}`}>01. ESSAYS</a>
+          <a href="#" className={`py-1 ${t.muted} hover:${t.text}`}>02. MONOGRAPHS</a>
+          <a href="#" className={`py-1 ${t.muted} hover:${t.text}`}>03. ARCHIVE</a>
+        </nav>
+      )}
     </header>
   );
 }
@@ -82,8 +111,18 @@ export function InputPreview({ mode }: { mode: Mode }) {
   const t = typographyFirst(mode);
   return (
     <div className="w-full max-w-sm space-y-1.5">
-      <label className={t.label}>AUTHOR SEARCH</label>
-      <input type="text" placeholder="e.g. Virginia Woolf" className={t.input} defaultValue="" />
+      <label className={t.label} htmlFor="typo-author-search">AUTHOR SEARCH</label>
+      <input
+        id="typo-author-search"
+        name="authorSearch"
+        aria-label="Author Search"
+        type="text"
+        autoComplete="off"
+        suppressHydrationWarning
+        placeholder="e.g. Virginia Woolf"
+        className={t.input}
+        defaultValue=""
+      />
       <p className={`font-serif italic text-[11px] ${t.muted}`}>Press enter to query repository</p>
     </div>
   );

@@ -14,6 +14,10 @@ const config: Config = {
       screens: { "2xl": "1280px" },
     },
     extend: {
+      spacing: {
+        4.5: "1.125rem",
+        5.5: "1.375rem",
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

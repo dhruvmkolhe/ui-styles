@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import type { Mode } from "@/lib/styles/types";
 import { scandinavian } from "./kit";
-import { ArrowRight, X } from "lucide-react";
+import { ArrowRight, Menu, X } from "lucide-react";
 
 export function ButtonPreview({ mode }: { mode: Mode }) {
   const k = scandinavian(mode);
@@ -45,22 +45,43 @@ export function CardPreview({ mode }: { mode: Mode }) {
 
 export function NavbarPreview({ mode }: { mode: Mode }) {
   const k = scandinavian(mode);
+  const [open, setOpen] = useState(false);
   return (
-    <header className={`${k.bar} flex items-center justify-between px-6 py-4 w-full`}>
-      <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-xl bg-[#E8DCC8] text-[#334155] flex items-center justify-center font-medium text-xs">
-          N
+    <header className={`${k.bar} flex flex-col justify-center px-4 py-3 sm:px-6 sm:py-4 w-full transition-all`}>
+      <div className="flex items-center justify-between gap-3 w-full">
+        <div className="flex items-center gap-2.5 shrink-0">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#E8DCC8] text-[#334155] flex items-center justify-center font-medium text-xs">
+            N
+          </div>
+          <a href="#" className="font-medium text-sm sm:text-base text-[#334155] dark:text-[#E2E8F0]">NORDIC FORM</a>
         </div>
-        <a href="#" className="font-medium text-base text-[#334155]">NORDIC FORM</a>
+
+        <nav className="hidden md:flex nav-desktop-links items-center gap-6 text-sm text-[#64748B] dark:text-[#94A3B8]">
+          <a href="#" className="text-[#334155] dark:text-[#E2E8F0] border-b border-[#A8C0D6] pb-0.5">Spaces</a>
+          <a href="#" className="hover:text-[#334155] dark:hover:text-[#E2E8F0]">Crafts</a>
+          <a href="#" className="hover:text-[#334155] dark:hover:text-[#E2E8F0]">Materials</a>
+        </nav>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <button className={`${k.btnPrimarySm} text-xs px-3 py-1.5`}>DISCOVER</button>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="md:hidden nav-mobile-toggle p-1.5 rounded-lg border border-[#A8C0D6]/40 text-[#64748B] hover:bg-[#E8DCC8]/20 transition-colors"
+            aria-label="Toggle menu"
+          >
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
+        </div>
       </div>
 
-      <nav className="hidden md:flex items-center gap-6 text-sm text-[#64748B]">
-        <a href="#" className="text-[#334155] border-b border-[#A8C0D6] pb-0.5">Spaces</a>
-        <a href="#" className="hover:text-[#334155]">Crafts</a>
-        <a href="#" className="hover:text-[#334155]">Materials</a>
-      </nav>
-
-      <button className={k.btnPrimarySm}>DISCOVER</button>
+      {open && (
+        <nav className="pt-3 mt-3 border-t border-[#A8C0D6]/20 flex flex-col gap-2 text-xs text-[#64748B] dark:text-[#94A3B8] animate-in fade-in-0">
+          <a href="#" className="py-1 text-[#334155] dark:text-[#E2E8F0]">Spaces</a>
+          <a href="#" className="py-1 hover:text-[#334155] dark:hover:text-[#E2E8F0]">Crafts</a>
+          <a href="#" className="py-1 hover:text-[#334155] dark:hover:text-[#E2E8F0]">Materials</a>
+        </nav>
+      )}
     </header>
   );
 }
@@ -69,8 +90,8 @@ export function InputPreview({ mode }: { mode: Mode }) {
   const k = scandinavian(mode);
   return (
     <div className="w-full max-w-sm space-y-1">
-      <label className={k.label}>SUBSCRIBE TO NORDIC NEWSLETTER</label>
-      <input type="email" placeholder="hello@hygge.se" className={k.input} />
+      <label className={k.label} htmlFor="scandi-email">SUBSCRIBE TO NORDIC NEWSLETTER</label>
+      <input id="scandi-email" name="email" aria-label="Subscribe to Nordic Newsletter" type="email" placeholder="hello@hygge.se" className={k.input} suppressHydrationWarning />
       <p className="text-xs text-[#64748B]">Monthly interior design notes from Copenhagen</p>
     </div>
   );

@@ -66,6 +66,9 @@ function OtpInputComponent() {
             }}
             type="text"
             inputMode="numeric"
+            autoComplete="one-time-code"
+            suppressHydrationWarning
+            aria-label={`Verification digit ${i + 1}`}
             maxLength={1}
             value={digit}
             onChange={(e) => handleChange(e.target.value, i)}
@@ -97,6 +100,9 @@ function PasswordStrengthComponent() {
       <div className="relative mb-3">
         <input
           type={show ? "text" : "password"}
+          autoComplete="new-password"
+          suppressHydrationWarning
+          aria-label="Enter secure password"
           value={pwd}
           onChange={(e) => setPwd(e.target.value)}
           placeholder="Enter secure password..."

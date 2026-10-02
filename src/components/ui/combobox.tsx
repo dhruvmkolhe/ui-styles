@@ -246,7 +246,12 @@ export function Combobox({
             <Search className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
             <input
               ref={searchInputRef}
+              id="combobox-search-input"
+              name="comboboxSearch"
+              aria-label="Filter options"
               type="text"
+              autoComplete="off"
+              suppressHydrationWarning
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value)

@@ -18,95 +18,105 @@ export type MasonryGap = "none" | "xs" | "sm" | "md" | "lg"
 export interface MasonryProps extends React.HTMLAttributes<HTMLDivElement> {
   cols?: MasonryCols | ResponsiveMasonryCols
   gap?: MasonryGap
-}
-
-const columnClasses: Record<MasonryCols, string> = {
-  1: "columns-1",
-  2: "columns-2",
-  3: "columns-3",
-  4: "columns-4",
-  5: "columns-5",
-  6: "columns-6",
-}
-
-const smColClasses: Record<MasonryCols, string> = {
-  1: "sm:columns-1",
-  2: "sm:columns-2",
-  3: "sm:columns-3",
-  4: "sm:columns-4",
-  5: "sm:columns-5",
-  6: "sm:columns-6",
-}
-
-const mdColClasses: Record<MasonryCols, string> = {
-  1: "md:columns-1",
-  2: "md:columns-2",
-  3: "md:columns-3",
-  4: "md:columns-4",
-  5: "md:columns-5",
-  6: "md:columns-6",
-}
-
-const lgColClasses: Record<MasonryCols, string> = {
-  1: "lg:columns-1",
-  2: "lg:columns-2",
-  3: "lg:columns-3",
-  4: "lg:columns-4",
-  5: "lg:columns-5",
-  6: "lg:columns-6",
-}
-
-const xlColClasses: Record<MasonryCols, string> = {
-  1: "xl:columns-1",
-  2: "xl:columns-2",
-  3: "xl:columns-3",
-  4: "xl:columns-4",
-  5: "xl:columns-5",
-  6: "xl:columns-6",
+  columnClassName?: string
 }
 
 const gapClasses: Record<MasonryGap, string> = {
-  none: "gap-0 [&>*]:mb-0",
-  xs: "gap-2 [&>*]:mb-2",
-  sm: "gap-3 [&>*]:mb-3",
-  md: "gap-4 [&>*]:mb-4",
-  lg: "gap-6 [&>*]:mb-6",
+  none: "gap-0",
+  xs: "gap-2",
+  sm: "gap-3",
+  md: "gap-4",
+  lg: "gap-6",
+}
+
+const BREAKPOINTS = {
+  sm: 640,
+  md: 768,
+  lg: 1024,
+  xl: 1280,
+} as const
+
+function useColumnCount(cols: MasonryCols | ResponsiveMasonryCols = { default: 1, sm: 2, md: 3 }): number {
+  const isNumber = typeof cols === "number"
+  const defaultCol = isNumber ? cols : cols.default ?? 1
+  const smCol = !isNumber ? cols.sm : undefined
+  const mdCol = !isNumber ? cols.md : undefined
+  const lgCol = !isNumber ? cols.lg : undefined
+  const xlCol = !isNumber ? cols.xl : undefined
+
+  // Match SSR initial state to avoid hydration mismatch
+  const [columnCount, setColumnCount] = React.useState<number>(defaultCol)
+
+  React.useEffect(() => {
+    const computeCount = (): number => {
+      if (isNumber) return defaultCol
+      const width = window.innerWidth
+      if (width >= BREAKPOINTS.xl) return xlCol ?? lgCol ?? mdCol ?? smCol ?? defaultCol
+      if (width >= BREAKPOINTS.lg) return lgCol ?? mdCol ?? smCol ?? defaultCol
+      if (width >= BREAKPOINTS.md) return mdCol ?? smCol ?? defaultCol
+      if (width >= BREAKPOINTS.sm) return smCol ?? defaultCol
+      return defaultCol
+    }
+
+    let rafId: number | null = null
+    const handleResize = () => {
+      if (rafId !== null) cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(() => {
+        setColumnCount(computeCount())
+      })
+    }
+
+    handleResize()
+    window.addEventListener("resize", handleResize)
+    return () => {
+      if (rafId !== null) cancelAnimationFrame(rafId)
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [isNumber, defaultCol, smCol, mdCol, lgCol, xlCol])
+
+  return columnCount
 }
 
 export const Masonry = React.forwardRef<HTMLDivElement, MasonryProps>(
-  ({ className, cols = { default: 1, sm: 2, md: 3 }, gap = "md", children, ...props }, ref) => {
-    let colClassNames = ""
-    if (typeof cols === "number") {
-      colClassNames = columnClasses[cols] || "columns-1"
-    } else if (typeof cols === "object") {
-      colClassNames = cn(
-        cols.default ? columnClasses[cols.default] : "columns-1",
-        cols.sm && smColClasses[cols.sm],
-        cols.md && mdColClasses[cols.md],
-        cols.lg && lgColClasses[cols.lg],
-        cols.xl && xlColClasses[cols.xl]
-      )
-    }
+  ({ className, cols = { default: 1, sm: 2, md: 3 }, gap = "md", columnClassName, children, ...props }, ref) => {
+    const columnCount = useColumnCount(cols)
+
+    const childArray = React.useMemo(() => {
+      return React.Children.toArray(children).filter(Boolean)
+    }, [children])
+
+    const columns = React.useMemo(() => {
+      const safeCols = Math.max(1, Math.min(6, columnCount))
+      const colBuckets: React.ReactNode[][] = Array.from({ length: safeCols }, () => [])
+      childArray.forEach((child, index) => {
+        colBuckets[index % safeCols].push(child)
+      })
+      return colBuckets
+    }, [childArray, columnCount])
 
     return (
       <div
         ref={ref}
+        suppressHydrationWarning
         className={cn(
-          "w-full",
-          colClassNames,
+          "flex w-full items-start",
           gapClasses[gap],
           className
         )}
         {...props}
       >
-        {React.Children.map(children, (child) => {
-          if (!React.isValidElement(child)) return child
-          return (
-            <div className="break-inside-avoid">
-              {child}
-            </div>
-          )
-        })}
+        {columns.map((colChildren, colIdx) => (
+          <div
+            key={colIdx}
+            className={cn(
+              "flex-1 min-w-0 flex flex-col",
+              gapClasses[gap],
+              columnClassName
+            )}
+          >
+            {colChildren}
+          </div>
+        ))}
       </div>
     )
   }
@@ -120,7 +130,7 @@ export const MasonryItem = React.forwardRef<HTMLDivElement, MasonryItemProps>(
     return (
       <div
         ref={ref}
-        className={cn("break-inside-avoid w-full", className)}
+        className={cn("w-full", className)}
         {...props}
       />
     )

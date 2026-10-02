@@ -25,6 +25,10 @@ export function FooterEffect({ slug, mode }: { slug: string; mode: VaultMode }) 
         </p>
         <div className="flex gap-2">
           <input
+            type="email"
+            aria-label="Email address for drop list"
+            autoComplete="off"
+            suppressHydrationWarning
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="JOIN THE DROP LIST"
@@ -116,6 +120,10 @@ export function FooterEffect({ slug, mode }: { slug: string; mode: VaultMode }) 
         </div>
         <div className="flex gap-2 max-w-md mx-auto">
           <input
+            type="email"
+            aria-label="Work email address"
+            autoComplete="off"
+            suppressHydrationWarning
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your work email..."

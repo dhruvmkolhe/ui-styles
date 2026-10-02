@@ -55,8 +55,8 @@ export function japandi(m: Mode) {
 
     /* ---------- form ---------- */
     label: d
-      ? "mb-2 block text-xs uppercase tracking-[0.2em] text-[#C9BCA6]/60"
-      : "mb-2 block text-xs uppercase tracking-[0.2em] text-[#8B7355]",
+      ? "mb-1.5 block text-xs font-semibold uppercase tracking-[0.18em] text-[#EDE6D8]"
+      : "mb-1.5 block text-xs font-semibold uppercase tracking-[0.18em] text-[#33291D]",
     input: d
       ? "w-full rounded-md border border-[#A98D6B]/30 bg-[#201B15] px-4 py-2.5 text-sm text-[#EDE6D8] placeholder-[#C9BCA6]/35 outline-none transition-colors focus:border-[#A98D6B]/70"
       : "w-full rounded-md border border-[#8B7355]/30 bg-white/50 px-4 py-2.5 text-sm text-[#3D3529] placeholder-[#8B7355]/45 outline-none transition-colors focus:border-[#8B7355]",

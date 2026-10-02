@@ -54,18 +54,18 @@ export function PopoverPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) 
           Popover Positioning
         </span>
         {saved && (
-          <span className="text-xs text-teal-600 dark:text-teal-400 font-semibold animate-in fade-in-0">
+          <span className={cn("text-xs font-semibold animate-in fade-in-0", k.strong)}>
             Dimensions updated!
           </span>
         )}
       </div>
 
-      <div className={cn("p-8 border flex flex-col items-center justify-center gap-3", k.panel, k.radius)}>
+      <div className={cn("p-6 sm:p-8 min-h-[300px] border flex flex-col items-center justify-start gap-4", k.panel, k.radius)}>
         <Popover>
           <PopoverTrigger asChild>
             <button
               type="button"
-              className={cn("px-4 py-2 text-xs font-bold rounded-lg shadow-xs flex items-center gap-2", k.btnPrimary)}
+              className={cn("px-4 py-2 text-xs font-bold shadow-xs flex items-center gap-2", k.btnPrimary, k.radius)}
             >
               <Sliders className="h-3.5 w-3.5" />
               <span>Canvas Dimensions</span>
@@ -80,18 +80,28 @@ export function PopoverPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) 
 
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div className="space-y-1">
-                <label className={cn("text-[10px] font-mono", k.muted)}>WIDTH (PX)</label>
+                <label htmlFor="popover-canvas-width" className={cn("text-[10px] font-mono", k.muted)}>WIDTH (PX)</label>
                 <input
+                  id="popover-canvas-width"
+                  name="canvasWidth"
+                  aria-label="Canvas Width in pixels"
                   type="text"
+                  autoComplete="off"
+                  suppressHydrationWarning
                   value={width}
                   onChange={(e) => setWidth(e.target.value)}
                   className={cn("w-full px-2 py-1 border text-xs", k.input, k.radius)}
                 />
               </div>
               <div className="space-y-1">
-                <label className={cn("text-[10px] font-mono", k.muted)}>HEIGHT (PX)</label>
+                <label htmlFor="popover-canvas-height" className={cn("text-[10px] font-mono", k.muted)}>HEIGHT (PX)</label>
                 <input
+                  id="popover-canvas-height"
+                  name="canvasHeight"
+                  aria-label="Canvas Height in pixels"
                   type="text"
+                  autoComplete="off"
+                  suppressHydrationWarning
                   value={height}
                   onChange={(e) => setHeight(e.target.value)}
                   className={cn("w-full px-2 py-1 border text-xs", k.input, k.radius)}
@@ -135,8 +145,8 @@ export function ContextMenuPreview({ slug, mode }: { slug: StyleSlug; mode: Mode
       </div>
 
       <ContextMenu>
-        <ContextMenuTrigger className={cn("p-10 border-2 border-dashed flex flex-col items-center justify-center gap-2 cursor-context-menu text-center transition-colors hover:border-teal-500", k.panel, k.radius)}>
-          <MousePointer className={cn("h-6 w-6 text-teal-600 dark:text-teal-400")} />
+        <ContextMenuTrigger className={cn("p-10 border-2 border-dashed flex flex-col items-center justify-center gap-2 cursor-context-menu text-center transition-colors hover:border-primary", k.panel, k.radius)}>
+          <MousePointer className={cn("h-6 w-6", k.strong)} />
           <div className={cn("text-xs font-bold", k.strong)}>
             Right-click anywhere inside this target
           </div>
@@ -203,14 +213,14 @@ export function HoverCardPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }
           Designed by{" "}
           <HoverCard openDelay={150} closeDelay={150}>
             <HoverCardTrigger asChild>
-              <span className={cn("font-bold cursor-pointer underline text-teal-600 dark:text-teal-400 hover:opacity-80")}>
+              <span className={cn("font-bold cursor-pointer underline hover:opacity-80", k.strong)}>
                 @ada_lovelace
               </span>
             </HoverCardTrigger>
 
             <HoverCardContent className={cn("w-80 p-4 border space-y-3 shadow-xl", k.panel, k.radius)}>
               <div className="flex items-start gap-3">
-                <div className="h-10 w-10 rounded-full bg-teal-600 text-white font-bold flex items-center justify-center shrink-0">
+                <div className={cn("h-10 w-10 font-bold flex items-center justify-center shrink-0", k.radius, k.btnPrimarySm)}>
                   AL
                 </div>
                 <div className="space-y-0.5 min-w-0 flex-1">
@@ -275,9 +285,14 @@ export function DrawerPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
 
             <div className="space-y-4 py-4 text-xs">
               <div className="space-y-1.5">
-                <label className={cn("font-semibold", k.strong)}>Project Name</label>
+                <label htmlFor="drawer-project-name" className={cn("font-semibold", k.strong)}>Project Name</label>
                 <input
+                  id="drawer-project-name"
+                  name="drawerProjectName"
+                  aria-label="Project Name"
                   type="text"
+                  autoComplete="off"
+                  suppressHydrationWarning
                   value={projectName}
                   onChange={(e) => setProjectName(e.target.value)}
                   className={cn("w-full px-3 py-2 border text-xs", k.input, k.radius)}
@@ -285,9 +300,14 @@ export function DrawerPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
               </div>
 
               <div className="space-y-1.5">
-                <label className={cn("font-semibold", k.strong)}>Design Tokens Output</label>
+                <label htmlFor="drawer-tokens-output" className={cn("font-semibold", k.strong)}>Design Tokens Output</label>
                 <input
+                  id="drawer-tokens-output"
+                  name="drawerTokensOutput"
+                  aria-label="Design Tokens Output"
                   type="text"
+                  autoComplete="off"
+                  suppressHydrationWarning
                   readOnly
                   value="src/styles/tokens.json"
                   className={cn("w-full px-3 py-2 border text-xs font-mono opacity-80", k.input, k.radius)}
@@ -391,19 +411,19 @@ export function CommandPalettePreview({ slug, mode }: { slug: StyleSlug; mode: M
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className={cn("w-full max-w-sm flex items-center justify-between px-3.5 py-2.5 rounded-lg border text-xs font-medium shadow-xs transition-colors hover:border-teal-500", k.input)}
+          className={cn("w-full max-w-sm flex items-center justify-between px-3.5 py-2.5 border text-xs font-medium shadow-xs transition-colors hover:border-primary", k.input, k.radius)}
         >
           <span className="flex items-center gap-2 text-muted-foreground">
-            <Search className="h-4 w-4 text-teal-600 dark:text-teal-400" />
+            <Search className={cn("h-4 w-4", k.strong)} />
             <span>Search commands or categories...</span>
           </span>
-          <kbd className="rounded border border-current/20 bg-current/10 px-1.5 py-0.5 font-mono text-[10px]">
+          <kbd className={cn("border border-current/20 bg-current/10 px-1.5 py-0.5 font-mono text-[10px]", k.radius)}>
             ⌘K
           </kbd>
         </button>
 
         {executed && (
-          <div className="text-xs text-teal-600 dark:text-teal-400 font-semibold flex items-center gap-1.5 animate-in fade-in-0">
+          <div className={cn("text-xs font-semibold flex items-center gap-1.5 animate-in fade-in-0", k.strong)}>
             <Check className="h-3.5 w-3.5" />
             <span>Executed: {executed}</span>
           </div>
@@ -437,10 +457,52 @@ export function DatePickerPreview({ slug, mode }: { slug: StyleSlug; mode: Mode 
         </span>
       </div>
 
-      <div className={cn("p-8 border flex flex-col items-center justify-center gap-3", k.panel, k.radius)}>
+      <div
+        className={cn(
+          "p-6 sm:p-8 min-h-[460px] border flex flex-col items-center justify-start gap-4 transition-all",
+          k.panel,
+          k.radius
+        )}
+      >
         <div className="w-full max-w-xs space-y-1.5">
           <label className={cn("text-xs font-semibold", k.strong)}>Launch Date</label>
           <DatePicker value={date} onValueChange={setDate} />
+        </div>
+
+        {/* Quick Date Presets */}
+        <div className="w-full max-w-xs pt-1 flex items-center justify-between text-[11px]">
+          <span className={cn("font-medium", k.muted)}>Presets:</span>
+          <div className="flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={() => setDate(new Date())}
+              className={cn("px-2 py-0.5 rounded text-[10px] font-mono border hover:bg-current/10 transition-colors", k.muted)}
+            >
+              Today
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                const nextWeek = new Date()
+                nextWeek.setDate(nextWeek.getDate() + 7)
+                setDate(nextWeek)
+              }}
+              className={cn("px-2 py-0.5 rounded text-[10px] font-mono border hover:bg-current/10 transition-colors", k.muted)}
+            >
+              +7 Days
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                const inMonth = new Date()
+                inMonth.setMonth(inMonth.getMonth() + 1)
+                setDate(inMonth)
+              }}
+              className={cn("px-2 py-0.5 rounded text-[10px] font-mono border hover:bg-current/10 transition-colors", k.muted)}
+            >
+              +30 Days
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -465,10 +527,33 @@ export function TimePickerPreview({ slug, mode }: { slug: StyleSlug; mode: Mode 
         </span>
       </div>
 
-      <div className={cn("p-8 border flex flex-col items-center justify-center gap-3", k.panel, k.radius)}>
+      <div
+        className={cn(
+          "p-6 sm:p-8 min-h-[380px] border flex flex-col items-center justify-start gap-4 transition-all",
+          k.panel,
+          k.radius
+        )}
+      >
         <div className="w-full max-w-xs space-y-1.5">
           <label className={cn("text-xs font-semibold", k.strong)}>Scheduled Deployment</label>
           <TimePicker value={time} onValueChange={setTime} />
+        </div>
+
+        {/* Quick presets */}
+        <div className="w-full max-w-xs pt-1 flex items-center justify-between text-[11px]">
+          <span className={cn("font-medium", k.muted)}>Quick Slot:</span>
+          <div className="flex items-center gap-1.5">
+            {["09:00 AM", "01:00 PM", "05:30 PM"].map((slot) => (
+              <button
+                key={slot}
+                type="button"
+                onClick={() => setTime(slot)}
+                className={cn("px-2 py-0.5 rounded text-[10px] font-mono border hover:bg-current/10 transition-colors", k.muted)}
+              >
+                {slot}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -507,7 +592,7 @@ export function MegaMenuPreview({ slug, mode }: { slug: StyleSlug; mode: Mode })
   const k = getStyleFormKit(slug, mode)
 
   return (
-    <div className="mx-auto w-full max-w-lg space-y-4">
+    <div className="mx-auto w-full max-w-lg space-y-4 min-h-[360px]">
       <div className="flex items-center justify-between pb-1">
         <span className={cn("text-xs font-mono tracking-wider uppercase", k.muted)}>
           Mega Menu Multi-Column Flyout
@@ -517,7 +602,7 @@ export function MegaMenuPreview({ slug, mode }: { slug: StyleSlug; mode: Mode })
 
       <div className={cn("p-4 border flex items-center justify-between", k.panel, k.radius)}>
         <div className="flex items-center gap-2 font-bold text-xs">
-          <LayoutGrid className="h-4 w-4 text-teal-600 dark:text-teal-400" />
+          <LayoutGrid className={cn("h-4 w-4", k.strong)} />
           <span className={k.strong}>PLATFORM</span>
         </div>
 
@@ -586,14 +671,14 @@ export function FloatingActionButtonPreview({ slug, mode }: { slug: StyleSlug; m
       </div>
 
       {/* Simulated Device / Card Frame */}
-      <div className={cn("border rounded-2xl p-6 h-56 relative flex flex-col justify-between overflow-hidden shadow-inner", k.panel)}>
+      <div className={cn("border p-6 h-56 relative flex flex-col justify-between overflow-hidden shadow-inner", k.panel, k.radius)}>
         <div>
           <h5 className={cn("font-bold text-xs", k.strong)}>Canvas Workspace</h5>
           <p className={cn("text-[11px] mt-0.5", k.muted)}>
             Floating corner trigger operates smoothly without obscuring content.
           </p>
           {lastAction && (
-            <div className="mt-2 text-xs text-teal-600 dark:text-teal-400 font-semibold animate-in fade-in-0">
+            <div className={cn("mt-2 text-xs font-semibold animate-in fade-in-0", k.strong)}>
               Triggered: {lastAction}
             </div>
           )}

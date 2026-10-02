@@ -44,6 +44,7 @@ export function ColorPicker({
   error,
   size = "md",
 }: ColorPickerProps) {
+  const instanceId = React.useId()
   const isControlled = controlledValue !== undefined
   const [uncontrolledValue, setUncontrolledValue] = React.useState<string>(defaultValue)
   const currentColor = (isControlled ? controlledValue : uncontrolledValue) || "#000000"
@@ -63,6 +64,18 @@ export function ColorPicker({
 
   const isValidHex = (hex: string) => {
     return /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(hex)
+  }
+
+  const normalizeToSixDigitHex = (hex: string): string => {
+    if (!hex) return "#000000"
+    const trimmed = hex.trim()
+    if (/^#[0-9A-Fa-f]{3}$/.test(trimmed)) {
+      return `#${trimmed[1]}${trimmed[1]}${trimmed[2]}${trimmed[2]}${trimmed[3]}${trimmed[3]}`
+    }
+    if (/^#[0-9A-Fa-f]{6}$/.test(trimmed)) {
+      return trimmed
+    }
+    return "#000000"
   }
 
   const handleColorChange = (newColor: string) => {
@@ -88,7 +101,7 @@ export function ColorPicker({
     }
   }
 
-  // Click outside listener
+  // Click outside and Escape key listeners
   React.useEffect(() => {
     if (!open) return
     const handleClickOutside = (e: MouseEvent) => {
@@ -96,8 +109,17 @@ export function ColorPicker({
         setOpen(false)
       }
     }
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false)
+      }
+    }
     document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
+    window.addEventListener("keydown", handleKeyDown)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+      window.removeEventListener("keydown", handleKeyDown)
+    }
   }, [open])
 
   const swatchSizes = {
@@ -199,10 +221,12 @@ export function ColorPicker({
                   <input
                     ref={nativeColorRef}
                     type="color"
-                    value={isValidHex(currentColor) ? currentColor : "#000000"}
+                    id={`${instanceId}-native-color-picker`}
+                    name={`${instanceId}-nativeColorPicker`}
+                    suppressHydrationWarning
+                    value={normalizeToSixDigitHex(currentColor)}
                     onChange={(e) => handleColorChange(e.target.value)}
                     className="sr-only"
-                    id="native-color-picker-input"
                     aria-label="Native color wheel"
                   />
                   <button
@@ -219,6 +243,10 @@ export function ColorPicker({
                 <div className="flex-1">
                   <input
                     type="text"
+                    id={`${instanceId}-hex-color-code`}
+                    name={`${instanceId}-hexColorCode`}
+                    autoComplete="off"
+                    suppressHydrationWarning
                     value={hexInput}
                     onChange={handleHexInputChange}
                     placeholder="#000000"

@@ -56,6 +56,12 @@ export function ExploreGrid() {
         <div className="relative">
           <Search className="absolute left-3.5 top-3 h-4 w-4 text-muted-foreground" />
           <input
+            id="explore-search-input"
+            name="exploreSearch"
+            aria-label="Search styles by name, vibe, or keyword"
+            type="text"
+            autoComplete="off"
+            suppressHydrationWarning
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search styles by name, vibe, or keyword (e.g. glass, retro, minimal)..."

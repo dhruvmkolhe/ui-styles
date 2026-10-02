@@ -1,7 +1,6 @@
 import React from "react"
 import type { ComponentDef, Mode, StyleSlug } from "@/lib/styles/types"
 import {
-  CommandPalettePreview,
   SearchBarPreview,
   FilterPreview,
   SortMenuPreview,
@@ -16,13 +15,6 @@ import { getAdvancedCodeForStyle } from "./common-advanced-code"
 
 export function getCommonAdvancedDefs(slug: StyleSlug): ComponentDef[] {
   return [
-    {
-      id: "command-palette",
-      name: "Command Palette",
-      description: "Fast keyboard-driven command runner with filtering, categorised groups, and shortcut cues.",
-      Preview: ({ mode }: { mode: Mode }) => <CommandPalettePreview slug={slug} mode={mode} />,
-      code: (mode: Mode) => getAdvancedCodeForStyle(slug, "command-palette", mode),
-    },
     {
       id: "search-bar",
       name: "Search Bar",

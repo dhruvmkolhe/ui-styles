@@ -63,16 +63,16 @@ export const japandiCode: Record<string, (mode: Mode) => string> = {
   navbar: (m) => {
     const k = japandi(m);
     return `<!-- Japandi · Navbar -->
-<header class="${k.bar} flex items-center justify-between px-5 py-4">
-  <a href="#" class="${k.serif} ${k.strong} text-sm tracking-[0.2em]">SABI &amp; CO</a>
+<header class="${k.bar} w-full flex items-center justify-between gap-4 sm:gap-8 px-6 py-3.5">
+  <a href="#" class="${k.serif} ${k.strong} text-sm tracking-[0.25em] font-medium shrink-0">SABI &amp; CO</a>
 
-  <nav class="flex items-center gap-6 text-[13px] tracking-wide">
+  <nav class="flex items-center gap-6 sm:gap-8 text-[13px] tracking-wide">
     <a href="#" class="${k.muted} transition-colors hover:text-[#3D3529]">Shop</a>
     <a href="#" class="${k.muted} transition-colors hover:text-[#3D3529]">Journal</a>
     <a href="#" class="${k.muted} transition-colors hover:text-[#3D3529]">Ateliers</a>
   </nav>
 
-  <button class="${k.btnPrimarySm}">Cart (0)</button>
+  <button class="${k.btnPrimarySm} shrink-0">Cart (0)</button>
 </header>`;
   },
 

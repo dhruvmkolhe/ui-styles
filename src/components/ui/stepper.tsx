@@ -95,13 +95,13 @@ export function Stepper({
               className={cn(
                 "relative flex items-center",
                 isHorizontal
-                  ? "flex-1 last:flex-none w-full sm:w-auto"
+                  ? "flex-1 min-w-0"
                   : "flex-row items-start gap-4"
               )}
             >
               <div
                 className={cn(
-                  "group flex items-center gap-3 w-full",
+                  "group flex items-center gap-2 sm:gap-2.5 min-w-0",
                   isClickable && "cursor-pointer"
                 )}
                 onClick={() => isClickable && onStepClick?.(index)}
@@ -121,9 +121,9 @@ export function Stepper({
                   className={cn(
                     "relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-all duration-200 select-none",
                     state === "completed" &&
-                      "bg-teal-600 text-white shadow-xs group-hover:bg-teal-700",
+                      "bg-primary text-primary-foreground shadow-xs group-hover:bg-primary/90",
                     state === "current" &&
-                      "border-2 border-teal-600 bg-background text-teal-600 ring-4 ring-teal-500/20 font-extrabold",
+                      "border-2 border-primary bg-background text-primary ring-4 ring-primary/20 font-extrabold",
                     state === "upcoming" &&
                       "border border-border bg-muted/60 text-muted-foreground",
                     state === "error" &&
@@ -144,8 +144,8 @@ export function Stepper({
                 </div>
 
                 {/* Step Text Info */}
-                <div className="flex flex-col min-w-0 pr-2">
-                  <div className="flex items-center gap-2">
+                <div className="flex flex-col min-w-0 pr-1 sm:pr-2">
+                  <div className="flex items-center gap-1.5 min-w-0">
                     <span
                       className={cn(
                         "text-xs font-semibold tracking-tight truncate",
@@ -159,15 +159,15 @@ export function Stepper({
                       {step.title}
                     </span>
                     {step.optional && (
-                      <span className="text-[10px] text-muted-foreground uppercase font-mono tracking-wider">
-                        Optional
+                      <span className="hidden md:inline text-[9px] text-muted-foreground uppercase font-mono tracking-wider shrink-0">
+                        Opt
                       </span>
                     )}
                   </div>
                   {step.description && (
                     <span
                       className={cn(
-                        "text-[11px] truncate max-w-[180px]",
+                        "text-[11px] truncate",
                         state === "disabled" ? "text-muted-foreground/40" : "text-muted-foreground"
                       )}
                     >
@@ -182,8 +182,8 @@ export function Stepper({
                 <div
                   aria-hidden="true"
                   className={cn(
-                    "hidden sm:block flex-1 h-0.5 mx-2 transition-colors",
-                    index < currentStep ? "bg-teal-600" : "bg-border"
+                    "hidden sm:block flex-1 min-w-[8px] h-0.5 mx-1.5 transition-colors",
+                    index < currentStep ? "bg-primary" : "bg-border"
                   )}
                 />
               )}

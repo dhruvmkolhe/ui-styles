@@ -6,10 +6,10 @@ export interface AudioPlayerProps extends React.AudioHTMLAttributes<HTMLAudioEle
 export const AudioPlayer = React.forwardRef<HTMLAudioElement, AudioPlayerProps>(
   ({ className, controls = true, ...props }, ref) => {
     return (
-      <div className={cn("flex w-full items-center p-2 rounded-md bg-muted/50 border", className)}>
+      <div className={cn("flex w-full min-w-[260px] items-center p-2 rounded-md bg-muted/50 border", className)}>
         <audio
           ref={ref}
-          className="w-full h-10 outline-none"
+          className="w-full min-w-full h-10 outline-none"
           controls={controls}
           {...props}
         />

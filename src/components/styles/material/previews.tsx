@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import type { Mode } from "@/lib/styles/types";
 import { material } from "./kit";
-import { ArrowRight, X } from "lucide-react";
+import { ArrowRight, Menu, X } from "lucide-react";
 
 export function ButtonPreview({ mode }: { mode: Mode }) {
   const k = material(mode);
@@ -45,22 +45,43 @@ export function CardPreview({ mode }: { mode: Mode }) {
 
 export function NavbarPreview({ mode }: { mode: Mode }) {
   const k = material(mode);
+  const [open, setOpen] = useState(false);
   return (
-    <header className={`${k.bar} flex items-center justify-between px-6 py-4 w-full`}>
-      <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-full bg-[#6200EE] text-white flex items-center justify-center font-bold text-xs shadow-md">
-          M
+    <header className={`${k.bar} flex flex-col justify-center px-4 py-3 sm:px-6 sm:py-4 w-full transition-all`}>
+      <div className="flex items-center justify-between gap-3 w-full">
+        <div className="flex items-center gap-2.5 shrink-0">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#6200EE] text-white flex items-center justify-center font-bold text-xs shadow-md">
+            M
+          </div>
+          <a href="#" className="font-medium text-base sm:text-lg text-[#121212] dark:text-white">Material Hub</a>
         </div>
-        <a href="#" className="font-medium text-lg text-[#121212]">Material Hub</a>
+
+        <nav className="hidden md:flex nav-desktop-links items-center gap-6 text-sm font-medium text-neutral-600 dark:text-neutral-300">
+          <a href="#" className="text-[#6200EE] border-b-2 border-[#6200EE] pb-1">Surfaces</a>
+          <a href="#" className="hover:text-[#6200EE]">Components</a>
+          <a href="#" className="hover:text-[#6200EE]">Tokens</a>
+        </nav>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <button className={`${k.btnPrimarySm} text-xs px-3 py-1.5`}>SIGN IN</button>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="md:hidden nav-mobile-toggle p-1.5 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-300 transition-colors"
+            aria-label="Toggle menu"
+          >
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
+        </div>
       </div>
 
-      <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-neutral-600">
-        <a href="#" className="text-[#6200EE] border-b-2 border-[#6200EE] pb-1">Surfaces</a>
-        <a href="#" className="hover:text-[#6200EE]">Components</a>
-        <a href="#" className="hover:text-[#6200EE]">Tokens</a>
-      </nav>
-
-      <button className={k.btnPrimarySm}>SIGN IN</button>
+      {open && (
+        <nav className="pt-3 mt-3 border-t border-neutral-200 dark:border-neutral-700 flex flex-col gap-2 text-xs font-medium text-neutral-600 dark:text-neutral-300 animate-in fade-in-0">
+          <a href="#" className="py-1 text-[#6200EE]">Surfaces</a>
+          <a href="#" className="py-1 hover:text-[#6200EE]">Components</a>
+          <a href="#" className="py-1 hover:text-[#6200EE]">Tokens</a>
+        </nav>
+      )}
     </header>
   );
 }
@@ -69,8 +90,8 @@ export function InputPreview({ mode }: { mode: Mode }) {
   const k = material(mode);
   return (
     <div className="w-full max-w-sm space-y-1">
-      <label className={k.label}>EMAIL ADDRESS</label>
-      <input type="email" placeholder="user@material.io" className={k.input} />
+      <label className={k.label} htmlFor="material-email">EMAIL ADDRESS</label>
+      <input id="material-email" name="email" aria-label="Email address" type="email" placeholder="user@material.io" className={k.input} suppressHydrationWarning />
       <p className="text-xs text-neutral-500">Enter your official Material Design account</p>
     </div>
   );

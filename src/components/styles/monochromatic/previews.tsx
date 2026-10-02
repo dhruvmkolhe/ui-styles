@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import type { Mode } from "@/lib/styles/types";
 import { monochromatic } from "./kit";
-import { ArrowRight, X } from "lucide-react";
+import { ArrowRight, Menu, X } from "lucide-react";
 
 export function ButtonPreview({ mode }: { mode: Mode }) {
   const k = monochromatic(mode);
@@ -45,22 +45,43 @@ export function CardPreview({ mode }: { mode: Mode }) {
 
 export function NavbarPreview({ mode }: { mode: Mode }) {
   const k = monochromatic(mode);
+  const [open, setOpen] = useState(false);
   return (
-    <header className={`${k.bar} flex items-center justify-between px-6 py-4 w-full`}>
-      <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-lg bg-[#2563EB] text-white flex items-center justify-center font-bold text-xs">
-          MB
+    <header className={`${k.bar} flex flex-col justify-center px-4 py-3 sm:px-6 sm:py-4 w-full transition-all`}>
+      <div className="flex items-center justify-between gap-3 w-full">
+        <div className="flex items-center gap-2.5 shrink-0">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#2563EB] text-white flex items-center justify-center font-bold text-xs shadow-xs">
+            MB
+          </div>
+          <a href="#" className="font-bold text-sm sm:text-base text-[#1E40AF] dark:text-[#93C5FD]">MonoBlue</a>
         </div>
-        <a href="#" className="font-bold text-base text-[#1E40AF]">MonoBlue</a>
+
+        <nav className="hidden md:flex nav-desktop-links items-center gap-6 text-sm font-medium text-[#2563EB] dark:text-[#93C5FD]">
+          <a href="#" className="text-[#1E40AF] dark:text-[#BFDBFE] border-b-2 border-[#1E40AF] dark:border-[#BFDBFE] pb-1">Tints</a>
+          <a href="#" className="hover:text-[#1E40AF] dark:hover:text-[#BFDBFE]">Shades</a>
+          <a href="#" className="hover:text-[#1E40AF] dark:hover:text-[#BFDBFE]">Tones</a>
+        </nav>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <button className={`${k.btnPrimarySm} text-xs px-3 py-1.5`}>CONNECT</button>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="md:hidden nav-mobile-toggle p-1.5 rounded-lg border border-[#2563EB]/30 text-[#2563EB] dark:text-[#93C5FD] hover:bg-[#2563EB]/10 transition-colors"
+            aria-label="Toggle menu"
+          >
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
+        </div>
       </div>
 
-      <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-[#2563EB]">
-        <a href="#" className="text-[#1E40AF] border-b-2 border-[#1E40AF] pb-1">Tints</a>
-        <a href="#" className="hover:text-[#1E40AF]">Shades</a>
-        <a href="#" className="hover:text-[#1E40AF]">Tones</a>
-      </nav>
-
-      <button className={k.btnPrimarySm}>CONNECT</button>
+      {open && (
+        <nav className="pt-3 mt-3 border-t border-[#2563EB]/20 flex flex-col gap-2 text-xs font-medium text-[#2563EB] dark:text-[#93C5FD] animate-in fade-in-0">
+          <a href="#" className="py-1 text-[#1E40AF] dark:text-[#BFDBFE]">Tints</a>
+          <a href="#" className="py-1 hover:text-[#1E40AF] dark:hover:text-[#BFDBFE]">Shades</a>
+          <a href="#" className="py-1 hover:text-[#1E40AF] dark:hover:text-[#BFDBFE]">Tones</a>
+        </nav>
+      )}
     </header>
   );
 }
@@ -69,8 +90,17 @@ export function InputPreview({ mode }: { mode: Mode }) {
   const k = monochromatic(mode);
   return (
     <div className="w-full max-w-sm space-y-1">
-      <label className={k.label}>BLUEPRINT IDENTIFIER</label>
-      <input type="text" placeholder="BLUE-SHADE-900" className={k.input} />
+      <label className={k.label} htmlFor="mono-blueprint-id">BLUEPRINT IDENTIFIER</label>
+      <input
+        id="mono-blueprint-id"
+        name="blueprintId"
+        aria-label="Blueprint Identifier"
+        type="text"
+        autoComplete="off"
+        suppressHydrationWarning
+        placeholder="BLUE-SHADE-900"
+        className={k.input}
+      />
       <p className="text-xs text-[#3B82F6]">Strictly blue spectrum values permitted</p>
     </div>
   );

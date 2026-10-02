@@ -55,10 +55,48 @@ export function SearchDialog({
     ).slice(0, 6);
   }, [query]);
 
+  const allResults = React.useMemo(() => [
+    ...filteredStyles.map((s) => ({
+      type: "style" as const,
+      id: `style-${s.slug}`,
+      name: s.name,
+      subtitle: s.tagline,
+      href: `/style/${s.slug}`,
+      isLive: s.status === "live",
+    })),
+    ...filteredComponents.map((c) => ({
+      type: "component" as const,
+      id: `comp-${c.id}`,
+      name: c.name,
+      subtitle: c.description,
+      href: `/components#${c.id}`,
+      isLive: false,
+    })),
+  ], [filteredStyles, filteredComponents]);
+
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    setSelectedIndex(0);
+  }, [query]);
+
   const handleSelect = (href: string) => {
     onOpenChange(false);
     setQuery("");
     router.push(href);
+  };
+
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setSelectedIndex((prev) => (prev + 1 < allResults.length ? prev + 1 : 0));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setSelectedIndex((prev) => (prev - 1 >= 0 ? prev - 1 : Math.max(0, allResults.length - 1)));
+    } else if (e.key === "Enter" && allResults[selectedIndex]) {
+      e.preventDefault();
+      handleSelect(allResults[selectedIndex].href);
+    }
   };
 
   return (
@@ -72,14 +110,22 @@ export function SearchDialog({
         <div className="flex items-center border-b border-border px-4 py-3 bg-card">
           <Search className="h-4 w-4 shrink-0 text-muted-foreground mr-3" />
           <input
+            id="global-search-dialog-input"
+            name="globalSearch"
+            aria-label="Search styles and components"
+            type="text"
+            autoComplete="off"
+            suppressHydrationWarning
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={handleInputKeyDown}
             placeholder="Search 25 styles, 15 components..."
             className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground text-foreground"
             autoFocus
           />
           {query && (
             <button
+              type="button"
               onClick={() => setQuery("")}
               className="text-xs text-muted-foreground hover:text-foreground px-1.5 py-0.5 rounded bg-muted font-mono"
             >
@@ -98,28 +144,38 @@ export function SearchDialog({
                 Styles ({filteredStyles.length})
               </p>
               <div className="space-y-1">
-                {filteredStyles.map((s) => (
-                  <button
-                    key={s.slug}
-                    onClick={() => handleSelect(`/style/${s.slug}`)}
-                    className="w-full flex items-center justify-between rounded-md px-3 py-2 text-left text-sm hover:bg-muted/70 transition-colors group"
-                  >
-                    <div>
-                      <div className="font-medium text-foreground group-hover:text-teal-600 dark:group-hover:text-teal-400 flex items-center gap-2">
-                        {s.name}
-                        {s.status === "live" && (
-                          <span className="text-[10px] uppercase font-semibold text-teal-600 dark:text-teal-400 bg-teal-500/10 px-1.5 py-0.2 rounded border border-teal-500/20">
-                            Live
-                          </span>
-                        )}
+                {filteredStyles.map((s) => {
+                  const itemIndex = allResults.findIndex((item) => item.id === `style-${s.slug}`);
+                  const isSelected = itemIndex === selectedIndex;
+
+                  return (
+                    <button
+                      key={s.slug}
+                      type="button"
+                      onClick={() => handleSelect(`/style/${s.slug}`)}
+                      onMouseEnter={() => setSelectedIndex(itemIndex)}
+                      className={cn(
+                        "w-full flex items-center justify-between rounded-md px-3 py-2 text-left text-sm transition-colors group cursor-pointer",
+                        isSelected ? "bg-muted text-foreground ring-1 ring-primary/30" : "hover:bg-muted/70 text-foreground"
+                      )}
+                    >
+                      <div>
+                        <div className="font-medium text-foreground group-hover:text-teal-600 dark:group-hover:text-teal-400 flex items-center gap-2">
+                          {s.name}
+                          {s.status === "live" && (
+                            <span className="text-[10px] uppercase font-semibold text-teal-600 dark:text-teal-400 bg-teal-500/10 px-1.5 py-0.2 rounded border border-teal-500/20">
+                              Live
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-muted-foreground line-clamp-1">
+                          {s.tagline}
+                        </p>
                       </div>
-                      <p className="text-xs text-muted-foreground line-clamp-1">
-                        {s.tagline}
-                      </p>
-                    </div>
-                    <ArrowRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 text-muted-foreground transition-opacity" />
-                  </button>
-                ))}
+                      <ArrowRight className={cn("h-3.5 w-3.5 transition-opacity text-muted-foreground", isSelected ? "opacity-100 text-teal-600 dark:text-teal-400" : "opacity-0 group-hover:opacity-100")} />
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -132,23 +188,33 @@ export function SearchDialog({
                 Components ({filteredComponents.length})
               </p>
               <div className="space-y-1">
-                {filteredComponents.map((c) => (
-                  <button
-                    key={c.id}
-                    onClick={() => handleSelect(`/components#${c.id}`)}
-                    className="w-full flex items-center justify-between rounded-md px-3 py-2 text-left text-sm hover:bg-muted/70 transition-colors group"
-                  >
-                    <div>
-                      <div className="font-medium text-foreground group-hover:text-teal-600 dark:group-hover:text-teal-400">
-                        {c.name}
+                {filteredComponents.map((c) => {
+                  const itemIndex = allResults.findIndex((item) => item.id === `comp-${c.id}`);
+                  const isSelected = itemIndex === selectedIndex;
+
+                  return (
+                    <button
+                      key={c.id}
+                      type="button"
+                      onClick={() => handleSelect(`/components#${c.id}`)}
+                      onMouseEnter={() => setSelectedIndex(itemIndex)}
+                      className={cn(
+                        "w-full flex items-center justify-between rounded-md px-3 py-2 text-left text-sm transition-colors group cursor-pointer",
+                        isSelected ? "bg-muted text-foreground ring-1 ring-primary/30" : "hover:bg-muted/70 text-foreground"
+                      )}
+                    >
+                      <div>
+                        <div className="font-medium text-foreground group-hover:text-teal-600 dark:group-hover:text-teal-400">
+                          {c.name}
+                        </div>
+                        <p className="text-xs text-muted-foreground line-clamp-1">
+                          {c.description}
+                        </p>
                       </div>
-                      <p className="text-xs text-muted-foreground line-clamp-1">
-                        {c.description}
-                      </p>
-                    </div>
-                    <ArrowRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 text-muted-foreground transition-opacity" />
-                  </button>
-                ))}
+                      <ArrowRight className={cn("h-3.5 w-3.5 transition-opacity text-muted-foreground", isSelected ? "opacity-100 text-teal-600 dark:text-teal-400" : "opacity-0 group-hover:opacity-100")} />
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}

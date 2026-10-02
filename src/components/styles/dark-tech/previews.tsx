@@ -11,6 +11,7 @@ import {
   IconGear,
   IconImage,
   IconLogout,
+  IconMenu,
   IconUser,
   IconX,
 } from "../icons";
@@ -60,16 +61,36 @@ export function CardPreview({ mode }: { mode: Mode }) {
 /* ============ 3 · Navbar ============ */
 export function NavbarPreview({ mode }: { mode: Mode }) {
   const k = darkTech(mode);
+  const [open, setOpen] = useState(false);
   return (
-    <div className={cn(k.bar, "flex items-center justify-between px-5 py-3")}>
-      <span className="font-mono font-bold text-sm text-[#00FF41]">root@hub:~$</span>
-      <nav className="hidden items-center gap-6 font-mono text-xs uppercase sm:flex">
-        <a href="#" className="hover:text-[#00FFFF]">/NET</a>
-        <a href="#" className="hover:text-[#00FFFF]">/CORE</a>
-        <a href="#" className="hover:text-[#00FFFF]">/LOGS</a>
-      </nav>
-      <button className={k.btnPrimarySm}>SYSTEM.ONLINE</button>
-    </div>
+    <header className={cn(k.bar, "w-full flex flex-col justify-center px-4 py-2.5 sm:px-5 sm:py-3 transition-all")}>
+      <div className="flex items-center justify-between gap-3 w-full">
+        <span className="font-mono font-bold text-xs sm:text-sm text-[#00FF41] shrink-0">root@hub:~$</span>
+        <nav className="hidden md:flex nav-desktop-links items-center gap-6 font-mono text-xs uppercase">
+          <a href="#" className="hover:text-[#00FFFF] transition-colors">/NET</a>
+          <a href="#" className="hover:text-[#00FFFF] transition-colors">/CORE</a>
+          <a href="#" className="hover:text-[#00FFFF] transition-colors">/LOGS</a>
+        </nav>
+        <div className="flex items-center gap-2 shrink-0">
+          <button className={cn(k.btnPrimarySm, "shrink-0 px-2.5 py-1 text-xs")}>SYS.ONLINE</button>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="md:hidden nav-mobile-toggle p-1 border border-[#00FF41]/40 text-[#00FF41] hover:bg-[#00FF41]/10 transition-colors"
+            aria-label="Toggle menu"
+          >
+            {open ? <IconX className="h-4 w-4" /> : <IconMenu className="h-4 w-4" />}
+          </button>
+        </div>
+      </div>
+      {open && (
+        <nav className="pt-2.5 mt-2.5 border-t border-[#00FF41]/30 flex flex-col gap-2 font-mono text-xs uppercase text-[#00FF41] animate-in fade-in-0">
+          <a href="#" className="py-1 hover:text-[#00FFFF] transition-colors">/NET</a>
+          <a href="#" className="py-1 hover:text-[#00FFFF] transition-colors">/CORE</a>
+          <a href="#" className="py-1 hover:text-[#00FFFF] transition-colors">/LOGS</a>
+        </nav>
+      )}
+    </header>
   );
 }
 
@@ -78,8 +99,16 @@ export function InputPreview({ mode }: { mode: Mode }) {
   const k = darkTech(mode);
   return (
     <div className="mx-auto w-full max-w-sm">
-      <label className={k.label}>PROMPT &gt; ENTRY_COMMAND</label>
-      <input className={k.input} placeholder="./launch_daemon --verbose" />
+      <label className={k.label} htmlFor="dark-tech-cmd">PROMPT &gt; ENTRY_COMMAND</label>
+      <input
+        id="dark-tech-cmd"
+        name="entryCommand"
+        aria-label="Prompt entry command"
+        autoComplete="off"
+        suppressHydrationWarning
+        className={k.input}
+        placeholder="./launch_daemon --verbose"
+      />
     </div>
   );
 }
@@ -98,35 +127,49 @@ export function BadgePreview({ mode }: { mode: Mode }) {
 /* ============ 6 · Modal ============ */
 export function ModalPreview({ mode }: { mode: Mode }) {
   const k = darkTech(mode);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
+
+  if (!open) {
+    return (
+      <div className="flex min-h-[200px] items-center justify-center">
+        <button onClick={() => setOpen(true)} className={k.btnPrimary}>
+          INIT_MODAL
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex justify-center">
-      <button onClick={() => setOpen(true)} className={k.btnPrimary}>
-        INIT_MODAL
-      </button>
-      {open && (
-        <div className={k.overlay}>
-          <div className={cn(k.panel, "w-full max-w-md")}>
-            <div className="flex items-center justify-between border-b border-[#00FF41]/30 pb-3">
-              <h3 className={cn(k.strong, "text-sm font-bold")}>TERMINAL SESSION DETACHED</h3>
-              <button onClick={() => setOpen(false)} className={k.iconBtn}>
-                <IconX className="h-4 w-4" />
-              </button>
-            </div>
-            <p className={cn("mt-4 font-mono text-xs leading-relaxed", k.muted)}>
-              Worker thread task-14 detached cleanly. Reconnect using daemon handle.
-            </p>
-            <div className="mt-6 flex justify-end gap-3">
-              <button onClick={() => setOpen(false)} className={k.btnSecondary}>
-                ABORT
-              </button>
-              <button onClick={() => setOpen(false)} className={k.btnPrimarySm}>
-                REATTACH
-              </button>
-            </div>
-          </div>
+    <div className="relative flex w-full min-h-[380px] sm:min-h-[420px] items-center justify-center p-4 sm:p-6 my-2">
+      <div
+        className={cn(k.overlay, "rounded-none")}
+        onClick={() => setOpen(false)}
+        aria-hidden="true"
+      />
+      <div
+        className={cn(k.panel, "relative z-20 w-full max-w-md shadow-2xl mx-auto")}
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+      >
+        <div className="flex items-center justify-between border-b border-[#00FF41]/30 pb-3">
+          <h3 className={cn(k.strong, "text-sm font-bold")}>TERMINAL SESSION DETACHED</h3>
+          <button onClick={() => setOpen(false)} className={k.iconBtn}>
+            <IconX className="h-4 w-4" />
+          </button>
         </div>
-      )}
+        <p className={cn("mt-4 font-mono text-xs leading-relaxed", k.muted)}>
+          Worker thread task-14 detached cleanly. Reconnect using daemon handle.
+        </p>
+        <div className="mt-6 flex flex-wrap justify-end gap-3">
+          <button onClick={() => setOpen(false)} className={k.btnSecondary}>
+            ABORT
+          </button>
+          <button onClick={() => setOpen(false)} className={k.btnPrimarySm}>
+            REATTACH
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

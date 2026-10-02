@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import type { Mode } from "@/lib/styles/types";
 import { organic } from "./kit";
-import { ArrowRight, X, Leaf } from "lucide-react";
+import { ArrowRight, Leaf, Menu, X } from "lucide-react";
 
 export function ButtonPreview({ mode }: { mode: Mode }) {
   const k = organic(mode);
@@ -48,22 +48,43 @@ export function CardPreview({ mode }: { mode: Mode }) {
 
 export function NavbarPreview({ mode }: { mode: Mode }) {
   const k = organic(mode);
+  const [open, setOpen] = useState(false);
   return (
-    <header className={`${k.bar} flex items-center justify-between px-6 py-4 w-full`}>
-      <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-full bg-[#6E8560] text-white flex items-center justify-center font-medium text-xs">
-          🌿
+    <header className={`${k.bar} flex flex-col justify-center px-4 py-3 sm:px-6 sm:py-4 w-full transition-all`}>
+      <div className="flex items-center justify-between gap-3 w-full">
+        <div className="flex items-center gap-2.5 shrink-0">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#6E8560] text-white flex items-center justify-center font-medium text-xs">
+            🌿
+          </div>
+          <a href="#" className="font-medium text-sm sm:text-base text-[#4A5D44] dark:text-[#A3B899]">FLORA &amp; STONE</a>
         </div>
-        <a href="#" className="font-medium text-base text-[#4A5D44]">FLORA &amp; STONE</a>
+
+        <nav className="hidden md:flex nav-desktop-links items-center gap-6 text-sm text-[#5C6E57] dark:text-[#A3B899]">
+          <a href="#" className="text-[#4A5D44] dark:text-[#D4E0D0] border-b border-[#6E8560] pb-0.5">Sanctuary</a>
+          <a href="#" className="hover:text-[#4A5D44] dark:hover:text-[#D4E0D0]">Botanicals</a>
+          <a href="#" className="hover:text-[#4A5D44] dark:hover:text-[#D4E0D0]">Terracotta</a>
+        </nav>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <button className={`${k.btnPrimarySm} text-xs px-3 py-1.5`}>EXPLORE</button>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="md:hidden nav-mobile-toggle p-1.5 rounded-full border border-[#6E8560]/30 text-[#4A5D44] dark:text-[#A3B899] hover:bg-[#6E8560]/10 transition-colors"
+            aria-label="Toggle menu"
+          >
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
+        </div>
       </div>
 
-      <nav className="hidden md:flex items-center gap-6 text-sm text-[#5C6E57]">
-        <a href="#" className="text-[#4A5D44] border-b border-[#6E8560] pb-0.5">Sanctuary</a>
-        <a href="#" className="hover:text-[#4A5D44]">Botanicals</a>
-        <a href="#" className="hover:text-[#4A5D44]">Terracotta</a>
-      </nav>
-
-      <button className={k.btnPrimarySm}>EXPLORE</button>
+      {open && (
+        <nav className="pt-3 mt-3 border-t border-[#6E8560]/20 flex flex-col gap-2 text-xs text-[#5C6E57] dark:text-[#A3B899] animate-in fade-in-0">
+          <a href="#" className="py-1 text-[#4A5D44] dark:text-[#D4E0D0]">Sanctuary</a>
+          <a href="#" className="py-1 hover:text-[#4A5D44] dark:hover:text-[#D4E0D0]">Botanicals</a>
+          <a href="#" className="py-1 hover:text-[#4A5D44] dark:hover:text-[#D4E0D0]">Terracotta</a>
+        </nav>
+      )}
     </header>
   );
 }
@@ -72,8 +93,8 @@ export function InputPreview({ mode }: { mode: Mode }) {
   const k = organic(mode);
   return (
     <div className="w-full max-w-sm space-y-1">
-      <label className={k.label}>SUBSCRIBE TO BOTANICAL DISPATCH</label>
-      <input type="email" placeholder="nature@flora.org" className={k.input} />
+      <label className={k.label} htmlFor="organic-email">SUBSCRIBE TO BOTANICAL DISPATCH</label>
+      <input id="organic-email" name="email" aria-label="Subscribe to Botanical Dispatch" type="email" placeholder="nature@flora.org" className={k.input} suppressHydrationWarning />
       <p className="text-xs text-[#5C6E57]">Natural stone tones and organic rounded curves</p>
     </div>
   );

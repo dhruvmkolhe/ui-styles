@@ -278,7 +278,12 @@ export function MultiSelect({
             <Search className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
             <input
               ref={searchInputRef}
+              id="multi-select-search-input"
+              name="multiSelectSearch"
+              aria-label="Filter selections"
               type="text"
+              autoComplete="off"
+              suppressHydrationWarning
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value)

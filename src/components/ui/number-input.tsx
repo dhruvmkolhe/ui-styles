@@ -131,7 +131,11 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           <input
             ref={handleRef}
             type="number"
+            autoComplete="off"
+            suppressHydrationWarning
             id={id}
+            name={props.name || "numberInput"}
+            aria-label={props["aria-label"] || "Number value"}
             value={currentValue !== undefined ? currentValue : ""}
             disabled={disabled}
             onChange={handleInputChange}
@@ -163,7 +167,11 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         <input
           ref={handleRef}
           type="number"
+          autoComplete="off"
+          suppressHydrationWarning
           id={id}
+          name={props.name || "numberInput"}
+          aria-label={props["aria-label"] || "Number value"}
           value={currentValue !== undefined ? currentValue : ""}
           disabled={disabled}
           onChange={handleInputChange}

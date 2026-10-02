@@ -34,6 +34,7 @@ export interface DataTableProps<T extends { id?: string | number }> {
   selectable?: boolean
   selectedIds?: (string | number)[]
   onSelectionChange?: (selectedIds: (string | number)[]) => void
+  getRowId?: (item: T, globalIndex: number) => string | number
   emptyMessage?: string
   isLoading?: boolean
   className?: string
@@ -50,6 +51,7 @@ export function DataTable<T extends { id?: string | number }>({
   selectable = false,
   selectedIds: controlledSelectedIds,
   onSelectionChange,
+  getRowId,
   emptyMessage = "No records found.",
   isLoading = false,
   className,
@@ -64,6 +66,16 @@ export function DataTable<T extends { id?: string | number }>({
   const [sortDirection, setSortDirection] = React.useState<SortDirection>(null)
   const [currentPage, setCurrentPage] = React.useState(1)
 
+  const getRowIdentifier = React.useCallback(
+    (row: T, pageRelativeIndex: number): string | number => {
+      const globalIndex = (currentPage - 1) * pageSize + pageRelativeIndex
+      if (getRowId) return getRowId(row, globalIndex)
+      if (row.id !== undefined && row.id !== null) return row.id
+      return `row-${globalIndex}`
+    },
+    [getRowId, currentPage, pageSize]
+  )
+
   const handleSelectionToggle = (id: string | number) => {
     const next = selectedIds.includes(id)
       ? selectedIds.filter((item) => item !== id)
@@ -75,7 +87,7 @@ export function DataTable<T extends { id?: string | number }>({
   }
 
   const handleSelectAll = (filteredRows: T[]) => {
-    const rowIds = filteredRows.map((r, i) => r.id ?? i)
+    const rowIds = filteredRows.map((r, i) => getRowIdentifier(r, i))
     const allSelected = rowIds.length > 0 && rowIds.every((id) => selectedIds.includes(id))
     const next = allSelected
       ? selectedIds.filter((id) => !rowIds.includes(id))
@@ -93,10 +105,10 @@ export function DataTable<T extends { id?: string | number }>({
     return data.filter((item) => {
       if (searchKey) {
         const val = item[searchKey]
-        return val !== undefined && String(val).toLowerCase().includes(query)
+        return val !== undefined && val !== null && String(val).toLowerCase().includes(query)
       }
       return Object.values(item).some(
-        (val) => val !== null && val !== undefined && String(val).toLowerCase().includes(query)
+        (val) => val !== null && val !== undefined && typeof val !== "object" && String(val).toLowerCase().includes(query)
       )
     })
   }, [data, searchQuery, searchKey])
@@ -149,18 +161,23 @@ export function DataTable<T extends { id?: string | number }>({
 
   const allCurrentSelected =
     paginatedData.length > 0 &&
-    paginatedData.every((row, i) => selectedIds.includes(row.id ?? i))
+    paginatedData.every((row, i) => selectedIds.includes(getRowIdentifier(row, i)))
   const someCurrentSelected =
-    paginatedData.some((row, i) => selectedIds.includes(row.id ?? i)) && !allCurrentSelected
+    paginatedData.some((row, i) => selectedIds.includes(getRowIdentifier(row, i))) && !allCurrentSelected
 
   return (
     <div className={cn("w-full space-y-3", className)}>
       {searchable && (
         <div className="flex items-center justify-between gap-3">
           <div className="relative flex-1 max-w-sm">
+            <label htmlFor="data-table-search" className="sr-only">Filter records</label>
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
             <input
+              id="data-table-search"
+              name="tableSearch"
               type="text"
+              autoComplete="off"
+              suppressHydrationWarning
               aria-label="Filter records"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -180,16 +197,22 @@ export function DataTable<T extends { id?: string | number }>({
             <TableRow>
               {selectable && (
                 <TableHead className="w-10 text-center">
-                  <input
-                    type="checkbox"
-                    aria-label="Select all rows on this page"
-                    checked={allCurrentSelected}
-                    ref={(el) => {
-                      if (el) el.indeterminate = someCurrentSelected
-                    }}
-                    onChange={() => handleSelectAll(paginatedData)}
-                    className="h-3.5 w-3.5 rounded border border-border text-primary focus:ring-1 focus:ring-primary/40 cursor-pointer"
-                  />
+                  <label className="inline-flex items-center justify-center cursor-pointer">
+                    <span className="sr-only">Select all rows on this page</span>
+                    <input
+                      id="data-table-select-all"
+                      name="selectAllTableRows"
+                      type="checkbox"
+                      suppressHydrationWarning
+                      aria-label="Select all rows on this page"
+                      checked={allCurrentSelected}
+                      ref={(el) => {
+                        if (el) el.indeterminate = someCurrentSelected
+                      }}
+                      onChange={() => handleSelectAll(paginatedData)}
+                      className="h-3.5 w-3.5 rounded border border-border text-primary focus:ring-1 focus:ring-primary/40 cursor-pointer"
+                    />
+                  </label>
                 </TableHead>
               )}
               {columns.map((column) => {
@@ -274,19 +297,25 @@ export function DataTable<T extends { id?: string | number }>({
               </TableRow>
             ) : (
               paginatedData.map((row, index) => {
-                const rowId = row.id ?? index
+                const rowId = getRowIdentifier(row, index)
                 const isSelected = selectedIds.includes(rowId)
                 return (
                   <TableRow key={rowId} isSelected={isSelected}>
                     {selectable && (
                       <TableCell className="w-10 text-center">
-                        <input
-                          type="checkbox"
-                          aria-label={`Select row ${index + 1}`}
-                          checked={isSelected}
-                          onChange={() => handleSelectionToggle(rowId)}
-                          className="h-3.5 w-3.5 rounded border border-border text-primary focus:ring-1 focus:ring-primary/40 cursor-pointer"
-                        />
+                        <label className="inline-flex items-center justify-center cursor-pointer">
+                          <span className="sr-only">{`Select row ${index + 1}`}</span>
+                          <input
+                            id={`data-table-select-row-${rowId}`}
+                            name="selectTableRows"
+                            type="checkbox"
+                            suppressHydrationWarning
+                            aria-label={`Select row ${index + 1}`}
+                            checked={isSelected}
+                            onChange={() => handleSelectionToggle(rowId)}
+                            className="h-3.5 w-3.5 rounded border border-border text-primary focus:ring-1 focus:ring-primary/40 cursor-pointer"
+                          />
+                        </label>
                       </TableCell>
                     )}
                     {columns.map((column) => (

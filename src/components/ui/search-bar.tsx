@@ -228,7 +228,11 @@ export const SearchBar = React.forwardRef<HTMLInputElement, SearchBarProps>(
               else if (ref) (ref as React.MutableRefObject<HTMLInputElement | null>).current = node
             }}
             id={props.id || "search-bar-input"}
+            name={props.name || "search"}
+            aria-label={props["aria-label"] || label || "Search"}
             type="search"
+            autoComplete="off"
+            suppressHydrationWarning
             role="combobox"
             aria-autocomplete="list"
             aria-expanded={showSuggestions}

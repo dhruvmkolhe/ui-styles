@@ -26,6 +26,28 @@
     --radius: 0.5rem;
   }
 
+  .light {
+    --background: 210 20% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 174 51% 39%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 16% 93%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 16% 93%;
+    --muted-foreground: 218 14% 46%;
+    --accent: 210 16% 93%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 214 32% 90%;
+    --input: 214 32% 90%;
+    --ring: 174 51% 39%;
+  }
+
   .dark {
     --background: 222 47% 11%;
     --foreground: 210 20% 98%;
@@ -55,12 +77,12 @@
   }
   html {
     scroll-behavior: smooth;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
   ::selection {
     @apply bg-teal-500/25 text-teal-950 dark:text-teal-100;
@@ -117,5 +139,13 @@
   }
   .code-scroll::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.22);
+  }
+
+  /* Support responsive modal preview when switched to mobile viewport */
+  [data-viewport="mobile"] .nav-desktop-links {
+    display: none !important;
+  }
+  [data-viewport="mobile"] .nav-mobile-toggle {
+    display: inline-flex !important;
   }
 }

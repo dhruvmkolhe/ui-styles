@@ -15,7 +15,7 @@ import { FilePreview } from "@/components/ui/file-preview"
 export function ImagePreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
   const k = getStyleFormKit(slug, mode)
   return (
-    <div className={`p-6 ${k.panel} ${k.radius} border space-y-6 max-w-lg mx-auto`}>
+    <div className={`w-full p-6 ${k.panel} ${k.radius} border space-y-6 max-w-lg mx-auto`}>
       <Image src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=800&q=80" alt="Gradient" className={`w-full h-64 ${k.radius}`} fallbackText="Image failed to load" />
     </div>
   )
@@ -24,7 +24,7 @@ export function ImagePreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
 export function ImageGalleryPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
   const k = getStyleFormKit(slug, mode)
   return (
-    <div className={`p-6 ${k.panel} ${k.radius} border space-y-6 max-w-2xl mx-auto`}>
+    <div className={`w-full p-6 ${k.panel} ${k.radius} border space-y-6 max-w-2xl mx-auto`}>
       <ImageGallery columns={3}>
         {[1, 2, 3, 4, 5, 6].map((i) => (
           <ImageGalleryItem key={i} className={k.radius}>
@@ -39,7 +39,7 @@ export function ImageGalleryPreview({ slug, mode }: { slug: StyleSlug; mode: Mod
 export function CarouselPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
   const k = getStyleFormKit(slug, mode)
   return (
-    <div className={`p-6 ${k.panel} ${k.radius} border space-y-6 max-w-2xl mx-auto`}>
+    <div className={`w-full p-6 ${k.panel} ${k.radius} border space-y-6 max-w-2xl mx-auto`}>
       <Carousel>
         {[1, 2, 3, 4].map((i) => (
           <CarouselItem key={i}>
@@ -54,7 +54,7 @@ export function CarouselPreview({ slug, mode }: { slug: StyleSlug; mode: Mode })
 export function VideoPlayerPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
   const k = getStyleFormKit(slug, mode)
   return (
-    <div className={`p-6 ${k.panel} ${k.radius} border space-y-6 max-w-2xl mx-auto`}>
+    <div className={`w-full p-6 ${k.panel} ${k.radius} border space-y-6 max-w-2xl mx-auto`}>
       <VideoPlayer src="https://www.w3schools.com/html/mov_bbb.mp4" className={`w-full aspect-video ${k.radius}`} />
     </div>
   )
@@ -63,7 +63,11 @@ export function VideoPlayerPreview({ slug, mode }: { slug: StyleSlug; mode: Mode
 export function AudioPlayerPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
   const k = getStyleFormKit(slug, mode)
   return (
-    <div className={`p-6 ${k.panel} ${k.radius} border space-y-6 max-w-md mx-auto`}>
+    <div className={`w-full p-6 ${k.panel} ${k.radius} border space-y-4 max-w-md mx-auto`}>
+      <div className="space-y-1">
+        <h4 className={`text-sm font-semibold ${k.strong}`}>Acoustic Resonance</h4>
+        <p className={`text-xs ${k.muted}`}>Sample Audio Track · 0:01</p>
+      </div>
       <AudioPlayer src="https://www.w3schools.com/html/horse.ogg" className={`w-full ${k.radius}`} />
     </div>
   )
@@ -72,10 +76,10 @@ export function AudioPlayerPreview({ slug, mode }: { slug: StyleSlug; mode: Mode
 export function LightboxPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
   const k = getStyleFormKit(slug, mode)
   return (
-    <div className={`p-6 ${k.panel} ${k.radius} border space-y-6 max-w-md mx-auto flex justify-center`}>
+    <div className={`w-full p-6 ${k.panel} ${k.radius} border space-y-6 max-w-md mx-auto flex justify-center`}>
       <div className="w-64 h-64">
         <Lightbox alt="A beautiful landscape" className={k.radius}>
-          <Image src="https://images.unsplash.com/photo-1506744626753-1fa7604eb466?w=1200&q=80" alt="Landscape" className="object-cover w-full h-full" />
+          <Image src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200&q=80" alt="Landscape" className="object-cover w-full h-full" />
         </Lightbox>
       </div>
     </div>
@@ -85,7 +89,7 @@ export function LightboxPreview({ slug, mode }: { slug: StyleSlug; mode: Mode })
 export function MediaCardPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
   const k = getStyleFormKit(slug, mode)
   return (
-    <div className={`p-6 ${k.panel} ${k.radius} border space-y-6 max-w-md mx-auto`}>
+    <div className={`w-full p-6 ${k.panel} ${k.radius} border space-y-6 max-w-md mx-auto`}>
       <MediaCard className={k.radius}>
         <MediaCardImage>
           <Image src="https://images.unsplash.com/photo-1542204165-65bf26472b9b?w=800&q=80" alt="Photography" className="aspect-video" />
@@ -102,7 +106,7 @@ export function MediaCardPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }
 export function CodeBlockPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
   const k = getStyleFormKit(slug, mode)
   return (
-    <div className={`p-6 ${k.panel} ${k.radius} border space-y-6 max-w-2xl mx-auto`}>
+    <div className={`w-full p-6 ${k.panel} ${k.radius} border space-y-6 max-w-2xl mx-auto`}>
       <CodeBlock language="typescript" code={`function greet(name: string) {\n  console.log(\`Hello, \${name}!\`);\n}`} className={k.radius} />
     </div>
   )
@@ -112,7 +116,7 @@ export function MarkdownPreviewComponent({ slug, mode }: { slug: StyleSlug; mode
   const k = getStyleFormKit(slug, mode)
   const markdown = `# Welcome to Markdown\n\nThis is a **bold** statement and this is *italic*.\n\n- Item 1\n- Item 2\n\n> A blockquote goes here.\n\n\`\`\`javascript\nconst test = true;\nconsole.log(test);\n\`\`\``
   return (
-    <div className={`p-6 ${k.panel} ${k.radius} border max-w-2xl mx-auto`}>
+    <div className={`w-full p-6 ${k.panel} ${k.radius} border max-w-2xl mx-auto`}>
       <MarkdownPreview content={markdown} />
     </div>
   )
@@ -121,7 +125,7 @@ export function MarkdownPreviewComponent({ slug, mode }: { slug: StyleSlug; mode
 export function FilePreviewComponent({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
   const k = getStyleFormKit(slug, mode)
   return (
-    <div className={`p-6 ${k.panel} ${k.radius} border space-y-4 max-w-md mx-auto`}>
+    <div className={`w-full p-6 ${k.panel} ${k.radius} border space-y-4 max-w-md mx-auto`}>
       <FilePreview fileName="annual-report.pdf" fileSize="2.4 MB" fileType="document" onDownload={() => alert('Downloading...')} className={k.radius} />
       <FilePreview fileName="presentation.key" fileSize="14.1 MB" fileType="unknown" className={k.radius} />
       <FilePreview fileName="vacation.jpg" fileSize="4.2 MB" fileType="image" className={k.radius} />

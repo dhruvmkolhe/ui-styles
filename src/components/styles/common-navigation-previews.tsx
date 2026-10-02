@@ -210,7 +210,7 @@ export function SidebarPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) 
         >
           {/* Header */}
           <div className={cn("h-12 border-b border-current/10 flex items-center px-3 gap-2 shrink-0", isCollapsed && "justify-center")}>
-            <div className="h-7 w-7 rounded-md bg-teal-600 text-white flex items-center justify-center font-bold text-xs shrink-0">
+            <div className={cn("h-7 w-7 flex items-center justify-center font-bold text-xs shrink-0", k.radius, k.btnPrimarySm)}>
               UI
             </div>
             {!isCollapsed && (
@@ -315,13 +315,24 @@ export function NavigationMenuPreview({ slug, mode }: { slug: StyleSlug; mode: M
   const k = getStyleFormKit(slug, mode)
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
   const [selectedDest, setSelectedDest] = useState("Home")
+  const navRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setOpenDropdown(null)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
 
   const toggle = (id: string) => {
     setOpenDropdown(openDropdown === id ? null : id)
   }
 
   return (
-    <div className="mx-auto w-full max-w-lg space-y-4">
+    <div ref={navRef} className="mx-auto w-full max-w-lg space-y-4">
       <div className="flex items-center justify-between pb-1">
         <span className={cn("text-xs font-mono tracking-wider uppercase", k.muted)}>
           Top Navigation Bar
@@ -335,7 +346,7 @@ export function NavigationMenuPreview({ slug, mode }: { slug: StyleSlug; mode: M
         <nav aria-label="Demo Main Navigation" className="flex items-center justify-between gap-2">
           {/* Brand */}
           <div className="flex items-center gap-2 pl-2">
-            <Compass className="h-5 w-5 text-teal-600 dark:text-teal-400" />
+            <Compass className={cn("h-5 w-5", k.strong)} />
             <span className={cn("font-bold text-xs tracking-tight", k.strong)}>HUB</span>
           </div>
 
@@ -362,7 +373,7 @@ export function NavigationMenuPreview({ slug, mode }: { slug: StyleSlug; mode: M
                 <div
                   role="region"
                   className={cn(
-                    "absolute top-full left-0 mt-2 w-56 p-2 border shadow-xl z-50 animate-in fade-in-0 zoom-in-95",
+                    "absolute top-full left-0 mt-2 w-56 p-2 border shadow-xl z-20 animate-in fade-in-0 zoom-in-95",
                     k.panel,
                     k.radius
                   )}
@@ -441,8 +452,19 @@ export function NavigationMenuPreview({ slug, mode }: { slug: StyleSlug; mode: M
 /* ========================================================================== */
 export function MenuBarPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
   const k = getStyleFormKit(slug, mode)
-  const [openMenu, setOpenMenu] = useState<string | null>("Edit")
+  const [openMenu, setOpenMenu] = useState<string | null>(null)
   const [lastAction, setLastAction] = useState("Ready")
+  const menuBarRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuBarRef.current && !menuBarRef.current.contains(e.target as Node)) {
+        setOpenMenu(null)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
 
   const execute = (action: string) => {
     setLastAction(action)
@@ -450,7 +472,7 @@ export function MenuBarPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) 
   }
 
   return (
-    <div className="mx-auto w-full max-w-lg space-y-4">
+    <div ref={menuBarRef} className="mx-auto w-full max-w-lg space-y-4">
       <div className="flex items-center justify-between pb-1">
         <span className={cn("text-xs font-mono tracking-wider uppercase", k.muted)}>
           Desktop Application Menubar
@@ -484,7 +506,7 @@ export function MenuBarPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) 
                   <div
                     role="menu"
                     className={cn(
-                      "absolute left-0 top-full mt-1 w-48 p-1 border shadow-xl z-50 animate-in fade-in-0 zoom-in-95 space-y-0.5",
+                      "absolute left-0 top-full mt-1 w-48 p-1 border shadow-xl z-20 animate-in fade-in-0 zoom-in-95 space-y-0.5",
                       k.panel,
                       k.radius
                     )}
@@ -598,7 +620,7 @@ export function StepperPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) 
   ]
 
   return (
-    <div className="mx-auto w-full max-w-lg space-y-4">
+    <div className="mx-auto w-full max-w-2xl space-y-4">
       <div className="flex items-center justify-between pb-1">
         <span className={cn("text-xs font-mono tracking-wider uppercase", k.muted)}>
           Multi-Step Process Stepper
@@ -627,7 +649,7 @@ export function StepperPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) 
         </div>
       </div>
 
-      <div className={cn("p-5 border", k.panel, k.radius)}>
+      <div className={cn("p-4 sm:p-5 border overflow-x-auto", k.panel, k.radius)}>
         <Stepper
           steps={steps}
           currentStep={currentStep}
@@ -695,7 +717,7 @@ export function BottomNavigationPreview({ slug, mode }: { slug: StyleSlug; mode:
       <div className={cn("border overflow-hidden rounded-2xl shadow-lg flex flex-col h-[220px]", k.panel)}>
         {/* Mock Screen Content */}
         <div className="flex-1 p-4 flex flex-col items-center justify-center text-center">
-          <div className="h-10 w-10 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center mb-2">
+          <div className="h-10 w-10 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-2">
             {items.find((i) => i.id === activeTab)?.icon}
           </div>
           <div className={cn("text-xs font-bold capitalize", k.strong)}>
@@ -711,7 +733,7 @@ export function BottomNavigationPreview({ slug, mode }: { slug: StyleSlug; mode:
           items={items}
           value={activeTab}
           onValueChange={setActiveTab}
-          className="border-t border-current/10"
+          className={cn("border-t border-current/10", k.panelSoft)}
         />
       </div>
     </div>
@@ -783,22 +805,22 @@ export function CommandMenuPreview({ slug, mode }: { slug: StyleSlug; mode: Mode
           type="button"
           onClick={() => setIsOpen(true)}
           className={cn(
-            "w-full max-w-sm flex items-center justify-between px-3.5 py-2.5 rounded-lg border text-xs font-medium transition-all shadow-xs",
+            "w-full max-w-sm flex items-center justify-between px-3.5 py-2.5 border text-xs font-medium transition-all shadow-xs hover:border-primary",
             k.input,
-            "hover:border-teal-500"
+            k.radius
           )}
         >
           <span className="flex items-center gap-2 text-muted-foreground">
-            <Search className="h-4 w-4 text-teal-600 dark:text-teal-400" />
+            <Search className={cn("h-4 w-4", k.strong)} />
             <span>Search commands or jump to...</span>
           </span>
-          <kbd className="rounded border border-current/20 bg-current/10 px-1.5 py-0.5 font-mono text-[10px]">
+          <kbd className={cn("border border-current/20 bg-current/10 px-1.5 py-0.5 font-mono text-[10px]", k.radius)}>
             ⌘K
           </kbd>
         </button>
 
         {selectedAction && (
-          <div className="text-xs text-teal-600 dark:text-teal-400 font-semibold flex items-center gap-1.5 animate-in fade-in-0">
+          <div className={cn("text-xs font-semibold flex items-center gap-1.5 animate-in fade-in-0", k.strong)}>
             <Check className="h-3.5 w-3.5" />
             <span>Executed: {selectedAction}</span>
           </div>
@@ -830,7 +852,7 @@ export function LinkPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
           Link Variants &amp; Semantics
         </span>
         {clickedMessage && (
-          <span className="text-xs text-teal-600 dark:text-teal-400 font-medium">
+          <span className={cn("text-xs font-medium", k.strong)}>
             {clickedMessage}
           </span>
         )}
@@ -858,6 +880,7 @@ export function LinkPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
           <Link
             href="#"
             variant="subtle"
+            className={cn(k.muted, "hover:opacity-100 transition-opacity")}
             onClick={(e) => {
               e.preventDefault()
               setClickedMessage("Clicked: Subtle Link")
@@ -890,6 +913,7 @@ export function LinkPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
             href="#"
             variant="underline"
             underline="always"
+            className={cn("underline font-medium hover:opacity-80 transition-opacity", k.strong)}
             onClick={(e) => {
               e.preventDefault()
               setClickedMessage("Clicked: Underlined Link")
@@ -902,7 +926,7 @@ export function LinkPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
         {/* Disabled State */}
         <div className="flex items-center justify-between">
           <span className={k.muted}>Disabled Link:</span>
-          <Link href="#" disabled>
+          <Link href="#" disabled className={k.muted}>
             Pro Features (Locked)
           </Link>
         </div>

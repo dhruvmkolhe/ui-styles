@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import type { Mode } from "@/lib/styles/types";
 import { neoGeo } from "./kit";
-import { ArrowRight, X, ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 
 export function ButtonPreview({ mode }: { mode: Mode }) {
   const k = neoGeo(mode);
@@ -49,20 +49,41 @@ export function CardPreview({ mode }: { mode: Mode }) {
 
 export function NavbarPreview({ mode }: { mode: Mode }) {
   const k = neoGeo(mode);
+  const [open, setOpen] = useState(false);
   return (
-    <header className={`${k.bar} flex items-center justify-between px-6 py-4 w-full`}>
-      <div className="flex items-center gap-3">
-        <div className="w-4 h-4 bg-[#FFD700] border border-black rotate-45"></div>
-        <a href="#" className="font-black text-sm uppercase tracking-wider text-[#00F0FF]">NEO_GEO_</a>
+    <header className={`${k.bar} flex flex-col justify-center px-4 py-3 sm:px-6 sm:py-4 w-full transition-all`}>
+      <div className="flex items-center justify-between gap-3 w-full">
+        <div className="flex items-center gap-2.5 shrink-0">
+          <div className="w-4 h-4 bg-[#FFD700] border border-black rotate-45"></div>
+          <a href="#" className="font-black text-xs sm:text-sm uppercase tracking-wider text-[#00F0FF]">NEO_GEO_</a>
+        </div>
+
+        <nav className="hidden md:flex nav-desktop-links items-center gap-6 sm:gap-8 font-mono text-xs uppercase tracking-widest font-black">
+          <a href="#" className="text-[#FFD700] underline decoration-2 underline-offset-4">01. BLOCKS</a>
+          <a href="#" className={`${k.muted} hover:text-[#00F0FF]`}>02. ANGLES</a>
+          <a href="#" className={`${k.muted} hover:text-[#00F0FF]`}>03. COLOR</a>
+        </nav>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <button className={`${k.btnPrimarySm} text-xs px-2.5 py-1.5`}>ENTER MATRIX</button>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="md:hidden nav-mobile-toggle p-1.5 border-2 border-[#00F0FF] text-[#00F0FF] hover:bg-[#00F0FF] hover:text-black transition-colors"
+            aria-label="Toggle menu"
+          >
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
+        </div>
       </div>
 
-      <nav className="hidden md:flex items-center gap-8 font-mono text-xs uppercase tracking-widest font-black">
-        <a href="#" className="text-[#FFD700] underline decoration-2 underline-offset-4">01. BLOCKS</a>
-        <a href="#" className={`${k.muted} hover:text-[#00F0FF]`}>02. ANGLES</a>
-        <a href="#" className={`${k.muted} hover:text-[#00F0FF]`}>03. COLOR</a>
-      </nav>
-
-      <button className={k.btnPrimarySm}>ENTER MATRIX</button>
+      {open && (
+        <nav className="pt-3 mt-3 border-t-2 border-[#00F0FF]/30 flex flex-col gap-2 font-mono text-xs uppercase tracking-widest font-black animate-in fade-in-0">
+          <a href="#" className="py-1 text-[#FFD700]">01. BLOCKS</a>
+          <a href="#" className={`py-1 ${k.muted} hover:text-[#00F0FF]`}>02. ANGLES</a>
+          <a href="#" className={`py-1 ${k.muted} hover:text-[#00F0FF]`}>03. COLOR</a>
+        </nav>
+      )}
     </header>
   );
 }
@@ -71,8 +92,17 @@ export function InputPreview({ mode }: { mode: Mode }) {
   const k = neoGeo(mode);
   return (
     <div className="w-full max-w-sm space-y-1.5">
-      <label className={k.label}>01 // INPUT GEOMETRIC CODE</label>
-      <input type="text" placeholder="GEO-PURPLE-800" className={k.input} />
+      <label className={k.label} htmlFor="geo-code">01 // INPUT GEOMETRIC CODE</label>
+      <input
+        id="geo-code"
+        name="geometricCode"
+        aria-label="Input Geometric Code"
+        type="text"
+        autoComplete="off"
+        suppressHydrationWarning
+        placeholder="GEO-PURPLE-800"
+        className={k.input}
+      />
       <p className="font-mono text-[10px] text-[#FF6B6B] font-bold">ELECTRIC COLOR OVERLAY</p>
     </div>
   );

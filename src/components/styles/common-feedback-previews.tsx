@@ -967,17 +967,30 @@ export function CookieBannerPreview({ slug, mode }: { slug: StyleSlug; mode: Mod
               </div>
 
               <div className="space-y-2.5">
-                <label className="flex items-start gap-2.5 opacity-60 cursor-not-allowed">
-                  <input type="checkbox" checked disabled className="mt-0.5" />
+                <label htmlFor="cookie-essential" className="flex items-start gap-2.5 opacity-60 cursor-not-allowed">
+                  <input
+                    id="cookie-essential"
+                    name="cookieEssential"
+                    aria-label="Essential System Storage"
+                    type="checkbox"
+                    suppressHydrationWarning
+                    checked
+                    disabled
+                    className="mt-0.5"
+                  />
                   <div>
                     <strong className="block font-semibold">Essential System Storage</strong>
                     <span className={k.faint}>Required for CSRF protection and theme switching.</span>
                   </div>
                 </label>
 
-                <label className="flex items-start gap-2.5 cursor-pointer">
+                <label htmlFor="cookie-analytics" className="flex items-start gap-2.5 cursor-pointer">
                   <input
+                    id="cookie-analytics"
+                    name="cookieAnalytics"
+                    aria-label="Analytics Telemetry"
                     type="checkbox"
+                    suppressHydrationWarning
                     checked={analytics}
                     onChange={(e) => setAnalytics(e.target.checked)}
                     className="mt-0.5"
@@ -988,9 +1001,13 @@ export function CookieBannerPreview({ slug, mode }: { slug: StyleSlug; mode: Mod
                   </div>
                 </label>
 
-                <label className="flex items-start gap-2.5 cursor-pointer">
+                <label htmlFor="cookie-marketing" className="flex items-start gap-2.5 cursor-pointer">
                   <input
+                    id="cookie-marketing"
+                    name="cookieMarketing"
+                    aria-label="Custom Preferences"
                     type="checkbox"
+                    suppressHydrationWarning
                     checked={marketing}
                     onChange={(e) => setMarketing(e.target.checked)}
                     className="mt-0.5"

@@ -61,7 +61,7 @@ export default function ComponentsPage() {
               <p className="mt-1.5 flex-1 text-xs leading-relaxed text-muted-foreground">
                 {c.description}
               </p>
-              <div className="mt-5 flex items-center gap-2 border-t border-border pt-3.5">
+              <div className="mt-5 flex flex-wrap items-center gap-1.5 border-t border-border pt-3.5">
                 {LIVE.map((s) => (
                   <Link
                     key={s.slug}

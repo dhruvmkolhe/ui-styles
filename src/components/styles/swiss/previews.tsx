@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import type { Mode } from "@/lib/styles/types";
 import { swiss } from "./kit";
-import { ArrowRight, X, ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 
 export function ButtonPreview({ mode }: { mode: Mode }) {
   const k = swiss(mode);
@@ -45,20 +45,41 @@ export function CardPreview({ mode }: { mode: Mode }) {
 
 export function NavbarPreview({ mode }: { mode: Mode }) {
   const k = swiss(mode);
+  const [open, setOpen] = useState(false);
   return (
-    <header className={`${k.bar} flex items-center justify-between px-6 py-4 w-full`}>
-      <div className="flex items-center gap-3">
-        <span className="h-3 w-3 bg-[#E30613] inline-block"></span>
-        <a href="#" className="font-black text-sm uppercase tracking-tighter">HELVETICA ARCHIVE</a>
+    <header className={`${k.bar} flex flex-col justify-center px-4 py-3 sm:px-6 sm:py-4 w-full transition-all`}>
+      <div className="flex items-center justify-between gap-3 w-full">
+        <div className="flex items-center gap-2.5 shrink-0">
+          <span className="h-3 w-3 bg-[#E30613] inline-block"></span>
+          <a href="#" className="font-black text-xs sm:text-sm uppercase tracking-tighter">HELVETICA ARCHIVE</a>
+        </div>
+
+        <nav className="hidden md:flex nav-desktop-links items-center gap-6 sm:gap-8 text-xs font-mono uppercase tracking-widest">
+          <a href="#" className={`${k.text} hover:text-[#E30613] transition-colors`}>01. PRINCIPLES</a>
+          <a href="#" className={`${k.muted} hover:text-[#E30613] transition-colors`}>02. GRID</a>
+          <a href="#" className={`${k.muted} hover:text-[#E30613] transition-colors`}>03. POSTERS</a>
+        </nav>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <button className={`${k.btnPrimarySm} text-xs px-2.5 py-1.5`}>CONTACT</button>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="md:hidden nav-mobile-toggle p-1.5 border border-[#E30613] text-[#E30613] hover:bg-[#E30613] hover:text-white transition-colors"
+            aria-label="Toggle menu"
+          >
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
+        </div>
       </div>
 
-      <nav className="hidden md:flex items-center gap-8 text-xs font-mono uppercase tracking-widest">
-        <a href="#" className={`${k.text} hover:text-[#E30613] transition-colors`}>01. PRINCIPLES</a>
-        <a href="#" className={`${k.muted} hover:text-[#E30613] transition-colors`}>02. GRID</a>
-        <a href="#" className={`${k.muted} hover:text-[#E30613] transition-colors`}>03. POSTERS</a>
-      </nav>
-
-      <button className={k.btnPrimarySm}>CONTACT</button>
+      {open && (
+        <nav className="pt-3 mt-3 border-t border-neutral-300 dark:border-neutral-700 flex flex-col gap-2 text-xs font-mono uppercase tracking-widest animate-in fade-in-0">
+          <a href="#" className={`py-1 ${k.text} hover:text-[#E30613] transition-colors`}>01. PRINCIPLES</a>
+          <a href="#" className={`py-1 ${k.muted} hover:text-[#E30613] transition-colors`}>02. GRID</a>
+          <a href="#" className={`py-1 ${k.muted} hover:text-[#E30613] transition-colors`}>03. POSTERS</a>
+        </nav>
+      )}
     </header>
   );
 }
@@ -67,8 +88,8 @@ export function InputPreview({ mode }: { mode: Mode }) {
   const k = swiss(mode);
   return (
     <div className="w-full max-w-sm space-y-1.5">
-      <label className={k.label}>01. REGISTRATION EMAIL</label>
-      <input type="email" placeholder="ARCHIVE@DESIGN.CH" className={k.input} />
+      <label className={k.label} htmlFor="swiss-email">01. REGISTRATION EMAIL</label>
+      <input id="swiss-email" name="email" aria-label="Registration Email" type="email" placeholder="ARCHIVE@DESIGN.CH" className={k.input} suppressHydrationWarning />
       <p className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest">REQUIRES VALID INSTITUTIONAL DOMAIN</p>
     </div>
   );

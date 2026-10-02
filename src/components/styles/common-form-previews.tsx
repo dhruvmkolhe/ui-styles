@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   Check,
   Minus,
@@ -16,6 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 import type { Mode, StyleSlug } from "@/lib/styles/types";
 import { getStyleFormKit } from "./common-form-kit";
+import { DateInput, type DateDisplayFormat } from "@/components/ui/date-input";
 
 /* ========================================================================== */
 /* 1 · Checkbox Preview                                                       */
@@ -38,15 +39,13 @@ export function CheckboxPreview({ slug, mode }: { slug: StyleSlug; mode: Mode })
           aria-checked={checked1}
           onClick={() => setChecked1(!checked1)}
           className={cn(
-            "relative mt-0.5 flex h-4.5 w-4.5 shrink-0 items-center justify-center border transition-all",
+            "relative mt-0.5 flex h-[18px] w-[18px] shrink-0 items-center justify-center border transition-all",
             k.radius,
             k.focusRing,
-            checked1
-              ? k.checkboxAccent
-              : cn("border-current/40 bg-transparent", k.text)
+            checked1 ? k.checkboxAccent : k.checkboxUnchecked
           )}
         >
-          {checked1 && <Check className="h-3 w-3 stroke-[2.5]" />}
+          {checked1 && <Check className="h-3.5 w-3.5 stroke-[2.5]" />}
         </button>
         <div className="grid gap-0.5">
           <span className={cn("text-xs font-semibold leading-tight", k.text)}>
@@ -66,15 +65,13 @@ export function CheckboxPreview({ slug, mode }: { slug: StyleSlug; mode: Mode })
           aria-checked={checked2}
           onClick={() => setChecked2(!checked2)}
           className={cn(
-            "relative mt-0.5 flex h-4.5 w-4.5 shrink-0 items-center justify-center border transition-all",
+            "relative mt-0.5 flex h-[18px] w-[18px] shrink-0 items-center justify-center border transition-all",
             k.radius,
             k.focusRing,
-            checked2
-              ? k.checkboxAccent
-              : cn("border-current/40 bg-transparent", k.text)
+            checked2 ? k.checkboxAccent : k.checkboxUnchecked
           )}
         >
-          {checked2 && <Check className="h-3 w-3 stroke-[2.5]" />}
+          {checked2 && <Check className="h-3.5 w-3.5 stroke-[2.5]" />}
         </button>
         <div className="grid gap-0.5">
           <span className={cn("text-xs font-semibold leading-tight", k.text)}>
@@ -94,15 +91,13 @@ export function CheckboxPreview({ slug, mode }: { slug: StyleSlug; mode: Mode })
           aria-checked="mixed"
           onClick={() => setIndeterminate(!indeterminate)}
           className={cn(
-            "relative mt-0.5 flex h-4.5 w-4.5 shrink-0 items-center justify-center border transition-all",
+            "relative mt-0.5 flex h-[18px] w-[18px] shrink-0 items-center justify-center border transition-all",
             k.radius,
             k.focusRing,
-            indeterminate
-              ? k.checkboxAccent
-              : cn("border-current/40 bg-transparent", k.text)
+            indeterminate ? k.checkboxAccent : k.checkboxUnchecked
           )}
         >
-          {indeterminate && <Minus className="h-3 w-3 stroke-[2.5]" />}
+          {indeterminate && <Minus className="h-3.5 w-3.5 stroke-[2.5]" />}
         </button>
         <div className="grid gap-0.5">
           <span className={cn("text-xs font-semibold leading-tight", k.text)}>
@@ -122,12 +117,12 @@ export function CheckboxPreview({ slug, mode }: { slug: StyleSlug; mode: Mode })
           aria-checked={true}
           disabled
           className={cn(
-            "relative mt-0.5 flex h-4.5 w-4.5 shrink-0 items-center justify-center border cursor-not-allowed",
+            "relative mt-0.5 flex h-[18px] w-[18px] shrink-0 items-center justify-center border cursor-not-allowed",
             k.radius,
             k.checkboxAccent
           )}
         >
-          <Check className="h-3 w-3 stroke-[2.5]" />
+          <Check className="h-3.5 w-3.5 stroke-[2.5]" />
         </button>
         <div className="grid gap-0.5">
           <span className={cn("text-xs font-semibold leading-tight", k.text)}>
@@ -152,17 +147,17 @@ export function CheckboxPreview({ slug, mode }: { slug: StyleSlug; mode: Mode })
               if (!termsChecked) setShowError(false);
             }}
             className={cn(
-              "relative mt-0.5 flex h-4.5 w-4.5 shrink-0 items-center justify-center border transition-all",
+              "relative mt-0.5 flex h-[18px] w-[18px] shrink-0 items-center justify-center border transition-all",
               k.radius,
               k.focusRing,
               termsChecked
                 ? k.checkboxAccent
                 : showError
-                ? "border-rose-500 bg-rose-500/10 ring-2 ring-rose-500/30"
-                : cn("border-current/40 bg-transparent", k.text)
+                ? "border-rose-500 bg-rose-500/10 ring-2 ring-rose-500/30 text-rose-500"
+                : k.checkboxUnchecked
             )}
           >
-            {termsChecked && <Check className="h-3 w-3 stroke-[2.5]" />}
+            {termsChecked && <Check className="h-3.5 w-3.5 stroke-[2.5]" />}
           </button>
           <div className="grid gap-0.5">
             <span className={cn("text-xs font-semibold leading-tight", k.text)}>
@@ -336,7 +331,7 @@ export function SelectPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
   const currentOption = options.find((o) => o.value === selectedVal);
 
   return (
-    <div className="mx-auto w-full max-w-sm space-y-2">
+    <div className="mx-auto w-full max-w-sm space-y-2 min-h-[300px] flex flex-col justify-start">
       <label className={k.label} htmlFor="currency-select">
         Primary Billing Currency
       </label>
@@ -441,6 +436,7 @@ export function TextareaPreview({ slug, mode }: { slug: StyleSlug; mode: Mode })
 
       <textarea
         id="bio-textarea"
+        name="bioTextarea"
         rows={4}
         value={text}
         maxLength={max}
@@ -544,6 +540,9 @@ export function FormPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
           </label>
           <input
             id="form-name"
+            name="fullName"
+            aria-label="Full Name"
+            suppressHydrationWarning
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Ada Lovelace"
@@ -562,7 +561,10 @@ export function FormPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
           </label>
           <input
             id="form-email"
+            name="emailAddress"
+            aria-label="Email Address"
             type="email"
+            suppressHydrationWarning
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="ada@domain.org"
@@ -581,6 +583,8 @@ export function FormPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
           </label>
           <select
             id="form-role"
+            name="projectRole"
+            aria-label="Project Discipline"
             value={role}
             onChange={(e) => setRole(e.target.value)}
             className={cn("w-full text-xs appearance-none", k.input)}
@@ -636,38 +640,78 @@ export function LabelPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
   const k = getStyleFormKit(slug, mode);
 
   return (
-    <div className="mx-auto w-full max-w-sm space-y-4">
-      {/* 1. Standard */}
-      <div className="p-3 border border-current/10 rounded">
-        <label className={k.label}>Standard Field Label</label>
-        <span className={cn("text-xs", k.muted)}>Default typographical weight and tracking</span>
+    <div className={cn(k.panel, "mx-auto w-full max-w-md p-5 sm:p-6 shadow-sm space-y-6")}>
+      {/* Component Header */}
+      <div className="flex items-center justify-between border-b border-current/10 pb-3">
+        <span className={cn("text-xs font-mono font-bold uppercase tracking-wider", k.muted)}>
+          Label Anatomy & Hierarchy
+        </span>
+        <span className={cn("text-[10px] font-mono px-2 py-0.5 rounded-full border border-current/20", k.faint)}>
+          Form Primitives
+        </span>
       </div>
 
-      {/* 2. Required */}
-      <div className="p-3 border border-current/10 rounded">
-        <label className={k.label}>
-          Required Field Label <span className="text-rose-500 ml-0.5">*</span>
+      {/* 1. Standard Field Label */}
+      <div className="space-y-1">
+        <label className={cn(k.label, "!mb-0 cursor-default")}>
+          Standard Field Label
         </label>
-        <span className={cn("text-xs", k.muted)}>Includes semantic required asterisk marker</span>
+        <p className={cn("text-[11px] leading-relaxed", k.muted)}>
+          Primary typographical visual weight with high contrast and balanced letterspacing.
+        </p>
       </div>
 
-      {/* 3. Optional */}
-      <div className="p-3 border border-current/10 rounded">
-        <label className={k.label}>
-          Secondary Phone <span className={cn("text-[10px] font-normal lowercase ml-1.5", k.faint)}>(optional)</span>
+      {/* 2. Required Field Label */}
+      <div className="space-y-1 pt-4 border-t border-current/10">
+        <label className={cn(k.label, "!mb-0 cursor-default flex items-center gap-1.5")}>
+          <span>Required Field Label</span>
+          <span className="text-rose-500 font-bold text-sm leading-none" aria-hidden="true">*</span>
+          <span className="sr-only">(required)</span>
         </label>
-        <span className={cn("text-xs", k.muted)}>Subtle badge clarifying non-mandatory nature</span>
+        <p className={cn("text-[11px] leading-relaxed", k.muted)}>
+          Includes high-contrast semantic required marker for mandatory form inputs.
+        </p>
       </div>
 
-      {/* 4. With Helper Info */}
-      <div className="p-3 border border-current/10 rounded">
-        <div className="flex items-center gap-1.5">
-          <label className={k.label}>Tax Identification Number</label>
-          <span title="VAT or EIN registered with local revenue authority" className="cursor-help text-xs opacity-60">
-            <Info className="h-3.5 w-3.5" />
+      {/* 3. Optional Field Label */}
+      <div className="space-y-1 pt-4 border-t border-current/10">
+        <div className="flex items-center justify-between gap-2">
+          <label className={cn(k.label, "!mb-0 cursor-default")}>
+            Secondary Phone Number
+          </label>
+          <span className={cn("text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded border border-current/20", k.faint)}>
+            Optional
           </span>
         </div>
-        <span className={cn("text-xs", k.muted)}>Integrated tooltip hint icon</span>
+        <p className={cn("text-[11px] leading-relaxed", k.muted)}>
+          Subtle metadata indicator clarifying non-mandatory nature without visual clutter.
+        </p>
+      </div>
+
+      {/* 4. Label with Contextual Info & Action */}
+      <div className="space-y-1 pt-4 border-t border-current/10">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1.5">
+            <label className={cn(k.label, "!mb-0 cursor-default")}>
+              Tax Identification Number
+            </label>
+            <span
+              title="VAT or EIN registered with local revenue authority"
+              className={cn("cursor-help inline-flex items-center opacity-65 transition-opacity hover:opacity-100", k.muted)}
+            >
+              <Info className="h-3.5 w-3.5" />
+            </span>
+          </div>
+          <button
+            type="button"
+            className={cn("text-[11px] font-medium hover:underline transition-colors shrink-0", k.strong)}
+          >
+            Where to find?
+          </button>
+        </div>
+        <p className={cn("text-[11px] leading-relaxed", k.muted)}>
+          Integrated inline tooltip hint icon and baseline-aligned contextual action link.
+        </p>
       </div>
     </div>
   );
@@ -689,6 +733,9 @@ export function FormFieldPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }
         <div className="relative flex items-center">
           <input
             id="demo-subdomain"
+            name="workspaceSubdomain"
+            aria-label="Workspace Subdomain"
+            suppressHydrationWarning
             defaultValue="acme-studio"
             className={cn("w-full text-xs font-mono", k.input)}
           />
@@ -708,6 +755,9 @@ export function FormFieldPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }
         </label>
         <input
           id="demo-error"
+          name="databaseConnectionUri"
+          aria-label="Database Connection URI"
+          suppressHydrationWarning
           defaultValue="postgres://localhost:5432"
           aria-invalid="true"
           className={cn("w-full text-xs font-mono border-rose-500 ring-2 ring-rose-500/20", k.input)}
@@ -727,46 +777,69 @@ export function FormFieldPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }
 export function DateInputPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
   const k = getStyleFormKit(slug, mode);
   const [date, setDate] = useState("2026-10-15");
+  const [displayFormat, setDisplayFormat] = useState<DateDisplayFormat>("YYYY-MM-DD");
 
   return (
     <div className="mx-auto w-full max-w-sm space-y-2">
-      <label className={k.label} htmlFor="date-input-field">
-        Target Delivery Date
-      </label>
-
-      <div className="relative flex items-center">
-        <div className="pointer-events-none absolute left-3 flex items-center justify-center opacity-60">
-          <Calendar className="h-4 w-4" />
-        </div>
-
-        <input
-          id="date-input-field"
-          type="date"
-          value={date}
-          min="2026-01-01"
-          max="2030-12-31"
-          onChange={(e) => setDate(e.target.value)}
-          className={cn(
-            "w-full pl-9 pr-9 text-xs transition-colors",
-            k.input,
-            k.focusRing
-          )}
-        />
-
-        {date && (
+      <div className="flex items-center justify-between">
+        <label className={k.label} htmlFor="date-input-field">
+          Target Delivery Date
+        </label>
+        {/* Format toggle: YYYY-MM-DD vs DD-MM-YYYY */}
+        <div className="inline-flex items-center rounded-md border border-current/15 bg-current/5 p-0.5 text-[10px]">
           <button
             type="button"
-            onClick={() => setDate("")}
-            className="absolute right-2.5 flex h-4 w-4 items-center justify-center rounded-full opacity-60 hover:opacity-100 transition-opacity"
-            title="Clear date"
+            onClick={() => setDisplayFormat("YYYY-MM-DD")}
+            className={cn(
+              "px-1.5 py-0.5 rounded font-mono transition-all",
+              displayFormat === "YYYY-MM-DD"
+                ? "bg-foreground text-background font-semibold shadow-xs"
+                : "opacity-60 hover:opacity-100"
+            )}
+            aria-label="Format YYYY-MM-DD"
+            aria-pressed={displayFormat === "YYYY-MM-DD"}
           >
-            <X className="h-3 w-3" />
+            YYYY-MM-DD
           </button>
-        )}
+          <button
+            type="button"
+            onClick={() => setDisplayFormat("DD-MM-YYYY")}
+            className={cn(
+              "px-1.5 py-0.5 rounded font-mono transition-all",
+              displayFormat === "DD-MM-YYYY"
+                ? "bg-foreground text-background font-semibold shadow-xs"
+                : "opacity-60 hover:opacity-100"
+            )}
+            aria-label="Format DD-MM-YYYY"
+            aria-pressed={displayFormat === "DD-MM-YYYY"}
+          >
+            DD-MM-YYYY
+          </button>
+        </div>
       </div>
 
+      <DateInput
+        id="date-input-field"
+        name="targetDeliveryDate"
+        aria-label="Target Delivery Date"
+        value={date}
+        onChange={setDate}
+        displayFormat={displayFormat}
+        min="2026-01-01"
+        max="2030-12-31"
+        className={cn(
+          k.input,
+          k.focusRing,
+          "!pl-10 !pr-10 text-xs transition-colors"
+        )}
+      />
+
       <div className="flex items-center justify-between text-[11px]">
-        <span className={k.faint}>Format: ISO-8601 (YYYY-MM-DD)</span>
+        <span className={k.faint}>
+          {displayFormat === "YYYY-MM-DD"
+            ? "Format: ISO-8601 (YYYY-MM-DD)"
+            : "Format: Localized (DD-MM-YYYY)"}
+        </span>
         <span className={cn("font-mono font-medium", k.muted)}>
           {date ? `Selected: ${date}` : "No date chosen"}
         </span>
@@ -807,7 +880,11 @@ export function NumberInputPreview({ slug, mode }: { slug: StyleSlug; mode: Mode
 
         <input
           id="number-stepper"
+          name="numberStepper"
+          aria-label="Border Radius Token (px)"
           type="number"
+          autoComplete="off"
+          suppressHydrationWarning
           value={val}
           min={min}
           max={max}
@@ -904,10 +981,13 @@ export function ShowcasePreview({ slug, mode }: { slug: StyleSlug; mode: Mode })
       <div className={cn("grid gap-4 p-5 border sm:grid-cols-2", k.panel, k.radius)}>
         {/* Input */}
         <div className="space-y-1">
-          <label className={k.label}>
+          <label htmlFor="showcase-api-endpoint" className={k.label}>
             API Endpoint Name {simRequired && <span className="text-rose-500">*</span>}
           </label>
           <input
+            id="showcase-api-endpoint"
+            name="apiEndpoint"
+            suppressHydrationWarning
             disabled={simDisabled}
             defaultValue="production-v3-cluster"
             aria-invalid={simError}
@@ -922,11 +1002,14 @@ export function ShowcasePreview({ slug, mode }: { slug: StyleSlug; mode: Mode })
 
         {/* Date */}
         <div className="space-y-1">
-          <label className={k.label}>
+          <label htmlFor="showcase-deployment-window" className={k.label}>
             Deployment Window {simRequired && <span className="text-rose-500">*</span>}
           </label>
           <input
+            id="showcase-deployment-window"
+            name="deploymentWindow"
             type="date"
+            suppressHydrationWarning
             disabled={simDisabled}
             defaultValue="2026-10-31"
             aria-invalid={simError}

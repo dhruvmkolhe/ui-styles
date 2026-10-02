@@ -50,6 +50,7 @@ export interface ResolvedStyleFormKit {
   radius: string;
   focusRing: string;
   checkboxAccent: string;
+  checkboxUnchecked: string;
   errorClasses: string;
 }
 
@@ -111,7 +112,7 @@ export function getStyleFormKit(slug: StyleSlug, mode: Mode): ResolvedStyleFormK
     focusRing = "focus:ring-2 focus:ring-violet-400/40";
   }
 
-  let checkboxAccent = "bg-primary text-primary-foreground";
+  let checkboxAccent = "bg-primary text-primary-foreground border-primary";
   if (slug === "brutalist" || slug === "neobrutalist") {
     checkboxAccent = "bg-[#FFDE00] text-black border-2 border-black shadow-[2px_2px_0_#000]";
   } else if (slug === "dark-tech") {
@@ -119,11 +120,85 @@ export function getStyleFormKit(slug: StyleSlug, mode: Mode): ResolvedStyleFormK
   } else if (slug === "swiss") {
     checkboxAccent = "bg-[#E30613] text-white border border-[#E30613]";
   } else if (slug === "art-deco") {
-    checkboxAccent = "bg-[#C9A961] text-black border border-[#F3E5AB]";
+    checkboxAccent = "bg-[#C9A961] text-black border border-[#C9A961]";
   } else if (slug === "japandi") {
-    checkboxAccent = isDark ? "bg-[#A98D6B] text-[#201B15]" : "bg-[#8B7355] text-white";
+    checkboxAccent = isDark ? "bg-[#A98D6B] text-[#201B15] border-[#A98D6B]" : "bg-[#8B7355] text-white border-[#8B7355]";
   } else if (slug === "retro-y2k") {
     checkboxAccent = "bg-[#FF2E93] text-white border-2 border-[#00E5FF]";
+  } else if (slug === "bauhaus") {
+    checkboxAccent = "bg-[#D62828] text-white border-2 border-black";
+  } else if (slug === "bento-grid") {
+    checkboxAccent = "bg-indigo-600 text-white border-indigo-500 shadow-sm";
+  } else if (slug === "editorial") {
+    checkboxAccent = isDark ? "bg-[#D6D3D1] text-[#1C1917] border-[#D6D3D1]" : "bg-[#1C1917] text-white border-[#1C1917]";
+  } else if (slug === "glassmorphism") {
+    checkboxAccent = "bg-gradient-to-br from-violet-500 to-indigo-600 text-white border-white/40 shadow-sm backdrop-blur-xs";
+  } else if (slug === "gradient-modern") {
+    checkboxAccent = "bg-gradient-to-r from-fuchsia-500 to-violet-600 text-white border-transparent";
+  } else if (slug === "kinetic") {
+    checkboxAccent = "bg-[#FF5500] text-white border-[#FF5500]";
+  } else if (slug === "luxury-minimal") {
+    checkboxAccent = isDark ? "bg-[#D4AF37] text-black border-[#D4AF37]" : "bg-[#996515] text-white border-[#996515]";
+  } else if (slug === "material") {
+    checkboxAccent = isDark ? "bg-[#D0BCFF] text-[#381E72] border-[#D0BCFF]" : "bg-[#6750A4] text-white border-[#6750A4]";
+  } else if (slug === "metropolitan") {
+    checkboxAccent = "bg-blue-600 text-white border-blue-600";
+  } else if (slug === "minimalist") {
+    checkboxAccent = isDark ? "bg-white text-black border-white" : "bg-neutral-900 text-white border-neutral-900";
+  } else if (slug === "modernist") {
+    checkboxAccent = "bg-[#C85A32] text-white border-[#C85A32]";
+  } else if (slug === "monochromatic") {
+    checkboxAccent = "bg-blue-600 text-white border-blue-600";
+  } else if (slug === "neo-geo") {
+    checkboxAccent = "bg-[#8A2BE2] text-white border-2 border-[#00F0FF]";
+  } else if (slug === "neomorphism") {
+    checkboxAccent = isDark ? "bg-[#2d3239] text-[#00e5ff] border-transparent shadow-[inset_2px_2px_4px_rgba(0,0,0,0.6),inset_-2px_-2px_4px_rgba(255,255,255,0.05)]" : "bg-[#e2e8f0] text-blue-600 border-transparent shadow-[inset_2px_2px_4px_rgba(0,0,0,0.15),inset_-2px_-2px_4px_rgba(255,255,255,0.7)]";
+  } else if (slug === "organic") {
+    checkboxAccent = "bg-[#52796F] text-white border-[#52796F]";
+  } else if (slug === "retro-futuristic") {
+    checkboxAccent = "bg-[#FF00AA] text-white border-[#FF00AA] shadow-[0_0_8px_#FF00AA]";
+  } else if (slug === "scandinavian") {
+    checkboxAccent = "bg-[#4A7C59] text-white border-[#4A7C59]";
+  } else if (slug === "typography-first") {
+    checkboxAccent = isDark ? "bg-white text-black border-white" : "bg-black text-white border-black";
+  }
+
+  let checkboxUnchecked = isDark
+    ? "border-neutral-700 bg-neutral-900/60 hover:border-neutral-500"
+    : "border-neutral-300 bg-white hover:border-neutral-400";
+
+  if (slug === "japandi") {
+    checkboxUnchecked = isDark
+      ? "border-[#A98D6B]/30 bg-[#241E16] text-[#EDE6D8] hover:border-[#A98D6B]/60"
+      : "border-[#8B7355]/30 bg-[#FBF8F1] text-[#3D3529] hover:border-[#8B7355]/60";
+  } else if (slug === "brutalist" || slug === "neobrutalist") {
+    checkboxUnchecked = isDark
+      ? "border-2 border-white bg-black hover:bg-neutral-900"
+      : "border-2 border-black bg-white shadow-[2px_2px_0_#000] hover:bg-neutral-50";
+  } else if (slug === "dark-tech") {
+    checkboxUnchecked = "border border-[#00FF41]/40 bg-black/80 hover:border-[#00FF41] hover:shadow-[0_0_6px_rgba(0,255,65,0.3)]";
+  } else if (slug === "glassmorphism") {
+    checkboxUnchecked = isDark
+      ? "border border-white/20 bg-white/5 backdrop-blur-xs hover:border-white/40"
+      : "border border-black/15 bg-white/40 backdrop-blur-xs hover:border-black/30";
+  } else if (slug === "art-deco") {
+    checkboxUnchecked = isDark
+      ? "border border-[#C9A961]/40 bg-[#1A1813] hover:border-[#C9A961]"
+      : "border border-[#8C7335]/40 bg-[#FAF7EE] hover:border-[#8C7335]";
+  } else if (slug === "retro-y2k") {
+    checkboxUnchecked = "border-2 border-[#00E5FF] bg-[#120024] hover:bg-[#20003b]";
+  } else if (slug === "neomorphism") {
+    checkboxUnchecked = isDark
+      ? "border-transparent bg-[#1e232a] shadow-[inset_2px_2px_4px_rgba(0,0,0,0.5),inset_-2px_-2px_4px_rgba(255,255,255,0.05)]"
+      : "border-transparent bg-[#e6ecf4] shadow-[inset_2px_2px_4px_rgba(163,177,198,0.6),inset_-2px_-2px_4px_rgba(255,255,255,0.8)]";
+  } else if (slug === "bauhaus") {
+    checkboxUnchecked = isDark
+      ? "border-2 border-[#F1FAEE] bg-transparent hover:bg-white/10"
+      : "border-2 border-[#1D3557] bg-white hover:bg-neutral-100";
+  } else if (slug === "swiss") {
+    checkboxUnchecked = isDark
+      ? "border border-white bg-transparent hover:bg-white/10"
+      : "border border-black bg-white hover:bg-neutral-100";
   }
 
   const errorClasses = raw.errorBg || (isDark ? "border-rose-500 text-rose-400" : "border-rose-600 text-rose-600");
@@ -134,7 +209,7 @@ export function getStyleFormKit(slug: StyleSlug, mode: Mode): ResolvedStyleFormK
     isDark,
     stage: raw.stage || (isDark ? "bg-black" : "bg-white"),
     text: raw.text || (isDark ? "text-white" : "text-black"),
-    strong: raw.strong || raw.heading || "font-bold",
+    strong: raw.strong || raw.heading || raw.text || (isDark ? "text-white font-bold" : "text-neutral-900 font-bold"),
     muted: raw.muted || (isDark ? "text-neutral-400" : "text-neutral-600"),
     faint: raw.faint || (isDark ? "text-neutral-500" : "text-neutral-400"),
     panel: raw.panel || "border p-5 rounded-lg",
@@ -151,6 +226,7 @@ export function getStyleFormKit(slug: StyleSlug, mode: Mode): ResolvedStyleFormK
     radius,
     focusRing,
     checkboxAccent,
+    checkboxUnchecked,
     errorClasses,
   };
 }

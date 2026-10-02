@@ -85,6 +85,7 @@ export const StepProgress = React.forwardRef<HTMLDivElement, StepProgressProps>(
                 {/* Step Circle / Button */}
                 <button
                   type="button"
+                  aria-label={`Step ${idx + 1}: ${step.label}`}
                   disabled={!isClickable}
                   onClick={() => isClickable && onStepClick?.(idx)}
                   className={cn(

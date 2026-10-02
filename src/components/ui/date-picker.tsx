@@ -17,6 +17,10 @@ export interface DatePickerProps {
   disabled?: boolean
   clearable?: boolean
   className?: string
+  open?: boolean
+  defaultOpen?: boolean
+  onOpenChange?: (open: boolean) => void
+  popoverClassName?: string
 }
 
 export function formatDate(d?: Date): string {
@@ -39,11 +43,26 @@ export function DatePicker({
   disabled = false,
   clearable = true,
   className,
+  open: controlledOpen,
+  defaultOpen = false,
+  onOpenChange,
+  popoverClassName,
 }: DatePickerProps) {
   const [uncontrolledValue, setUncontrolledValue] = React.useState<Date | undefined>(defaultValue)
   const isControlled = controlledValue !== undefined
   const selectedDate = isControlled ? controlledValue : uncontrolledValue
-  const [open, setOpen] = React.useState(false)
+
+  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen)
+  const isControlledOpen = controlledOpen !== undefined
+  const open = isControlledOpen ? controlledOpen : uncontrolledOpen
+
+  const setOpen = React.useCallback(
+    (newOpen: boolean) => {
+      if (!isControlledOpen) setUncontrolledOpen(newOpen)
+      onOpenChange?.(newOpen)
+    },
+    [isControlledOpen, onOpenChange]
+  )
 
   const handleSelect = (d: Date | undefined) => {
     if (!isControlled) setUncontrolledValue(d)
@@ -62,46 +81,53 @@ export function DatePicker({
   }
 
   return (
-    <Popover open={open} onOpenChange={setOpen} placement="bottom" align="start">
-      <PopoverTrigger asChild>
-        <button
-          type="button"
-          disabled={disabled}
-          className={cn(
-            "flex h-9 w-full min-w-[220px] items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-xs shadow-xs transition-colors outline-none",
-            "hover:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
-            disabled && "opacity-50 pointer-events-none cursor-not-allowed",
-            !selectedDate && "text-muted-foreground",
-            className
-          )}
-        >
-          <span className="flex items-center gap-2 truncate">
-            <CalendarIcon className="h-4 w-4 shrink-0 text-muted-foreground" />
-            <span>{selectedDate ? formatDate(selectedDate) : placeholder}</span>
-          </span>
-
-          {clearable && selectedDate && !disabled && (
-            <span
-              role="button"
-              tabIndex={0}
-              onClick={handleClear}
-              className="rounded p-0.5 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors ml-2"
-              title="Clear date"
-              aria-label="Clear date"
-            >
-              <X className="h-3.5 w-3.5" />
+    <Popover open={open} onOpenChange={setOpen} placement="bottom" align="start" className="w-full">
+      <div className={cn("relative flex w-full min-w-[220px] items-center", className)}>
+        <PopoverTrigger asChild>
+          <button
+            type="button"
+            disabled={disabled}
+            className={cn(
+              "flex h-9 w-full items-center justify-between rounded-md border border-input bg-background pl-3 text-xs shadow-xs transition-colors outline-none",
+              clearable && selectedDate && !disabled ? "pr-8" : "pr-3",
+              "hover:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
+              disabled && "opacity-50 pointer-events-none cursor-not-allowed",
+              !selectedDate && "text-muted-foreground"
+            )}
+          >
+            <span className="flex items-center gap-2 truncate">
+              <CalendarIcon className="h-4 w-4 shrink-0 text-muted-foreground" />
+              <span>{selectedDate ? formatDate(selectedDate) : placeholder}</span>
             </span>
-          )}
-        </button>
-      </PopoverTrigger>
+          </button>
+        </PopoverTrigger>
 
-      <PopoverContent className="p-2 w-auto border border-border bg-popover shadow-xl rounded-xl z-50">
+        {clearable && selectedDate && !disabled && (
+          <button
+            type="button"
+            onClick={handleClear}
+            className="absolute right-2 z-10 rounded p-1 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+            title="Clear date"
+            aria-label="Clear date"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+        )}
+      </div>
+
+      <PopoverContent
+        className={cn(
+          "p-2 w-auto border border-border bg-popover text-popover-foreground shadow-2xl rounded-xl z-50",
+          popoverClassName
+        )}
+      >
         <Calendar
           value={selectedDate}
           onValueChange={handleSelect}
           minDate={minDate}
           maxDate={maxDate}
           disabledDates={disabledDates}
+          className="p-1 bg-transparent border-0 shadow-none"
         />
         <div className="flex items-center justify-between border-t border-border/80 px-2 pt-2 mt-1 text-xs">
           <button

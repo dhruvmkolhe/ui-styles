@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import type { Mode } from "@/lib/styles/types";
 import { bauhaus } from "./kit";
-import { ArrowRight, X, ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 
 export function ButtonPreview({ mode }: { mode: Mode }) {
   const k = bauhaus(mode);
@@ -49,20 +49,41 @@ export function CardPreview({ mode }: { mode: Mode }) {
 
 export function NavbarPreview({ mode }: { mode: Mode }) {
   const k = bauhaus(mode);
+  const [open, setOpen] = useState(false);
   return (
-    <header className={`${k.bar} flex items-center justify-between px-6 py-4 w-full`}>
-      <div className="flex items-center gap-3">
-        <div className="w-4 h-4 rounded-full bg-[#E63946]"></div>
-        <a href="#" className="font-black text-sm uppercase tracking-tighter text-[#1D3557]">BAUHAUS 1919</a>
+    <header className={`${k.bar} flex flex-col justify-center px-4 py-3 sm:px-6 sm:py-4 w-full transition-all`}>
+      <div className="flex items-center justify-between gap-3 w-full">
+        <div className="flex items-center gap-2.5 shrink-0">
+          <div className="w-4 h-4 rounded-full bg-[#E63946]"></div>
+          <a href="#" className="font-black text-xs sm:text-sm uppercase tracking-tighter text-[#1D3557] dark:text-white">BAUHAUS 1919</a>
+        </div>
+
+        <nav className="hidden md:flex nav-desktop-links items-center gap-6 sm:gap-8 font-mono text-xs uppercase tracking-widest font-bold">
+          <a href="#" className="text-[#E63946] underline decoration-2 underline-offset-4">01. ART</a>
+          <a href="#" className={`${k.muted} hover:text-[#E63946]`}>02. CRAFT</a>
+          <a href="#" className={`${k.muted} hover:text-[#E63946]`}>03. TECH</a>
+        </nav>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <button className={`${k.btnPrimarySm} text-xs px-2.5 py-1.5`}>JOIN ARCHIVE</button>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="md:hidden nav-mobile-toggle p-1.5 border border-[#1D3557] dark:border-white text-[#1D3557] dark:text-white hover:bg-[#E63946] hover:text-white transition-colors"
+            aria-label="Toggle menu"
+          >
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
+        </div>
       </div>
 
-      <nav className="hidden md:flex items-center gap-8 font-mono text-xs uppercase tracking-widest font-bold">
-        <a href="#" className="text-[#E63946] underline decoration-2 underline-offset-4">01. ART</a>
-        <a href="#" className={`${k.muted} hover:text-[#E63946]`}>02. CRAFT</a>
-        <a href="#" className={`${k.muted} hover:text-[#E63946]`}>03. TECH</a>
-      </nav>
-
-      <button className={k.btnPrimarySm}>JOIN ARCHIVE</button>
+      {open && (
+        <nav className="pt-3 mt-3 border-t-2 border-[#1D3557]/20 dark:border-white/20 flex flex-col gap-2 font-mono text-xs uppercase tracking-widest font-bold animate-in fade-in-0">
+          <a href="#" className="py-1 text-[#E63946]">01. ART</a>
+          <a href="#" className={`py-1 ${k.muted} hover:text-[#E63946]`}>02. CRAFT</a>
+          <a href="#" className={`py-1 ${k.muted} hover:text-[#E63946]`}>03. TECH</a>
+        </nav>
+      )}
     </header>
   );
 }
@@ -71,8 +92,17 @@ export function InputPreview({ mode }: { mode: Mode }) {
   const k = bauhaus(mode);
   return (
     <div className="w-full max-w-sm space-y-1.5">
-      <label className={k.label}>01 // REGISTER STUDENT DISCIPLINE</label>
-      <input type="text" placeholder="ARCHITECTURE & DESIGN" className={k.input} />
+      <label className={k.label} htmlFor="bauhaus-discipline">01 // REGISTER STUDENT DISCIPLINE</label>
+      <input
+        id="bauhaus-discipline"
+        name="studentDiscipline"
+        aria-label="Register student discipline"
+        autoComplete="off"
+        suppressHydrationWarning
+        type="text"
+        placeholder="ARCHITECTURE & DESIGN"
+        className={k.input}
+      />
       <p className="font-mono text-[10px] text-[#E63946] font-bold">PRIMARY COLOR CODING ENFORCED</p>
     </div>
   );

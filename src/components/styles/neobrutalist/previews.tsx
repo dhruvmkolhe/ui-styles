@@ -11,6 +11,7 @@ import {
   IconGear,
   IconImage,
   IconLogout,
+  IconMenu,
   IconUser,
   IconX,
 } from "../icons";
@@ -54,16 +55,36 @@ export function CardPreview({ mode }: { mode: Mode }) {
 
 export function NavbarPreview({ mode }: { mode: Mode }) {
   const k = neobrutalist(mode);
+  const [open, setOpen] = useState(false);
   return (
-    <div className={cn(k.bar, "flex items-center justify-between p-4")}>
-      <span className="font-mono font-black text-lg tracking-widest text-[#FFE500]">NEO//HUB</span>
-      <nav className="hidden items-center gap-4 font-mono text-xs font-black sm:flex">
-        <a href="#" className="hover:underline">TOKENS</a>
-        <a href="#" className="hover:underline">COMPONENTS</a>
-        <a href="#" className="hover:underline">MANIFESTO</a>
-      </nav>
-      <button className={k.btnPrimarySm}>ACTION</button>
-    </div>
+    <header className={cn(k.bar, "w-full flex flex-col justify-center p-3 sm:p-4 transition-all")}>
+      <div className="flex items-center justify-between gap-3 w-full">
+        <span className="font-mono font-black text-base sm:text-lg tracking-widest text-[#FFE500] shrink-0">NEO//HUB</span>
+        <nav className="hidden md:flex nav-desktop-links items-center gap-6 font-mono text-xs font-black">
+          <a href="#" className="hover:underline">TOKENS</a>
+          <a href="#" className="hover:underline">COMPONENTS</a>
+          <a href="#" className="hover:underline">MANIFESTO</a>
+        </nav>
+        <div className="flex items-center gap-2 shrink-0">
+          <button className={cn(k.btnPrimarySm, "shrink-0 px-3 py-1.5 text-xs")}>ACTION</button>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="md:hidden nav-mobile-toggle p-1.5 border-2 border-black bg-[#FFE500] text-black shadow-[2px_2px_0px_#000] hover:translate-x-0.5 hover:translate-y-0.5 transition-all"
+            aria-label="Toggle menu"
+          >
+            {open ? <IconX className="h-4 w-4 stroke-[3]" /> : <IconMenu className="h-4 w-4 stroke-[3]" />}
+          </button>
+        </div>
+      </div>
+      {open && (
+        <nav className="pt-3 mt-3 border-t-2 border-black flex flex-col gap-2 font-mono text-xs font-black animate-in fade-in-0">
+          <a href="#" className="py-1 hover:bg-[#FFE500] hover:text-black px-1">TOKENS</a>
+          <a href="#" className="py-1 hover:bg-[#FFE500] hover:text-black px-1">COMPONENTS</a>
+          <a href="#" className="py-1 hover:bg-[#FFE500] hover:text-black px-1">MANIFESTO</a>
+        </nav>
+      )}
+    </header>
   );
 }
 
@@ -71,8 +92,17 @@ export function InputPreview({ mode }: { mode: Mode }) {
   const k = neobrutalist(mode);
   return (
     <div className="mx-auto w-full max-w-sm">
-      <label className={k.label}>YOUR EMAIL</label>
-      <input className={k.input} placeholder="user@domain.com" />
+      <label className={k.label} htmlFor="neobrutalist-email">YOUR EMAIL</label>
+      <input
+        id="neobrutalist-email"
+        name="email"
+        type="email"
+        autoComplete="off"
+        suppressHydrationWarning
+        aria-label="Your Email"
+        className={k.input}
+        placeholder="user@domain.com"
+      />
     </div>
   );
 }
@@ -89,35 +119,49 @@ export function BadgePreview({ mode }: { mode: Mode }) {
 
 export function ModalPreview({ mode }: { mode: Mode }) {
   const k = neobrutalist(mode);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
+
+  if (!open) {
+    return (
+      <div className="flex min-h-[200px] items-center justify-center">
+        <button onClick={() => setOpen(true)} className={k.btnPrimary}>
+          OPEN MODAL
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex justify-center">
-      <button onClick={() => setOpen(true)} className={k.btnPrimary}>
-        OPEN MODAL
-      </button>
-      {open && (
-        <div className={k.overlay}>
-          <div className={cn(k.panel, "w-full max-w-md")}>
-            <div className="flex items-center justify-between border-b-4 border-black pb-3">
-              <h3 className={cn(k.serif, "text-lg font-black")}>CONFIRM ACTION</h3>
-              <button onClick={() => setOpen(false)} className={k.iconBtn}>
-                <IconX className="h-4 w-4 stroke-[3]" />
-              </button>
-            </div>
-            <p className={cn("mt-4 font-mono text-xs", k.muted)}>
-              ARE YOU SURE YOU WANT TO DEPLOY THIS BOLD UI?
-            </p>
-            <div className="mt-6 flex justify-end gap-3">
-              <button onClick={() => setOpen(false)} className={k.btnSecondary}>
-                CANCEL
-              </button>
-              <button onClick={() => setOpen(false)} className={k.btnPrimarySm}>
-                CONFIRM
-              </button>
-            </div>
-          </div>
+    <div className="relative flex w-full min-h-[380px] sm:min-h-[420px] items-center justify-center p-4 sm:p-6 my-2">
+      <div
+        className={cn(k.overlay, "rounded-none")}
+        onClick={() => setOpen(false)}
+        aria-hidden="true"
+      />
+      <div
+        className={cn(k.panel, "relative z-20 w-full max-w-md shadow-2xl mx-auto")}
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+      >
+        <div className="flex items-center justify-between border-b-4 border-black pb-3">
+          <h3 className={cn(k.serif, "text-lg font-black")}>CONFIRM ACTION</h3>
+          <button onClick={() => setOpen(false)} className={k.iconBtn}>
+            <IconX className="h-4 w-4 stroke-[3]" />
+          </button>
         </div>
-      )}
+        <p className={cn("mt-4 font-mono text-xs", k.muted)}>
+          ARE YOU SURE YOU WANT TO DEPLOY THIS BOLD UI?
+        </p>
+        <div className="mt-6 flex flex-wrap justify-end gap-3">
+          <button onClick={() => setOpen(false)} className={k.btnSecondary}>
+            CANCEL
+          </button>
+          <button onClick={() => setOpen(false)} className={k.btnPrimarySm}>
+            CONFIRM
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

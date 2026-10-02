@@ -38,8 +38,8 @@ export const BottomNavigation = React.forwardRef<HTMLElement, BottomNavigationPr
         ref={ref}
         aria-label="Bottom Navigation"
         className={cn(
-          "w-full border-t border-border bg-card/95 backdrop-blur-md px-2 py-1 select-none z-40 transition-colors",
-          fixed && "fixed bottom-0 left-0 right-0 pb-[env(safe-area-inset-bottom,0px)] shadow-lg",
+          "w-full border-t border-border bg-card/95 backdrop-blur-md px-2 py-1 select-none transition-colors",
+          fixed && "fixed bottom-0 left-0 right-0 z-40 pb-[env(safe-area-inset-bottom,0px)] shadow-lg",
           className
         )}
         {...props}
@@ -60,7 +60,7 @@ export const BottomNavigation = React.forwardRef<HTMLElement, BottomNavigationPr
                     "group relative flex w-full flex-col items-center justify-center gap-1 rounded-lg py-1.5 px-2 text-xs transition-all outline-none",
                     "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
                     isActive
-                      ? "text-teal-600 dark:text-teal-400 font-semibold"
+                      ? "text-primary font-semibold"
                       : "text-muted-foreground hover:text-foreground hover:bg-muted/40",
                     isDisabled && "opacity-40 cursor-not-allowed pointer-events-none"
                   )}
@@ -98,7 +98,7 @@ export const BottomNavigation = React.forwardRef<HTMLElement, BottomNavigationPr
                   {isActive && (
                     <span
                       aria-hidden="true"
-                      className="absolute -bottom-1 h-0.5 w-6 rounded-full bg-teal-600 dark:bg-teal-400"
+                      className="absolute bottom-0 h-0.5 w-6 rounded-full bg-primary"
                     />
                   )}
                 </button>

@@ -160,16 +160,21 @@ export function OtpInput({
           const hasVal = digit !== ""
 
           return (
-            <input
-              key={index}
-              ref={(el) => {
-                inputRefs.current[index] = el
-              }}
-              id={`${componentId}-digit-${index}`}
-              type={mask ? "password" : "text"}
-              inputMode={type === "number" ? "numeric" : "text"}
-              autoComplete="one-time-code"
-              maxLength={2} // Allow 2 to detect new character on overwrite
+            <React.Fragment key={index}>
+              <label htmlFor={`${componentId}-digit-${index}`} className="sr-only">
+                {`Digit ${index + 1} of ${length}`}
+              </label>
+              <input
+                ref={(el) => {
+                  inputRefs.current[index] = el
+                }}
+                id={`${componentId}-digit-${index}`}
+                name={`${componentId}_digit_${index}`}
+                type={mask ? "password" : "text"}
+                inputMode={type === "number" ? "numeric" : "text"}
+                autoComplete="one-time-code"
+                suppressHydrationWarning
+                maxLength={2} // Allow 2 to detect new character on overwrite
               value={digit}
               disabled={disabled}
               placeholder={placeholder}
@@ -188,7 +193,8 @@ export function OtpInput({
                 disabled && "opacity-50 pointer-events-none cursor-not-allowed bg-muted/40"
               )}
             />
-          )
+          </React.Fragment>
+        )
         })}
       </div>
 

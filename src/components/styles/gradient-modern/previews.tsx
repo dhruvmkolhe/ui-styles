@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import type { Mode } from "@/lib/styles/types";
 import { gradientModern } from "./kit";
-import { ArrowRight, X, Sparkles } from "lucide-react";
+import { ArrowRight, Menu, Sparkles, X } from "lucide-react";
 
 export function ButtonPreview({ mode }: { mode: Mode }) {
   const k = gradientModern(mode);
@@ -48,22 +48,43 @@ export function CardPreview({ mode }: { mode: Mode }) {
 
 export function NavbarPreview({ mode }: { mode: Mode }) {
   const k = gradientModern(mode);
+  const [open, setOpen] = useState(false);
   return (
-    <header className={`${k.bar} flex items-center justify-between px-6 py-4 w-full`}>
-      <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-xl bg-gradient-to-r from-[#6366F1] via-[#A855F7] to-[#EC4899] text-white flex items-center justify-center font-bold text-xs shadow-md">
-          GM
+    <header className={`${k.bar} flex flex-col justify-center px-4 py-3 sm:px-6 sm:py-4 w-full transition-all`}>
+      <div className="flex items-center justify-between gap-3 w-full">
+        <div className="flex items-center gap-2.5 shrink-0">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-r from-[#6366F1] via-[#A855F7] to-[#EC4899] text-white flex items-center justify-center font-bold text-xs shadow-md">
+            GM
+          </div>
+          <a href="#" className="font-bold text-sm sm:text-base text-transparent bg-clip-text bg-gradient-to-r from-[#6366F1] to-[#EC4899]">PrismUI</a>
         </div>
-        <a href="#" className="font-bold text-base text-transparent bg-clip-text bg-gradient-to-r from-[#6366F1] to-[#EC4899]">PrismUI</a>
+
+        <nav className="hidden md:flex nav-desktop-links items-center gap-6 text-sm text-slate-400 font-medium">
+          <a href="#" className="text-purple-400 border-b-2 border-purple-500 pb-0.5">Shaders</a>
+          <a href="#" className="hover:text-purple-300">Gradients</a>
+          <a href="#" className="hover:text-purple-300">Prisms</a>
+        </nav>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <button className={`${k.btnPrimarySm} text-xs px-3 py-1.5`}>GET STARTED</button>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="md:hidden nav-mobile-toggle p-1.5 rounded-lg border border-purple-500/30 text-purple-400 hover:bg-purple-500/10 transition-colors"
+            aria-label="Toggle menu"
+          >
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
+        </div>
       </div>
 
-      <nav className="hidden md:flex items-center gap-6 text-sm text-slate-400 font-medium">
-        <a href="#" className="text-purple-400 border-b-2 border-purple-500 pb-0.5">Shaders</a>
-        <a href="#" className="hover:text-purple-300">Gradients</a>
-        <a href="#" className="hover:text-purple-300">Prisms</a>
-      </nav>
-
-      <button className={k.btnPrimarySm}>GET STARTED</button>
+      {open && (
+        <nav className="pt-3 mt-3 border-t border-purple-500/20 flex flex-col gap-2 text-xs text-slate-300 animate-in fade-in-0">
+          <a href="#" className="py-1 text-purple-400">Shaders</a>
+          <a href="#" className="py-1 hover:text-purple-300">Gradients</a>
+          <a href="#" className="py-1 hover:text-purple-300">Prisms</a>
+        </nav>
+      )}
     </header>
   );
 }
@@ -72,8 +93,17 @@ export function InputPreview({ mode }: { mode: Mode }) {
   const k = gradientModern(mode);
   return (
     <div className="w-full max-w-sm space-y-1">
-      <label className={k.label}>SPECTRAL PROMPT</label>
-      <input type="text" placeholder="indigo-fuchsia-glow-mesh" className={k.input} />
+      <label className={k.label} htmlFor="gradient-spectral-prompt">SPECTRAL PROMPT</label>
+      <input
+        id="gradient-spectral-prompt"
+        name="spectralPrompt"
+        aria-label="Spectral Prompt"
+        type="text"
+        autoComplete="off"
+        suppressHydrationWarning
+        placeholder="indigo-fuchsia-glow-mesh"
+        className={k.input}
+      />
       <p className="text-xs text-slate-400">Enter custom CSS gradient parameters</p>
     </div>
   );

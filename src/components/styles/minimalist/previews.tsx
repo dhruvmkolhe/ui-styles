@@ -11,6 +11,7 @@ import {
   IconGear,
   IconImage,
   IconLogout,
+  IconMenu,
   IconUser,
   IconX,
 } from "../icons";
@@ -57,16 +58,36 @@ export function CardPreview({ mode }: { mode: Mode }) {
 /* ============ 3 · Navbar ============ */
 export function NavbarPreview({ mode }: { mode: Mode }) {
   const k = minimalist(mode);
+  const [open, setOpen] = useState(false);
   return (
-    <div className={cn(k.bar, "flex items-center justify-between px-6 py-3.5")}>
-      <span className="text-xs font-light uppercase tracking-[0.3em]">STUDIO</span>
-      <nav className="hidden items-center gap-8 text-xs font-light text-neutral-500 sm:flex">
-        <a href="#" className="hover:text-black">Work</a>
-        <a href="#" className="hover:text-black">Index</a>
-        <a href="#" className="hover:text-black">About</a>
-      </nav>
-      <button className={k.btnPrimarySm}>Contact</button>
-    </div>
+    <header className={cn(k.bar, "w-full flex flex-col justify-center px-4 py-3 sm:px-6 sm:py-3.5 transition-all")}>
+      <div className="flex items-center justify-between gap-3 w-full">
+        <span className="text-xs font-light uppercase tracking-[0.3em] shrink-0">STUDIO</span>
+        <nav className="hidden md:flex nav-desktop-links items-center gap-8 text-xs font-light text-neutral-500">
+          <a href="#" className="hover:text-black dark:hover:text-white transition-colors">Work</a>
+          <a href="#" className="hover:text-black dark:hover:text-white transition-colors">Index</a>
+          <a href="#" className="hover:text-black dark:hover:text-white transition-colors">About</a>
+        </nav>
+        <div className="flex items-center gap-2 shrink-0">
+          <button className={cn(k.btnPrimarySm, "shrink-0 px-3 py-1.5 text-xs")}>Contact</button>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="md:hidden nav-mobile-toggle p-1.5 text-neutral-500 hover:text-black dark:hover:text-white transition-colors"
+            aria-label="Toggle menu"
+          >
+            {open ? <IconX className="h-4 w-4 stroke-[1.5]" /> : <IconMenu className="h-4 w-4 stroke-[1.5]" />}
+          </button>
+        </div>
+      </div>
+      {open && (
+        <nav className="pt-3 mt-3 border-t border-neutral-200 dark:border-neutral-800 flex flex-col gap-2 text-xs font-light text-neutral-500 animate-in fade-in-0">
+          <a href="#" className="py-1 hover:text-black dark:hover:text-white transition-colors">Work</a>
+          <a href="#" className="py-1 hover:text-black dark:hover:text-white transition-colors">Index</a>
+          <a href="#" className="py-1 hover:text-black dark:hover:text-white transition-colors">About</a>
+        </nav>
+      )}
+    </header>
   );
 }
 
@@ -75,8 +96,17 @@ export function InputPreview({ mode }: { mode: Mode }) {
   const k = minimalist(mode);
   return (
     <div className="mx-auto w-full max-w-sm">
-      <label className={k.label}>SUBSCRIPTION EMAIL</label>
-      <input className={k.input} placeholder="address@domain.com" />
+      <label className={k.label} htmlFor="minimalist-email">SUBSCRIPTION EMAIL</label>
+      <input
+        id="minimalist-email"
+        name="email"
+        type="email"
+        autoComplete="off"
+        suppressHydrationWarning
+        aria-label="Subscription Email"
+        className={k.input}
+        placeholder="address@domain.com"
+      />
     </div>
   );
 }
@@ -95,35 +125,49 @@ export function BadgePreview({ mode }: { mode: Mode }) {
 /* ============ 6 · Modal ============ */
 export function ModalPreview({ mode }: { mode: Mode }) {
   const k = minimalist(mode);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
+
+  if (!open) {
+    return (
+      <div className="flex min-h-[200px] items-center justify-center">
+        <button onClick={() => setOpen(true)} className={k.btnPrimary}>
+          Open Modal
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex justify-center">
-      <button onClick={() => setOpen(true)} className={k.btnPrimary}>
-        Open Modal
-      </button>
-      {open && (
-        <div className={k.overlay}>
-          <div className={cn(k.panel, "w-full max-w-md")}>
-            <div className="flex items-center justify-between border-b border-neutral-100 pb-4">
-              <h3 className={cn(k.strong, "text-sm font-normal")}>Export Workspace</h3>
-              <button onClick={() => setOpen(false)} className={k.iconBtn}>
-                <IconX className="h-3.5 w-3.5 stroke-[1.5]" />
-              </button>
-            </div>
-            <p className={cn("mt-4 text-xs leading-relaxed", k.muted)}>
-              All canvas state will be packaged as a single vector file with embedded font definitions.
-            </p>
-            <div className="mt-6 flex justify-end gap-3">
-              <button onClick={() => setOpen(false)} className={k.btnSecondary}>
-                Dismiss
-              </button>
-              <button onClick={() => setOpen(false)} className={k.btnPrimarySm}>
-                Export PDF
-              </button>
-            </div>
-          </div>
+    <div className="relative flex w-full min-h-[380px] sm:min-h-[420px] items-center justify-center p-4 sm:p-6 my-2">
+      <div
+        className={cn(k.overlay, "rounded-xl")}
+        onClick={() => setOpen(false)}
+        aria-hidden="true"
+      />
+      <div
+        className={cn(k.panel, "relative z-20 w-full max-w-md shadow-2xl mx-auto")}
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+      >
+        <div className="flex items-center justify-between border-b border-neutral-100 dark:border-neutral-800 pb-4">
+          <h3 className={cn(k.strong, "text-sm font-normal")}>Export Workspace</h3>
+          <button onClick={() => setOpen(false)} className={k.iconBtn}>
+            <IconX className="h-3.5 w-3.5 stroke-[1.5]" />
+          </button>
         </div>
-      )}
+        <p className={cn("mt-4 text-xs leading-relaxed", k.muted)}>
+          All canvas state will be packaged as a single vector file with embedded font definitions.
+        </p>
+        <div className="mt-6 flex flex-wrap justify-end gap-3">
+          <button onClick={() => setOpen(false)} className={k.btnSecondary}>
+            Dismiss
+          </button>
+          <button onClick={() => setOpen(false)} className={k.btnPrimarySm}>
+            Export PDF
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

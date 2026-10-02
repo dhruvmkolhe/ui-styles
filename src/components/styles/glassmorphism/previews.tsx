@@ -15,6 +15,7 @@ import {
   IconImage,
   IconInfo,
   IconLogout,
+  IconMenu,
   IconSparkle,
   IconUser,
   IconX,
@@ -71,23 +72,45 @@ export function CardPreview({ mode }: { mode: Mode }) {
 /* ============ 3 · Navbar ============ */
 export function NavbarPreview({ mode }: { mode: Mode }) {
   const k = glass(mode);
+  const [open, setOpen] = useState(false);
   return (
-    <div className={cn(k.bar, "flex items-center justify-between px-4 py-3 sm:px-5")}>
-      <div className={cn("flex items-center gap-2 text-sm font-semibold", k.strong)}>
-        <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-cyan-400 shadow-[0_0_12px_rgba(139,92,246,0.5)]">
-          <IconBolt className="h-3.5 w-3.5 text-white" />
-        </span>
-        Aurora
+    <header className={cn(k.bar, "w-full flex flex-col justify-center px-4 py-3 transition-all")}>
+      <div className="flex items-center justify-between gap-3 w-full">
+        <div className={cn("flex items-center gap-2 text-sm font-semibold shrink-0", k.strong)}>
+          <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-cyan-400 shadow-[0_0_12px_rgba(139,92,246,0.5)]">
+            <IconBolt className="h-3.5 w-3.5 text-white" />
+          </span>
+          Aurora
+        </div>
+        <nav className="hidden md:flex nav-desktop-links items-center gap-5 text-[13px]">
+          {["Products", "Pricing", "Docs"].map((l) => (
+            <a key={l} href="#" className={cn("transition hover:opacity-100", k.muted, "hover:text-inherit")}>
+              {l}
+            </a>
+          ))}
+        </nav>
+        <div className="flex items-center gap-2 shrink-0">
+          <button className={cn(k.btnPrimarySm, "shrink-0 px-3 py-1.5 text-xs")}>Sign in</button>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="md:hidden nav-mobile-toggle p-1.5 rounded-lg border border-white/20 bg-white/5 hover:bg-white/10 transition-colors"
+            aria-label="Toggle menu"
+          >
+            {open ? <IconX className="h-4 w-4" /> : <IconMenu className="h-4 w-4" />}
+          </button>
+        </div>
       </div>
-      <nav className="hidden items-center gap-5 text-[13px] sm:flex">
-        {["Products", "Pricing", "Docs"].map((l) => (
-          <a key={l} href="#" className={cn("transition hover:opacity-100", k.muted, "hover:text-inherit")}>
-            {l}
-          </a>
-        ))}
-      </nav>
-      <button className={k.btnPrimarySm}>Sign in</button>
-    </div>
+      {open && (
+        <nav className="pt-3 mt-3 border-t border-white/10 flex flex-col gap-2 text-xs animate-in fade-in-0">
+          {["Products", "Pricing", "Docs"].map((l) => (
+            <a key={l} href="#" className={cn("py-1 transition hover:opacity-100", k.muted, "hover:text-inherit")}>
+              {l}
+            </a>
+          ))}
+        </nav>
+      )}
+    </header>
   );
 }
 
@@ -97,7 +120,16 @@ export function InputPreview({ mode }: { mode: Mode }) {
   return (
     <div className="mx-auto w-full max-w-sm">
       <label className={k.label} htmlFor="glass-email">Email address</label>
-      <input id="glass-email" className={k.input} placeholder="you@studio.com" />
+      <input
+        id="glass-email"
+        name="email"
+        type="email"
+        autoComplete="off"
+        suppressHydrationWarning
+        aria-label="Email address"
+        className={k.input}
+        placeholder="you@studio.com"
+      />
       <p className={cn("mt-2 text-xs", k.faint)}>
         We&apos;ll send a magic link — no password needed.
       </p>
@@ -126,39 +158,50 @@ export function BadgePreview({ mode }: { mode: Mode }) {
 /* ============ 6 · Modal ============ */
 export function ModalPreview({ mode }: { mode: Mode }) {
   const k = glass(mode);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
+
+  if (!open) {
+    return (
+      <div className="flex min-h-[200px] items-center justify-center">
+        <button className={k.btnPrimary} onClick={() => setOpen(true)}>
+          <IconSparkle className="h-4 w-4" />
+          Open modal
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="relative -m-5 flex min-h-[260px] items-center justify-center p-5 sm:-m-10 sm:p-10">
-      <button className={k.btnPrimary} onClick={() => setOpen(true)}>
-        <IconSparkle className="h-4 w-4" />
-        Open modal
-      </button>
-      {open && (
-        <div className={k.overlay} onClick={() => setOpen(false)}>
-          <div
-            className={cn(k.panel, "w-full max-w-sm p-6")}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-start justify-between">
-              <h3 className={cn("text-base font-semibold", k.strong)}>Upgrade to Pro</h3>
-              <button className={k.iconBtn} onClick={() => setOpen(false)} aria-label="Close">
-                <IconX className="h-3.5 w-3.5" />
-              </button>
-            </div>
-            <p className={cn("mt-3 text-sm leading-relaxed", k.muted)}>
-              Unlock all 8 styles, 120 components and clean, unwatermarked code for your team.
-            </p>
-            <div className="mt-6 flex justify-end gap-3">
-              <button className={cn(k.btnSecondary, "!px-4 !py-2 !text-xs")} onClick={() => setOpen(false)}>
-                Cancel
-              </button>
-              <button className={k.btnPrimarySm} onClick={() => setOpen(false)}>
-                Upgrade — $9/mo
-              </button>
-            </div>
-          </div>
+    <div className="relative flex w-full min-h-[380px] sm:min-h-[420px] items-center justify-center p-4 sm:p-6 my-2">
+      <div
+        className={cn(k.overlay, "rounded-xl")}
+        onClick={() => setOpen(false)}
+        aria-hidden="true"
+      />
+      <div
+        className={cn(k.panel, "relative z-20 w-full max-w-sm p-6 shadow-2xl mx-auto")}
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+      >
+        <div className="flex items-start justify-between gap-4">
+          <h3 className={cn("text-base font-semibold", k.strong)}>Upgrade to Pro</h3>
+          <button className={k.iconBtn} onClick={() => setOpen(false)} aria-label="Close">
+            <IconX className="h-3.5 w-3.5" />
+          </button>
         </div>
-      )}
+        <p className={cn("mt-3 text-sm leading-relaxed", k.muted)}>
+          Unlock all 8 styles, 120 components and clean, unwatermarked code for your team.
+        </p>
+        <div className="mt-6 flex flex-wrap justify-end gap-3">
+          <button className={cn(k.btnSecondary, "!px-4 !py-2 !text-xs")} onClick={() => setOpen(false)}>
+            Cancel
+          </button>
+          <button className={k.btnPrimarySm} onClick={() => setOpen(false)}>
+            Upgrade — $9/mo
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -298,6 +341,7 @@ export function SwitchPreview({ mode }: { mode: Mode }) {
     <div className="flex items-center justify-center gap-4">
       <button
         role="switch"
+        aria-label="Toggle notifications"
         aria-checked={on}
         onClick={() => setOn(!on)}
         className={cn(

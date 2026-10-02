@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import type { Mode } from "@/lib/styles/types";
 import { editorial } from "./kit";
-import { ArrowRight, X } from "lucide-react";
+import { ArrowRight, Menu, X } from "lucide-react";
 
 export function ButtonPreview({ mode }: { mode: Mode }) {
   const k = editorial(mode);
@@ -45,19 +45,38 @@ export function CardPreview({ mode }: { mode: Mode }) {
 
 export function NavbarPreview({ mode }: { mode: Mode }) {
   const k = editorial(mode);
+  const [open, setOpen] = useState(false);
   return (
-    <header className={`${k.bar} px-6 py-5 w-full`}>
-      <div className={`flex items-center justify-between border-b ${mode === 'dark' ? 'border-[#44403C]' : 'border-[#D6D3D1]'} pb-4`}>
-        <span className="font-mono text-xs uppercase tracking-widest text-[#78716C]">EST. 1924</span>
-        <a href="#" className="font-serif text-2xl font-bold tracking-tight">THE CHRONICLE</a>
-        <span className="font-mono text-xs uppercase tracking-widest text-[#78716C]">VOL. IV</span>
+    <header className={`${k.bar} px-4 py-3 sm:px-6 sm:py-5 w-full transition-all`}>
+      <div className={`flex items-center justify-between border-b ${mode === 'dark' ? 'border-[#44403C]' : 'border-[#D6D3D1]'} pb-3 sm:pb-4 gap-2`}>
+        <span className="hidden sm:inline-block font-mono text-[10px] sm:text-xs uppercase tracking-widest text-[#78716C]">EST. 1924</span>
+        <a href="#" className="font-serif text-lg sm:text-2xl font-bold tracking-tight">THE CHRONICLE</a>
+        <div className="flex items-center gap-2">
+          <span className="hidden sm:inline-block font-mono text-[10px] sm:text-xs uppercase tracking-widest text-[#78716C]">VOL. IV</span>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="md:hidden nav-mobile-toggle p-1 rounded hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+            aria-label="Toggle navigation"
+          >
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
+        </div>
       </div>
-      <nav className="flex items-center justify-center gap-8 pt-3 font-serif text-xs uppercase tracking-widest">
+      <nav className="hidden md:flex nav-desktop-links items-center justify-center gap-6 sm:gap-8 pt-3 font-serif text-xs uppercase tracking-widest">
         <a href="#" className={`${k.text} underline underline-offset-4`}>Essays</a>
         <a href="#" className={`${k.muted} hover:text-foreground`}>Criticism</a>
         <a href="#" className={`${k.muted} hover:text-foreground`}>Dispatch</a>
         <a href="#" className={`${k.muted} hover:text-foreground`}>Archive</a>
       </nav>
+      {open && (
+        <nav className="pt-3 flex flex-col items-center gap-2 font-serif text-xs uppercase tracking-widest animate-in fade-in-0">
+          <a href="#" className={`${k.text} py-1 underline underline-offset-4`}>Essays</a>
+          <a href="#" className={`${k.muted} py-1 hover:text-foreground`}>Criticism</a>
+          <a href="#" className={`${k.muted} py-1 hover:text-foreground`}>Dispatch</a>
+          <a href="#" className={`${k.muted} py-1 hover:text-foreground`}>Archive</a>
+        </nav>
+      )}
     </header>
   );
 }
@@ -66,8 +85,8 @@ export function InputPreview({ mode }: { mode: Mode }) {
   const k = editorial(mode);
   return (
     <div className="w-full max-w-sm space-y-2">
-      <label className={k.label}>SUBSCRIBE TO THE WEEKLY DISPATCH</label>
-      <input type="email" placeholder="reader@journal.org" className={k.input} suppressHydrationWarning />
+      <label className={k.label} htmlFor="editorial-email">SUBSCRIBE TO THE WEEKLY DISPATCH</label>
+      <input id="editorial-email" name="email" aria-label="Subscribe to the weekly dispatch" type="email" placeholder="reader@journal.org" className={k.input} suppressHydrationWarning />
       <p className="font-serif italic text-xs text-[#78716C]">Delivered every Sunday dawn. No spam.</p>
     </div>
   );

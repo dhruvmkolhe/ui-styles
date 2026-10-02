@@ -212,6 +212,8 @@ function ImageCompareSliderComponent() {
       </div>
       <input
         type="range"
+        aria-label="Image comparison split position"
+        suppressHydrationWarning
         min="0"
         max="100"
         value={pos}

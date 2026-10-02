@@ -176,6 +176,11 @@ export function CommandPalette({
           <input
             ref={inputRef}
             type="text"
+            id="command-palette-search"
+            name="commandSearch"
+            aria-label="Type a command or search"
+            autoComplete="off"
+            suppressHydrationWarning
             role="combobox"
             aria-expanded="true"
             aria-controls="palette-list"

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import type { Mode } from "@/lib/styles/types";
 import { modernist } from "./kit";
-import { ArrowRight, X, ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 
 export function ButtonPreview({ mode }: { mode: Mode }) {
   const k = modernist(mode);
@@ -49,20 +49,41 @@ export function CardPreview({ mode }: { mode: Mode }) {
 
 export function NavbarPreview({ mode }: { mode: Mode }) {
   const k = modernist(mode);
+  const [open, setOpen] = useState(false);
   return (
-    <header className={`${k.bar} flex items-center justify-between px-6 py-4 w-full`}>
-      <div className="flex items-center gap-3">
-        <div className="w-4 h-4 bg-[#C85A32]"></div>
-        <a href="#" className="font-bold text-sm uppercase tracking-wider text-[#2B2B2B]">MODERNIST 1954</a>
+    <header className={`${k.bar} flex flex-col justify-center px-4 py-3 sm:px-6 sm:py-4 w-full transition-all`}>
+      <div className="flex items-center justify-between gap-3 w-full">
+        <div className="flex items-center gap-2.5 shrink-0">
+          <div className="w-4 h-4 bg-[#C85A32]"></div>
+          <a href="#" className="font-bold text-xs sm:text-sm uppercase tracking-wider text-[#2B2B2B] dark:text-white">MODERNIST 1954</a>
+        </div>
+
+        <nav className="hidden md:flex nav-desktop-links items-center gap-6 sm:gap-8 font-mono text-xs uppercase tracking-widest font-bold">
+          <a href="#" className="text-[#C85A32] underline underline-offset-4">01. FURNITURE</a>
+          <a href="#" className={`${k.muted} hover:text-[#C85A32]`}>02. LIGHTING</a>
+          <a href="#" className={`${k.muted} hover:text-[#C85A32]`}>03. LAYOUT</a>
+        </nav>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <button className={`${k.btnPrimarySm} text-xs px-2.5 py-1.5`}>CONTACT</button>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="md:hidden nav-mobile-toggle p-1.5 border border-[#C85A32]/40 text-[#C85A32] hover:bg-[#C85A32]/10 transition-colors"
+            aria-label="Toggle menu"
+          >
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
+        </div>
       </div>
 
-      <nav className="hidden md:flex items-center gap-8 font-mono text-xs uppercase tracking-widest font-bold">
-        <a href="#" className="text-[#C85A32] underline underline-offset-4">01. FURNITURE</a>
-        <a href="#" className={`${k.muted} hover:text-[#C85A32]`}>02. LIGHTING</a>
-        <a href="#" className={`${k.muted} hover:text-[#C85A32]`}>03. LAYOUT</a>
-      </nav>
-
-      <button className={k.btnPrimarySm}>CONTACT</button>
+      {open && (
+        <nav className="pt-3 mt-3 border-t border-[#C85A32]/20 flex flex-col gap-2 font-mono text-xs uppercase tracking-widest font-bold animate-in fade-in-0">
+          <a href="#" className="py-1 text-[#C85A32]">01. FURNITURE</a>
+          <a href="#" className={`py-1 ${k.muted} hover:text-[#C85A32]`}>02. LIGHTING</a>
+          <a href="#" className={`py-1 ${k.muted} hover:text-[#C85A32]`}>03. LAYOUT</a>
+        </nav>
+      )}
     </header>
   );
 }
@@ -71,8 +92,17 @@ export function InputPreview({ mode }: { mode: Mode }) {
   const k = modernist(mode);
   return (
     <div className="w-full max-w-sm space-y-1.5">
-      <label className={k.label}>01 // ARCHITECTURAL DRAWING ID</label>
-      <input type="text" placeholder="MOD-1954-TERRACOTTA" className={k.input} />
+      <label className={k.label} htmlFor="modernist-drawing-id">01 // ARCHITECTURAL DRAWING ID</label>
+      <input
+        id="modernist-drawing-id"
+        name="drawingId"
+        aria-label="Architectural Drawing ID"
+        type="text"
+        autoComplete="off"
+        suppressHydrationWarning
+        placeholder="MOD-1954-TERRACOTTA"
+        className={k.input}
+      />
       <p className="font-mono text-[10px] text-[#556B2F] font-bold">MID-CENTURY SPECIFICATION FILE</p>
     </div>
   );

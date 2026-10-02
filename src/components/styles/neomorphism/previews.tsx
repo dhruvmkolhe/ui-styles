@@ -11,6 +11,7 @@ import {
   IconGear,
   IconImage,
   IconLogout,
+  IconMenu,
   IconUser,
   IconX,
 } from "../icons";
@@ -56,16 +57,36 @@ export function CardPreview({ mode }: { mode: Mode }) {
 /* ============ 3 · Navbar ============ */
 export function NavbarPreview({ mode }: { mode: Mode }) {
   const k = neomorphism(mode);
+  const [open, setOpen] = useState(false);
   return (
-    <div className={cn(k.bar, "flex items-center justify-between px-6 py-4")}>
-      <span className="text-sm font-bold tracking-wide text-[#6d7df2]">SOFT.UI</span>
-      <nav className={cn("hidden items-center gap-6 text-xs font-medium sm:flex", k.muted)}>
-        <a href="#" className="hover:text-[#6d7df2]">Surfaces</a>
-        <a href="#" className="hover:text-[#6d7df2]">Controls</a>
-        <a href="#" className="hover:text-[#6d7df2]">Specs</a>
-      </nav>
-      <button className={k.btnPrimarySm}>Connect</button>
-    </div>
+    <header className={cn(k.bar, "w-full flex flex-col justify-center px-4 py-3 sm:px-6 sm:py-4 transition-all")}>
+      <div className="flex items-center justify-between gap-3 w-full">
+        <span className="text-xs sm:text-sm font-bold tracking-wide text-[#6d7df2] shrink-0">SOFT.UI</span>
+        <nav className={cn("hidden md:flex nav-desktop-links items-center gap-6 text-xs font-medium", k.muted)}>
+          <a href="#" className="hover:text-[#6d7df2] transition-colors">Surfaces</a>
+          <a href="#" className="hover:text-[#6d7df2] transition-colors">Controls</a>
+          <a href="#" className="hover:text-[#6d7df2] transition-colors">Specs</a>
+        </nav>
+        <div className="flex items-center gap-2 shrink-0">
+          <button className={cn(k.btnPrimarySm, "shrink-0 px-3 py-1.5 text-xs")}>Connect</button>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className={cn("md:hidden nav-mobile-toggle p-1.5 rounded-lg transition-all", k.iconBtn)}
+            aria-label="Toggle menu"
+          >
+            {open ? <IconX className="h-4 w-4" /> : <IconMenu className="h-4 w-4" />}
+          </button>
+        </div>
+      </div>
+      {open && (
+        <nav className={cn("pt-3 mt-3 border-t border-black/5 dark:border-white/5 flex flex-col gap-2 text-xs font-medium animate-in fade-in-0", k.muted)}>
+          <a href="#" className="py-1 hover:text-[#6d7df2] transition-colors">Surfaces</a>
+          <a href="#" className="py-1 hover:text-[#6d7df2] transition-colors">Controls</a>
+          <a href="#" className="py-1 hover:text-[#6d7df2] transition-colors">Specs</a>
+        </nav>
+      )}
+    </header>
   );
 }
 
@@ -74,8 +95,16 @@ export function InputPreview({ mode }: { mode: Mode }) {
   const k = neomorphism(mode);
   return (
     <div className="mx-auto w-full max-w-sm">
-      <label className={k.label}>PRESSED INPUT SURFACE</label>
-      <input className={k.input} placeholder="Type message..." />
+      <label className={k.label} htmlFor="neomorphism-input">PRESSED INPUT SURFACE</label>
+      <input
+        id="neomorphism-input"
+        name="message"
+        aria-label="Pressed Input Surface"
+        autoComplete="off"
+        suppressHydrationWarning
+        className={k.input}
+        placeholder="Type message..."
+      />
     </div>
   );
 }
@@ -94,35 +123,49 @@ export function BadgePreview({ mode }: { mode: Mode }) {
 /* ============ 6 · Modal ============ */
 export function ModalPreview({ mode }: { mode: Mode }) {
   const k = neomorphism(mode);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
+
+  if (!open) {
+    return (
+      <div className="flex min-h-[200px] items-center justify-center">
+        <button onClick={() => setOpen(true)} className={k.btnPrimary}>
+          Open Soft Modal
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex justify-center">
-      <button onClick={() => setOpen(true)} className={k.btnPrimary}>
-        Open Soft Modal
-      </button>
-      {open && (
-        <div className={k.overlay}>
-          <div className={cn(k.panel, "w-full max-w-md")}>
-            <div className="flex items-center justify-between border-b border-[#b8bec7]/40 pb-3">
-              <h3 className={cn(k.strong, "text-sm font-semibold")}>Tactile Dialog</h3>
-              <button onClick={() => setOpen(false)} className={k.iconBtn}>
-                <IconX className="h-4 w-4" />
-              </button>
-            </div>
-            <p className={cn("mt-4 text-xs leading-relaxed", k.muted)}>
-              Adjust system volume curves and tactile feedback sensitivity across paired controllers.
-            </p>
-            <div className="mt-6 flex justify-end gap-3">
-              <button onClick={() => setOpen(false)} className={k.btnSecondary}>
-                Back
-              </button>
-              <button onClick={() => setOpen(false)} className={k.btnPrimarySm}>
-                Save State
-              </button>
-            </div>
-          </div>
+    <div className="relative flex w-full min-h-[380px] sm:min-h-[420px] items-center justify-center p-4 sm:p-6 my-2">
+      <div
+        className={cn(k.overlay, "rounded-2xl")}
+        onClick={() => setOpen(false)}
+        aria-hidden="true"
+      />
+      <div
+        className={cn(k.panel, "relative z-20 w-full max-w-md shadow-2xl mx-auto")}
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+      >
+        <div className="flex items-center justify-between border-b border-[#b8bec7]/40 pb-3">
+          <h3 className={cn(k.strong, "text-sm font-semibold")}>Tactile Dialog</h3>
+          <button onClick={() => setOpen(false)} className={k.iconBtn}>
+            <IconX className="h-4 w-4" />
+          </button>
         </div>
-      )}
+        <p className={cn("mt-4 text-xs leading-relaxed", k.muted)}>
+          Adjust system volume curves and tactile feedback sensitivity across paired controllers.
+        </p>
+        <div className="mt-6 flex flex-wrap justify-end gap-3">
+          <button onClick={() => setOpen(false)} className={k.btnSecondary}>
+            Back
+          </button>
+          <button onClick={() => setOpen(false)} className={k.btnPrimarySm}>
+            Save State
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

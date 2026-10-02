@@ -11,6 +11,7 @@ import {
   IconGear,
   IconImage,
   IconLogout,
+  IconMenu,
   IconUser,
   IconX,
 } from "../icons";
@@ -57,16 +58,36 @@ export function CardPreview({ mode }: { mode: Mode }) {
 /* ============ 3 · Navbar ============ */
 export function NavbarPreview({ mode }: { mode: Mode }) {
   const k = retroY2k(mode);
+  const [open, setOpen] = useState(false);
   return (
-    <div className={cn(k.bar, "flex items-center justify-between p-4")}>
-      <span className="font-black text-base text-[#FF2E93] flex items-center gap-1">✦ STAR_HUB ✦</span>
-      <nav className="hidden items-center gap-5 font-bold text-xs uppercase sm:flex">
-        <a href="#" className="hover:text-[#FF2E93]">MUSIC</a>
-        <a href="#" className="hover:text-[#FF2E93]">GLITTER</a>
-        <a href="#" className="hover:text-[#FF2E93]">SKINS</a>
-      </nav>
-      <button className={k.btnPrimarySm}>GO!!</button>
-    </div>
+    <header className={cn(k.bar, "w-full flex flex-col justify-center p-3 sm:p-4 transition-all")}>
+      <div className="flex items-center justify-between gap-3 w-full">
+        <span className="font-black text-sm sm:text-base text-[#FF2E93] flex items-center gap-1 shrink-0">✦ STAR_HUB ✦</span>
+        <nav className="hidden md:flex nav-desktop-links items-center gap-5 font-bold text-xs uppercase">
+          <a href="#" className="hover:text-[#FF2E93] transition-colors">MUSIC</a>
+          <a href="#" className="hover:text-[#FF2E93] transition-colors">GLITTER</a>
+          <a href="#" className="hover:text-[#FF2E93] transition-colors">SKINS</a>
+        </nav>
+        <div className="flex items-center gap-2 shrink-0">
+          <button className={cn(k.btnPrimarySm, "shrink-0 px-3 py-1.5 text-xs")}>GO!!</button>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="md:hidden nav-mobile-toggle p-1.5 rounded-full border-2 border-[#FF2E93] text-[#FF2E93] bg-[#FFE500] hover:scale-105 transition-all"
+            aria-label="Toggle menu"
+          >
+            {open ? <IconX className="h-4 w-4 stroke-[3]" /> : <IconMenu className="h-4 w-4 stroke-[3]" />}
+          </button>
+        </div>
+      </div>
+      {open && (
+        <nav className="pt-3 mt-3 border-t-2 border-[#FF2E93]/30 flex flex-col gap-2 font-bold text-xs uppercase animate-in fade-in-0">
+          <a href="#" className="py-1 hover:text-[#FF2E93] transition-colors">MUSIC</a>
+          <a href="#" className="py-1 hover:text-[#FF2E93] transition-colors">GLITTER</a>
+          <a href="#" className="py-1 hover:text-[#FF2E93] transition-colors">SKINS</a>
+        </nav>
+      )}
+    </header>
   );
 }
 
@@ -75,8 +96,16 @@ export function InputPreview({ mode }: { mode: Mode }) {
   const k = retroY2k(mode);
   return (
     <div className="mx-auto w-full max-w-sm">
-      <label className={k.label}>~* BLOGGER HANDLE *~</label>
-      <input className={k.input} placeholder="pink_princess_99" />
+      <label className={k.label} htmlFor="y2k-handle">~* BLOGGER HANDLE *~</label>
+      <input
+        id="y2k-handle"
+        name="bloggerHandle"
+        aria-label="Blogger Handle"
+        autoComplete="off"
+        suppressHydrationWarning
+        className={k.input}
+        placeholder="pink_princess_99"
+      />
     </div>
   );
 }
@@ -95,35 +124,49 @@ export function BadgePreview({ mode }: { mode: Mode }) {
 /* ============ 6 · Modal ============ */
 export function ModalPreview({ mode }: { mode: Mode }) {
   const k = retroY2k(mode);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
+
+  if (!open) {
+    return (
+      <div className="flex min-h-[200px] items-center justify-center">
+        <button onClick={() => setOpen(true)} className={k.btnPrimary}>
+          ✦ OPEN SHUFFLE ✦
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex justify-center">
-      <button onClick={() => setOpen(true)} className={k.btnPrimary}>
-        ✦ OPEN SHUFFLE ✦
-      </button>
-      {open && (
-        <div className={k.overlay}>
-          <div className={cn(k.panel, "w-full max-w-md")}>
-            <div className="flex items-center justify-between border-b-[3px] border-[#FF2E93] pb-3">
-              <h3 className={cn(k.serif, "text-base font-black")}>✦ PLAYLIST CREATED ✦</h3>
-              <button onClick={() => setOpen(false)} className={k.iconBtn}>
-                <IconX className="h-4 w-4 stroke-[2.5]" />
-              </button>
-            </div>
-            <p className={cn("mt-4 font-bold text-xs", k.muted)}>
-              32 tracks added to your iPod Shuffle mix.
-            </p>
-            <div className="mt-6 flex justify-end gap-3">
-              <button onClick={() => setOpen(false)} className={k.btnSecondary}>
-                LATER
-              </button>
-              <button onClick={() => setOpen(false)} className={k.btnPrimarySm}>
-                PLAY NOW
-              </button>
-            </div>
-          </div>
+    <div className="relative flex w-full min-h-[380px] sm:min-h-[420px] items-center justify-center p-4 sm:p-6 my-2">
+      <div
+        className={cn(k.overlay, "rounded-2xl")}
+        onClick={() => setOpen(false)}
+        aria-hidden="true"
+      />
+      <div
+        className={cn(k.panel, "relative z-20 w-full max-w-md shadow-2xl mx-auto")}
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+      >
+        <div className="flex items-center justify-between border-b-[3px] border-[#FF2E93] pb-3">
+          <h3 className={cn(k.serif, "text-base font-black")}>✦ PLAYLIST CREATED ✦</h3>
+          <button onClick={() => setOpen(false)} className={k.iconBtn}>
+            <IconX className="h-4 w-4 stroke-[2.5]" />
+          </button>
         </div>
-      )}
+        <p className={cn("mt-4 font-bold text-xs", k.muted)}>
+          32 tracks added to your iPod Shuffle mix.
+        </p>
+        <div className="mt-6 flex flex-wrap justify-end gap-3">
+          <button onClick={() => setOpen(false)} className={k.btnSecondary}>
+            LATER
+          </button>
+          <button onClick={() => setOpen(false)} className={k.btnPrimarySm}>
+            PLAY NOW
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

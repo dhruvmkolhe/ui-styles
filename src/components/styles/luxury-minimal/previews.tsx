@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import type { Mode } from "@/lib/styles/types";
 import { luxuryMinimal } from "./kit";
-import { ArrowRight, X } from "lucide-react";
+import { ArrowRight, Menu, X } from "lucide-react";
 
 export function ButtonPreview({ mode }: { mode: Mode }) {
   const k = luxuryMinimal(mode);
@@ -45,19 +45,40 @@ export function CardPreview({ mode }: { mode: Mode }) {
 
 export function NavbarPreview({ mode }: { mode: Mode }) {
   const k = luxuryMinimal(mode);
+  const [open, setOpen] = useState(false);
   return (
-    <header className={`${k.bar} flex items-center justify-between px-8 py-5 w-full`}>
-      <div className="flex items-center gap-3">
-        <a href="#" className="font-serif text-xl font-normal tracking-[0.25em]">Maison V</a>
+    <header className={`${k.bar} flex flex-col justify-center px-4 py-3 sm:px-8 sm:py-5 w-full transition-all`}>
+      <div className="flex items-center justify-between gap-3 w-full">
+        <div className="flex items-center gap-3 shrink-0">
+          <a href="#" className="font-serif text-base sm:text-xl font-normal tracking-[0.2em] sm:tracking-[0.25em]">Maison V</a>
+        </div>
+
+        <nav className="hidden md:flex nav-desktop-links items-center gap-8 font-sans text-xs text-neutral-400 tracking-[0.25em]">
+          <a href="#" className="text-[#C5A059] border-b border-[#C5A059] pb-0.5">COUTURE</a>
+          <a href="#" className="hover:text-foreground transition-colors">ATELIER</a>
+          <a href="#" className="hover:text-foreground transition-colors">JOURNAL</a>
+        </nav>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <button className={`${k.btnPrimarySm} text-xs px-2.5 py-1.5 tracking-wider`}>APPOINTMENT</button>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="md:hidden nav-mobile-toggle p-1.5 border border-[#C5A059]/40 text-[#C5A059] hover:bg-[#C5A059]/10 transition-colors"
+            aria-label="Toggle menu"
+          >
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
+        </div>
       </div>
 
-      <nav className="hidden md:flex items-center gap-8 font-sans text-xs text-neutral-400 tracking-[0.25em]">
-        <a href="#" className="text-[#C5A059] border-b border-[#C5A059] pb-0.5">COUTURE</a>
-        <a href="#" className="hover:text-foreground transition-colors">ATELIER</a>
-        <a href="#" className="hover:text-foreground transition-colors">JOURNAL</a>
-      </nav>
-
-      <button className={k.btnPrimarySm}>APPOINTMENT</button>
+      {open && (
+        <nav className="pt-3 mt-3 border-t border-[#C5A059]/20 flex flex-col items-center gap-2 font-sans text-xs text-neutral-400 tracking-[0.25em] animate-in fade-in-0">
+          <a href="#" className="py-1 text-[#C5A059]">COUTURE</a>
+          <a href="#" className="py-1 hover:text-foreground transition-colors">ATELIER</a>
+          <a href="#" className="py-1 hover:text-foreground transition-colors">JOURNAL</a>
+        </nav>
+      )}
     </header>
   );
 }
@@ -66,8 +87,17 @@ export function InputPreview({ mode }: { mode: Mode }) {
   const k = luxuryMinimal(mode);
   return (
     <div className="w-full max-w-sm space-y-2">
-      <label className={k.label}>PRIVATE INVITATION CODE</label>
-      <input type="text" placeholder="MAISON-PARIS-VIP" className={k.input} />
+      <label className={k.label} htmlFor="luxury-invitation-code">PRIVATE INVITATION CODE</label>
+      <input
+        id="luxury-invitation-code"
+        name="invitationCode"
+        aria-label="Private Invitation Code"
+        type="text"
+        autoComplete="off"
+        suppressHydrationWarning
+        placeholder="MAISON-PARIS-VIP"
+        className={k.input}
+      />
       <p className="font-serif italic text-xs text-neutral-400">Strictly confidential subscription service</p>
     </div>
   );

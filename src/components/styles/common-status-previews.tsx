@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { cn } from "@/lib/utils"
 import type { Mode, StyleSlug } from "@/lib/styles/types"
 import { getStyleFormKit } from "./common-form-kit"
 import { Spinner } from "@/components/ui/spinner"
@@ -48,9 +49,9 @@ export function SpinnerPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) 
       </div>
 
       <div className="border-t pt-4">
-        <div className="p-3 rounded-lg bg-muted/40 flex items-center justify-between">
+        <div className={cn("p-3 flex items-center justify-between border", k.panelSoft, k.radius)}>
           <Spinner size="sm" label="Fetching latest telemetry stream..." showLabel />
-          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-background border">
+          <span className={cn("text-[10px] font-mono px-2 py-0.5 border", k.radius, k.panel)}>
             LIVE SYNC
           </span>
         </div>
@@ -132,22 +133,22 @@ export function StatusIndicatorPreview({ slug, mode }: { slug: StyleSlug; mode: 
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-        <div className="p-2.5 rounded-lg border bg-card/60 flex items-center">
+        <div className={cn("p-2.5 border flex items-center", k.panelSoft, k.radius)}>
           <StatusIndicator status="online" label="Online" />
         </div>
-        <div className="p-2.5 rounded-lg border bg-card/60 flex items-center">
+        <div className={cn("p-2.5 border flex items-center", k.panelSoft, k.radius)}>
           <StatusIndicator status="pending" label="Syncing" />
         </div>
-        <div className="p-2.5 rounded-lg border bg-card/60 flex items-center">
+        <div className={cn("p-2.5 border flex items-center", k.panelSoft, k.radius)}>
           <StatusIndicator status="warning" label="Degraded" />
         </div>
-        <div className="p-2.5 rounded-lg border bg-card/60 flex items-center">
+        <div className={cn("p-2.5 border flex items-center", k.panelSoft, k.radius)}>
           <StatusIndicator status="error" label="Outage" />
         </div>
-        <div className="p-2.5 rounded-lg border bg-card/60 flex items-center">
+        <div className={cn("p-2.5 border flex items-center", k.panelSoft, k.radius)}>
           <StatusIndicator status="offline" label="Offline" />
         </div>
-        <div className="p-2.5 rounded-lg border bg-card/60 flex items-center">
+        <div className={cn("p-2.5 border flex items-center", k.panelSoft, k.radius)}>
           <StatusIndicator status="neutral" label="Standby" />
         </div>
       </div>
@@ -184,7 +185,7 @@ export function StepProgressPreview({ slug, mode }: { slug: StyleSlug; mode: Mod
           type="button"
           disabled={activeStep === 0}
           onClick={() => setActiveStep((prev) => Math.max(0, prev - 1))}
-          className="px-3 py-1.5 rounded border text-muted-foreground hover:text-foreground disabled:opacity-40"
+          className={cn("px-3 py-1.5 transition-colors disabled:opacity-40", k.radius, k.btnSecondary)}
         >
           Previous
         </button>
@@ -192,7 +193,7 @@ export function StepProgressPreview({ slug, mode }: { slug: StyleSlug; mode: Mod
           type="button"
           disabled={activeStep === steps.length - 1}
           onClick={() => setActiveStep((prev) => Math.min(steps.length - 1, prev + 1))}
-          className="px-3 py-1.5 rounded bg-primary text-primary-foreground font-semibold hover:opacity-90 disabled:opacity-40"
+          className={cn("px-3 py-1.5 font-semibold disabled:opacity-40", k.radius, k.btnPrimarySm)}
         >
           Continue
         </button>
@@ -214,7 +215,11 @@ export function CircularProgressPreview({ slug, mode }: { slug: StyleSlug; mode:
         <div className="flex items-center gap-2">
           <label className="flex items-center gap-1.5 cursor-pointer text-muted-foreground text-[11px]">
             <input
+              id="circular-indeterminate-toggle"
+              name="circularIndeterminate"
+              aria-label="Indeterminate mode"
               type="checkbox"
+              suppressHydrationWarning
               checked={isIndeterminate}
               onChange={(e) => setIsIndeterminate(e.target.checked)}
               className="rounded"
@@ -257,11 +262,15 @@ export function CircularProgressPreview({ slug, mode }: { slug: StyleSlug; mode:
       {!isIndeterminate && (
         <div className="space-y-1.5 border-t pt-3">
           <div className="flex justify-between text-[11px] text-muted-foreground">
-            <span>Adjust Gauge</span>
+            <label htmlFor="circular-progress-slider">Adjust Gauge</label>
             <span className="font-mono font-bold text-foreground">{progressVal}%</span>
           </div>
           <input
+            id="circular-progress-slider"
+            name="circularProgressValue"
+            aria-label="Adjust Gauge"
             type="range"
+            suppressHydrationWarning
             min={0}
             max={100}
             value={progressVal}
@@ -349,7 +358,7 @@ export function SkeletonTextPreview({ slug, mode }: { slug: StyleSlug; mode: Mod
         <span className={k.muted}>Tapered Last Line</span>
       </div>
 
-      <div className="p-4 rounded-xl border bg-card space-y-4">
+      <div className={cn("p-4 border space-y-4", k.panelSoft, k.radius)}>
         <div className="space-y-2">
           <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
             Headline Skeleton
@@ -380,7 +389,11 @@ export function LoadingBarPreview({ slug, mode }: { slug: StyleSlug; mode: Mode 
         <span className={`font-semibold ${k.strong}`}>Horizontal Bars</span>
         <label className="flex items-center gap-1.5 cursor-pointer text-muted-foreground text-[11px]">
           <input
+            id="loading-bar-indeterminate-toggle"
+            name="loadingBarIndeterminate"
+            aria-label="Indeterminate mode"
             type="checkbox"
+            suppressHydrationWarning
             checked={indeterminate}
             onChange={(e) => setIndeterminate(e.target.checked)}
             className="rounded"
@@ -417,8 +430,15 @@ export function LoadingBarPreview({ slug, mode }: { slug: StyleSlug; mode: Mode 
 
       {!indeterminate && (
         <div className="space-y-1 pt-2 border-t">
+          <label htmlFor="loading-bar-progress-slider" className="sr-only">
+            Adjust Loading Bar Progress
+          </label>
           <input
+            id="loading-bar-progress-slider"
+            name="loadingBarProgress"
+            aria-label="Adjust Loading Bar Progress"
             type="range"
+            suppressHydrationWarning
             min={0}
             max={100}
             value={val}

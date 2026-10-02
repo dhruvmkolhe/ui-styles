@@ -38,7 +38,7 @@ import {
   ResizablePanel,
   ResizableHandle,
 } from "@/components/ui/resizable-panel"
-import { Masonry } from "@/components/ui/masonry"
+import { Masonry, type MasonryCols } from "@/components/ui/masonry"
 
 /* ========================================================================== */
 /* 1 · Collapsible Preview                                                    */
@@ -192,7 +192,7 @@ export function ContainerPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }
         </div>
       </div>
 
-      <div className="border border-dashed border-border/80 p-4 rounded-lg bg-muted/10">
+      <div className={cn("border border-dashed border-border/80 p-4 bg-muted/10", k.radius)}>
         <Container size={size} className={cn("border p-6 shadow-sm transition-all duration-300", k.panel, k.radius)}>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border/50 pb-3">
             <div>
@@ -353,14 +353,14 @@ export function SplitPanePreview({ slug, mode }: { slug: StyleSlug; mode: Mode }
           <div className="p-4 h-full flex flex-col justify-between text-xs space-y-2">
             <div>
               <div className="flex items-center gap-1.5 text-xs font-bold text-foreground">
-                <Terminal className="h-3.5 w-3.5 text-teal-600" />
+                <Terminal className={cn("h-3.5 w-3.5", k.strong)} />
                 <span>Primary Editor Pane</span>
               </div>
               <p className={cn("text-[11px] mt-1.5 leading-relaxed", k.muted)}>
                 Use pointer dragging on the central handle or use arrow keys when focused to adjust pane widths.
               </p>
             </div>
-            <div className="font-mono text-[10px] text-muted-foreground bg-muted/40 p-2 rounded">
+            <div className={cn("font-mono text-[10px] text-muted-foreground bg-muted/40 p-2", k.radius)}>
               width: {Math.round(size)}%
             </div>
           </div>
@@ -418,8 +418,8 @@ export function AspectRatioPreview({ slug, mode }: { slug: StyleSlug; mode: Mode
         </div>
       </div>
 
-      <div className="border border-border/60 p-4 rounded-xl bg-card">
-        <AspectRatio ratio={ratio} className={cn("border rounded-lg shadow-inner", k.panel)}>
+      <div className={cn("border border-border/60 p-4", k.panelSoft, k.radius)}>
+        <AspectRatio ratio={ratio} className={cn("border shadow-inner", k.panel, k.radius)}>
           <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center space-y-1">
             <span className="font-mono text-sm font-bold text-foreground">{ratio}</span>
             <span className={cn("text-xs", k.muted)}>Native CSS aspect-ratio</span>
@@ -526,15 +526,69 @@ export function ResizablePanelPreview({ slug, mode }: { slug: StyleSlug; mode: M
 /* ========================================================================== */
 export function MasonryPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
   const k = getStyleFormKit(slug, mode)
+  const [colsOverride, setColsOverride] = useState<MasonryCols | null>(null)
 
   const items = [
-    { title: "Design Principles", height: "h-28", desc: "Establishing strict typography hierarchies." },
-    { title: "Responsive Tokens", height: "h-40", desc: "Coordinating breakpoints across phone, tablet, laptop, and ultra-wide monitor screens." },
-    { title: "Color Contrast", height: "h-24", desc: "AA/AAA WCAG accessibility ratings." },
-    { title: "Animation Physics", height: "h-36", desc: "Spring constants and cubic bezier transition rates for interactive triggers." },
-    { title: "Zero Layout Shift", height: "h-32", desc: "Preventing cumulative layout shift with aspect-ratio placeholders." },
-    { title: "Edge Performance", height: "h-24", desc: "Instant hydration and zero bundle bloat." },
+    {
+      num: "01",
+      tag: "SYSTEM",
+      title: "Design Principles",
+      desc: "Establishing strict typography hierarchies and token constraints across all visual surfaces.",
+      minHeight: "min-h-[120px]",
+      badge: "CORE",
+    },
+    {
+      num: "02",
+      tag: "TOKENS",
+      title: "Responsive Breakpoints",
+      desc: "Coordinating multi-device fluid tokens across mobile, tablet, laptop, and ultra-wide monitor screens with synchronized clamp functions.",
+      minHeight: "min-h-[165px]",
+      badge: "FLUID",
+    },
+    {
+      num: "03",
+      tag: "A11Y",
+      title: "Color Contrast",
+      desc: "WCAG 2.2 AAA ratings verified with high-contrast luminance ratios.",
+      minHeight: "min-h-[105px]",
+      badge: "7.1:1",
+    },
+    {
+      num: "04",
+      tag: "MOTION",
+      title: "Spring Physics Engine",
+      desc: "Interactive kinetic curves and cubic-bezier transition rates tuned for tactile user interactions and natural dampening.",
+      minHeight: "min-h-[155px]",
+      badge: "60 FPS",
+    },
+    {
+      num: "05",
+      tag: "PERF",
+      title: "Zero Cumulative Layout Shift",
+      desc: "Aspect-ratio placeholders prevent reflows during lazy asset mounting.",
+      minHeight: "min-h-[120px]",
+      badge: "0.00 CLS",
+    },
+    {
+      num: "06",
+      tag: "WATERFALL",
+      title: "Staggered Flow Architecture",
+      desc: "Dynamic multi-column tracks distribute elements horizontally so the natural reading order flows left-to-right across the top row before descending.",
+      minHeight: "min-h-[175px]",
+      badge: "STREAM",
+    },
+    {
+      num: "07",
+      tag: "EDGE",
+      title: "Sub-Millisecond Hydration",
+      desc: "Optimized server bundle with zero redundant DOM nesting or hydration drift.",
+      minHeight: "min-h-[110px]",
+      badge: "99.9%",
+    },
   ]
+
+  const activeCols: MasonryCols | { default: MasonryCols; sm: MasonryCols; md: MasonryCols } =
+    colsOverride ?? { default: 1, sm: 2, md: 3 }
 
   return (
     <div className="mx-auto w-full max-w-xl space-y-4">
@@ -542,26 +596,58 @@ export function MasonryPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) 
         <span className={cn("text-xs font-mono tracking-wider uppercase", k.muted)}>
           Responsive Masonry Waterfall
         </span>
-        <span className={cn("text-xs font-mono", k.muted)}>Columns 1 &rarr; 2 &rarr; 3</span>
+        <div className="flex items-center gap-1.5 text-xs">
+          <button
+            type="button"
+            onClick={() => setColsOverride(null)}
+            className={cn(
+              "px-2.5 py-1 text-xs rounded border transition-colors",
+              colsOverride === null ? "bg-primary text-primary-foreground font-semibold" : "hover:bg-muted"
+            )}
+          >
+            Auto
+          </button>
+          {([2, 3] as const).map((c) => (
+            <button
+              key={c}
+              type="button"
+              onClick={() => setColsOverride(c)}
+              className={cn(
+                "px-2.5 py-1 text-xs rounded border transition-colors",
+                colsOverride === c ? "bg-primary text-primary-foreground font-semibold" : "hover:bg-muted"
+              )}
+            >
+              {c} Cols
+            </button>
+          ))}
+        </div>
       </div>
 
-      <Masonry cols={{ default: 1, sm: 2, md: 3 }} gap="sm" className="w-full">
-        {items.map((item, idx) => (
+      <Masonry cols={activeCols} gap="sm" className="w-full">
+        {items.map((item) => (
           <div
-            key={idx}
+            key={item.num}
             className={cn(
-              "p-4 border rounded-lg shadow-xs flex flex-col justify-between",
-              item.height,
+              "p-4 border shadow-xs flex flex-col justify-between transition-all",
+              item.minHeight,
               k.panel,
               k.radius
             )}
           >
             <div>
-              <span className="text-[10px] font-mono text-muted-foreground">ENTRY 0{idx + 1}</span>
+              <div className="flex items-center justify-between gap-1 mb-1">
+                <span className="text-[10px] font-mono text-muted-foreground">ENTRY {item.num}</span>
+                <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-muted/60 text-muted-foreground">
+                  {item.tag}
+                </span>
+              </div>
               <h5 className={cn("text-xs font-bold mt-0.5", k.strong)}>{item.title}</h5>
-              <p className={cn("text-[11px] mt-1 line-clamp-2", k.muted)}>{item.desc}</p>
+              <p className={cn("text-[11px] mt-1.5 leading-relaxed", k.muted)}>{item.desc}</p>
             </div>
-            <span className="text-[9px] font-mono text-muted-foreground self-end">VERIFIED</span>
+            <div className="flex items-center justify-between border-t border-border/40 pt-2 mt-3 text-[9px] font-mono text-muted-foreground">
+              <span>{item.badge}</span>
+              <span>VERIFIED</span>
+            </div>
           </div>
         ))}
       </Masonry>

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import type { Mode } from "@/lib/styles/types";
 import { artDeco } from "./kit";
-import { ArrowRight, X, ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 
 export function ButtonPreview({ mode }: { mode: Mode }) {
   const k = artDeco(mode);
@@ -45,21 +45,42 @@ export function CardPreview({ mode }: { mode: Mode }) {
 
 export function NavbarPreview({ mode }: { mode: Mode }) {
   const k = artDeco(mode);
+  const [open, setOpen] = useState(false);
   return (
-    <header className={`${k.bar} flex items-center justify-between px-8 py-5 w-full`}>
-      <div className="flex items-center gap-3">
-        <span className="text-[#C9A961] font-serif text-sm">✦</span>
-        <a href="#" className="font-sans font-bold text-sm text-[#C9A961] tracking-[0.3em]">L&apos;HORIZON</a>
-        <span className="text-[#C9A961] font-serif text-sm">✦</span>
+    <header className={`${k.bar} flex flex-col justify-center px-4 py-3 sm:px-8 sm:py-5 w-full transition-all`}>
+      <div className="flex items-center justify-between gap-3 w-full">
+        <div className="flex items-center gap-2 shrink-0">
+          <span className="text-[#C9A961] font-serif text-xs sm:text-sm">✦</span>
+          <a href="#" className="font-sans font-bold text-xs sm:text-sm text-[#C9A961] tracking-[0.2em] sm:tracking-[0.3em]">L&apos;HORIZON</a>
+          <span className="text-[#C9A961] font-serif text-xs sm:text-sm">✦</span>
+        </div>
+
+        <nav className="hidden md:flex nav-desktop-links items-center gap-6 sm:gap-8 font-sans text-xs text-[#A38D56] tracking-[0.2em]">
+          <a href="#" className="text-[#C9A961] border-b border-[#C9A961]">SALON</a>
+          <a href="#" className="hover:text-[#C9A961] transition-colors">ARCHIVE</a>
+          <a href="#" className="hover:text-[#C9A961] transition-colors">GALLERY</a>
+        </nav>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <button className={`${k.btnPrimarySm} text-xs px-2.5 py-1.5`}>CONCIERGE</button>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="md:hidden nav-mobile-toggle p-1.5 border border-[#C9A961] text-[#C9A961] hover:bg-[#C9A961]/10 transition-colors"
+            aria-label="Toggle menu"
+          >
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
+        </div>
       </div>
 
-      <nav className="hidden md:flex items-center gap-8 font-sans text-xs text-[#A38D56] tracking-[0.2em]">
-        <a href="#" className="text-[#C9A961] border-b border-[#C9A961]">SALON</a>
-        <a href="#" className="hover:text-[#C9A961] transition-colors">ARCHIVE</a>
-        <a href="#" className="hover:text-[#C9A961] transition-colors">GALLERY</a>
-      </nav>
-
-      <button className={k.btnPrimarySm}>CONCIERGE</button>
+      {open && (
+        <nav className="pt-3 mt-3 border-t border-[#C9A961]/30 flex flex-col items-center gap-2 font-sans text-xs text-[#A38D56] tracking-[0.2em] animate-in fade-in-0">
+          <a href="#" className="py-1 text-[#C9A961]">SALON</a>
+          <a href="#" className="py-1 hover:text-[#C9A961] transition-colors">ARCHIVE</a>
+          <a href="#" className="py-1 hover:text-[#C9A961] transition-colors">GALLERY</a>
+        </nav>
+      )}
     </header>
   );
 }
@@ -68,8 +89,17 @@ export function InputPreview({ mode }: { mode: Mode }) {
   const k = artDeco(mode);
   return (
     <div className="w-full max-w-sm space-y-1.5">
-      <label className={k.label}>MEMBERSHIP ACCESS CODE</label>
-      <input type="text" placeholder="GOLDEN-1925-VIP" className={k.input} />
+      <label className={k.label} htmlFor="art-deco-code">MEMBERSHIP ACCESS CODE</label>
+      <input
+        id="art-deco-code"
+        name="accessCode"
+        aria-label="Membership access code"
+        autoComplete="off"
+        suppressHydrationWarning
+        type="text"
+        placeholder="GOLDEN-1925-VIP"
+        className={k.input}
+      />
       <p className="font-sans text-[9px] text-[#A38D56] tracking-[0.2em]">BY PRIVATE INVITATION ONLY</p>
     </div>
   );

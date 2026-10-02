@@ -135,6 +135,7 @@ const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
           <input
             type="hidden"
             name={name}
+            suppressHydrationWarning
             value={currentValue || ""}
             required={required}
           />

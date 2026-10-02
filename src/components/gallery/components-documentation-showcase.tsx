@@ -19,6 +19,50 @@ import {
   Sparkles,
   ToggleLeft,
   ToggleRight,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  Bell,
+  Clock,
+  CalendarDays,
+  Compass,
+  FolderKanban,
+  Home,
+  LayoutGrid,
+  ListOrdered,
+  Milestone,
+  MousePointer,
+  PanelLeftClose,
+  PanelLeftOpen,
+  PanelRight,
+  Search,
+  Settings,
+  Share2,
+  Sliders,
+  Smartphone,
+  Split,
+  Trash2,
+  User,
+  Users,
+  Waypoints,
+  ExternalLink,
+  DollarSign,
+  TrendingUp,
+  TrendingDown,
+  Server,
+  Star,
+  Table as TableIcon,
+  History,
+  BarChart3,
+  AlignJustify,
+  KeyRound,
+  Grid3X3,
+  Columns2,
+  Terminal,
+  GripHorizontal,
+  GripVertical,
+  Maximize2,
+  Minimize2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { copyCode } from "@/lib/copy";
@@ -168,50 +212,6 @@ import { ConnectionStatus, type ConnectionState } from "@/components/ui/connecti
 import { SkeletonText } from "@/components/ui/skeleton-text";
 import { LoadingBar } from "@/components/ui/loading-bar";
 import { ProcessingIndicator, type ProcessingStatus } from "@/components/ui/processing-indicator";
-import {
-  ArrowLeft,
-  ArrowRight,
-  ArrowUp,
-  Bell,
-  Clock,
-  CalendarDays,
-  Compass,
-  FolderKanban,
-  Home,
-  LayoutGrid,
-  ListOrdered,
-  Milestone,
-  MousePointer,
-  PanelLeftClose,
-  PanelLeftOpen,
-  PanelRight,
-  Search,
-  Settings,
-  Share2,
-  Sliders,
-  Smartphone,
-  Split,
-  Trash2,
-  User,
-  Users,
-  Waypoints,
-  ExternalLink,
-  DollarSign,
-  TrendingUp,
-  TrendingDown,
-  Server,
-  Star,
-  Table as TableIcon,
-  History,
-  BarChart3,
-  AlignJustify,
-  KeyRound,
-  Grid3X3,
-  Columns2,
-  Terminal,
-  GripHorizontal,
-  GripVertical,
-} from "lucide-react";
 
 const COMPONENTS_DOCS = [
   { id: "checkbox", name: "Checkbox", category: "Form" },
@@ -406,6 +406,27 @@ export function ComponentsDocumentationShowcase() {
   const [demoMultiSelectVal, setDemoMultiSelectVal] = useState<string[]>(["react", "typescript"]);
   const [demoOtpVal, setDemoOtpVal] = useState("");
   const [demoOtpCompleted, setDemoOtpCompleted] = useState<string | null>(null);
+  const [isFullScreen, setIsFullScreen] = useState(false);
+
+  // Esc key and scroll lock for full screen mode
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isFullScreen) {
+        setIsFullScreen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isFullScreen]);
+
+  React.useEffect(() => {
+    if (!isFullScreen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [isFullScreen]);
 
   const handleCopy = async (code: string, label: string) => {
     const ok = await copyCode(code, label);
@@ -416,7 +437,14 @@ export function ComponentsDocumentationShowcase() {
   };
 
   return (
-    <section className="mt-16 rounded-2xl border border-border bg-card shadow-sm overflow-hidden">
+    <section
+      className={cn(
+        "transition-all duration-200 overflow-hidden",
+        isFullScreen
+          ? "fixed inset-0 z-50 m-0 rounded-none border-none bg-background overflow-y-auto"
+          : "mt-16 rounded-2xl border border-border bg-card shadow-sm"
+      )}
+    >
       {/* Header banner */}
       <div className="border-b border-border bg-muted/40 p-6 sm:p-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
@@ -434,6 +462,18 @@ export function ComponentsDocumentationShowcase() {
 
           {/* Interactive modifiers */}
           <div className="flex flex-wrap items-center gap-2 rounded-lg border border-border bg-background p-1.5 shadow-xs">
+            <button
+              type="button"
+              onClick={() => setIsFullScreen(!isFullScreen)}
+              className={cn(
+                "inline-flex items-center gap-1.5 rounded px-2.5 py-1 text-xs font-medium transition-colors",
+                isFullScreen ? "bg-teal-600 text-white font-semibold" : "text-muted-foreground hover:text-foreground"
+              )}
+              title={isFullScreen ? "Exit full screen (Esc)" : "Expand to full screen"}
+            >
+              {isFullScreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
+              Full screen: {isFullScreen ? "ON" : "OFF"}
+            </button>
             <button
               type="button"
               onClick={() => setIsError(!isError)}
@@ -884,6 +924,8 @@ export function ComponentsDocumentationShowcase() {
                   <FormField label="First Name" required={isRequired} error={isError ? "First name required" : undefined}>
                     <input
                       name="firstName"
+                      autoComplete="off"
+                      suppressHydrationWarning
                       defaultValue="Margaret"
                       disabled={isDisabled}
                       className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs outline-none focus:ring-1 focus:ring-ring"
@@ -893,6 +935,8 @@ export function ComponentsDocumentationShowcase() {
                   <FormField label="Last Name" required={isRequired}>
                     <input
                       name="lastName"
+                      autoComplete="off"
+                      suppressHydrationWarning
                       defaultValue="Hamilton"
                       disabled={isDisabled}
                       className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs outline-none focus:ring-1 focus:ring-ring"
@@ -904,6 +948,7 @@ export function ComponentsDocumentationShowcase() {
                   <input
                     type="email"
                     name="email"
+                    suppressHydrationWarning
                     defaultValue="margaret@apollo.nasa.gov"
                     disabled={isDisabled}
                     className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs outline-none focus:ring-1 focus:ring-ring"
@@ -1019,6 +1064,9 @@ export function ComponentsDocumentationShowcase() {
                   error={isError ? "Token invalid or expired." : undefined}
                 >
                   <input
+                    name="apiTokenKey"
+                    autoComplete="off"
+                    suppressHydrationWarning
                     defaultValue="sec_live_94827103984"
                     disabled={isDisabled}
                     className={cn(
@@ -2603,18 +2651,28 @@ export function ComponentsDocumentationShowcase() {
 
                     <div className="grid grid-cols-2 gap-2 text-xs">
                       <div className="space-y-1">
-                        <label className="text-[10px] font-mono text-muted-foreground">WIDTH (PX)</label>
+                        <label htmlFor="doc-popover-width" className="text-[10px] font-mono text-muted-foreground">WIDTH (PX)</label>
                         <input
+                          id="doc-popover-width"
+                          name="popoverWidth"
+                          aria-label="Popover Width in pixels"
                           type="text"
+                          autoComplete="off"
+                          suppressHydrationWarning
                           value={popoverW}
                           onChange={(e) => setPopoverW(e.target.value)}
                           className="w-full px-2 py-1 border rounded text-xs"
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[10px] font-mono text-muted-foreground">HEIGHT (PX)</label>
+                        <label htmlFor="doc-popover-height" className="text-[10px] font-mono text-muted-foreground">HEIGHT (PX)</label>
                         <input
+                          id="doc-popover-height"
+                          name="popoverHeight"
+                          aria-label="Popover Height in pixels"
                           type="text"
+                          autoComplete="off"
+                          suppressHydrationWarning
                           value={popoverH}
                           onChange={(e) => setPopoverH(e.target.value)}
                           className="w-full px-2 py-1 border rounded text-xs"
@@ -2821,18 +2879,28 @@ export function ComponentsDocumentationShowcase() {
 
                   <div className="space-y-4 py-4 text-xs">
                     <div className="space-y-1.5">
-                      <Label>Target Framework</Label>
+                      <Label htmlFor="doc-target-framework">Target Framework</Label>
                       <input
+                        id="doc-target-framework"
+                        name="targetFramework"
+                        aria-label="Target Framework"
                         type="text"
+                        autoComplete="off"
+                        suppressHydrationWarning
                         defaultValue="Next.js 16 (Turbopack)"
                         className="w-full px-3 py-2 border rounded-md text-xs bg-muted/20"
                         readOnly
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <Label>Output Directory</Label>
+                      <Label htmlFor="doc-output-directory">Output Directory</Label>
                       <input
+                        id="doc-output-directory"
+                        name="outputDirectory"
+                        aria-label="Output Directory"
                         type="text"
+                        autoComplete="off"
+                        suppressHydrationWarning
                         defaultValue="src/components/ui"
                         className="w-full px-3 py-2 border rounded-md text-xs font-mono bg-muted/20"
                         readOnly
@@ -4466,26 +4534,84 @@ export function ComponentsDocumentationShowcase() {
 
               <Masonry cols={{ default: 1, sm: 2, md: 3 }} gap="sm" className="w-full">
                 {[
-                  { title: "Design Principles", height: "h-28", desc: "Establishing strict typography hierarchies." },
-                  { title: "Responsive Tokens", height: "h-40", desc: "Coordinating breakpoints across phone, tablet, laptop, and ultra-wide monitor screens." },
-                  { title: "Color Contrast", height: "h-24", desc: "AA/AAA WCAG accessibility ratings." },
-                  { title: "Animation Physics", height: "h-36", desc: "Spring constants and cubic bezier transition rates for interactive triggers." },
-                  { title: "Zero Layout Shift", height: "h-32", desc: "Preventing cumulative layout shift with aspect-ratio placeholders." },
-                  { title: "Edge Performance", height: "h-24", desc: "Instant hydration and zero bundle bloat." },
-                ].map((item, idx) => (
+                  {
+                    num: "01",
+                    tag: "SYSTEM",
+                    title: "Design Principles",
+                    desc: "Establishing strict typography hierarchies and token constraints across all visual surfaces.",
+                    minHeight: "min-h-[120px]",
+                    badge: "CORE",
+                  },
+                  {
+                    num: "02",
+                    tag: "TOKENS",
+                    title: "Responsive Breakpoints",
+                    desc: "Coordinating multi-device fluid tokens across mobile, tablet, laptop, and ultra-wide monitor screens with synchronized clamp functions.",
+                    minHeight: "min-h-[165px]",
+                    badge: "FLUID",
+                  },
+                  {
+                    num: "03",
+                    tag: "A11Y",
+                    title: "Color Contrast",
+                    desc: "WCAG 2.2 AAA ratings verified with high-contrast luminance ratios.",
+                    minHeight: "min-h-[105px]",
+                    badge: "7.1:1",
+                  },
+                  {
+                    num: "04",
+                    tag: "MOTION",
+                    title: "Spring Physics Engine",
+                    desc: "Interactive kinetic curves and cubic-bezier transition rates tuned for tactile user interactions and natural dampening.",
+                    minHeight: "min-h-[155px]",
+                    badge: "60 FPS",
+                  },
+                  {
+                    num: "05",
+                    tag: "PERF",
+                    title: "Zero Cumulative Layout Shift",
+                    desc: "Aspect-ratio placeholders prevent reflows during lazy asset mounting.",
+                    minHeight: "min-h-[120px]",
+                    badge: "0.00 CLS",
+                  },
+                  {
+                    num: "06",
+                    tag: "WATERFALL",
+                    title: "Staggered Flow Architecture",
+                    desc: "Dynamic multi-column tracks distribute elements horizontally so the natural reading order flows left-to-right across the top row before descending.",
+                    minHeight: "min-h-[175px]",
+                    badge: "STREAM",
+                  },
+                  {
+                    num: "07",
+                    tag: "EDGE",
+                    title: "Sub-Millisecond Hydration",
+                    desc: "Optimized server bundle with zero redundant DOM nesting or hydration drift.",
+                    minHeight: "min-h-[110px]",
+                    badge: "99.9%",
+                  },
+                ].map((item) => (
                   <div
-                    key={idx}
+                    key={item.num}
                     className={cn(
-                      "p-4 border border-border rounded-lg bg-card shadow-xs flex flex-col justify-between",
-                      item.height
+                      "p-4 border border-border rounded-lg bg-card shadow-xs flex flex-col justify-between transition-all",
+                      item.minHeight
                     )}
                   >
                     <div>
-                      <span className="text-[10px] font-mono text-muted-foreground">ENTRY 0{idx + 1}</span>
+                      <div className="flex items-center justify-between gap-1 mb-1">
+                        <span className="text-[10px] font-mono text-muted-foreground">ENTRY {item.num}</span>
+                        <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
+                          {item.tag}
+                        </span>
+                      </div>
                       <h5 className="text-xs font-bold mt-0.5 text-foreground">{item.title}</h5>
-                      <p className="text-[11px] text-muted-foreground mt-1 line-clamp-2">{item.desc}</p>
+                      <p className="text-[11px] text-muted-foreground mt-1.5 leading-relaxed">{item.desc}</p>
                     </div>
-                    <span className="text-[9px] font-mono text-muted-foreground self-end">VERIFIED</span>
+                    <div className="flex items-center justify-between border-t border-border/40 pt-2 mt-3 text-[9px] font-mono text-muted-foreground">
+                      <span>{item.badge}</span>
+                      <span>VERIFIED</span>
+                    </div>
                   </div>
                 ))}
               </Masonry>
@@ -4775,9 +4901,13 @@ export function ComponentsDocumentationShowcase() {
             <div className="rounded-xl border border-border bg-background p-6 max-w-lg mx-auto space-y-6">
               <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
                 <span>Radial Metric Display</span>
-                <label className="flex items-center gap-1.5 cursor-pointer">
+                <label htmlFor="doc-circ-indeterminate" className="flex items-center gap-1.5 cursor-pointer">
                   <input
+                    id="doc-circ-indeterminate"
+                    name="circIndeterminate"
+                    aria-label="Toggle Indeterminate state"
                     type="checkbox"
+                    suppressHydrationWarning
                     checked={circIndeterminate}
                     onChange={(e) => setCircIndeterminate(e.target.checked)}
                     className="rounded text-xs"
@@ -4819,11 +4949,15 @@ export function ComponentsDocumentationShowcase() {
               {!circIndeterminate && (
                 <div className="space-y-1.5 border-t border-border pt-3">
                   <div className="flex justify-between text-xs text-muted-foreground">
-                    <span>Adjust Percentage:</span>
+                    <label htmlFor="doc-circ-progress-slider">Adjust Percentage:</label>
                     <span className="font-mono font-bold text-foreground">{circVal}%</span>
                   </div>
                   <input
+                    id="doc-circ-progress-slider"
+                    name="circProgressSlider"
+                    aria-label="Adjust circular progress percentage"
                     type="range"
+                    suppressHydrationWarning
                     min={0}
                     max={100}
                     value={circVal}
@@ -5013,9 +5147,13 @@ export function ComponentsDocumentationShowcase() {
             <div className="rounded-xl border border-border bg-background p-6 max-w-lg mx-auto space-y-5">
               <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
                 <span>Track Visual Variants</span>
-                <label className="flex items-center gap-1.5 cursor-pointer">
+                <label htmlFor="doc-loading-bar-indet" className="flex items-center gap-1.5 cursor-pointer">
                   <input
+                    id="doc-loading-bar-indet"
+                    name="loadingBarIndet"
+                    aria-label="Toggle indeterminate loading bar"
                     type="checkbox"
+                    suppressHydrationWarning
                     checked={loadingBarIndet}
                     onChange={(e) => setLoadingBarIndet(e.target.checked)}
                     className="rounded text-xs"
@@ -5051,11 +5189,15 @@ export function ComponentsDocumentationShowcase() {
               {!loadingBarIndet && (
                 <div className="space-y-1 pt-2 border-t border-border">
                   <div className="flex justify-between text-xs text-muted-foreground">
-                    <span>Progress:</span>
+                    <label htmlFor="doc-loading-bar-progress">Progress:</label>
                     <span className="font-mono font-bold text-foreground">{loadingBarValue}%</span>
                   </div>
                   <input
+                    id="doc-loading-bar-progress"
+                    name="loadingBarProgress"
+                    aria-label="Adjust loading bar progress"
                     type="range"
+                    suppressHydrationWarning
                     min={0}
                     max={100}
                     value={loadingBarValue}
@@ -5251,7 +5393,7 @@ export function ComponentsDocumentationShowcase() {
             <div className="p-4 rounded-xl border border-border bg-card flex justify-center">
               <div className="w-64 h-64">
                 <Lightbox alt="A beautiful landscape">
-                  <Image src="https://images.unsplash.com/photo-1506744626753-1fa7604eb466?w=1200&q=80" alt="Landscape" className="rounded-lg object-cover w-full h-full" />
+                  <Image src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200&q=80" alt="Landscape" className="rounded-lg object-cover w-full h-full" />
                 </Lightbox>
               </div>
             </div>
@@ -5340,7 +5482,6 @@ export function ComponentsDocumentationShowcase() {
           </div>
         )}
 
-\n        
         {/* BATCH 9 ADVANCED / UTILITY TABS */}
         {activeTab === "search-bar" && (
           <div className="space-y-8">
@@ -5768,6 +5909,9 @@ export function ComponentsDocumentationShowcase() {
                 <div className="grid gap-4 sm:grid-cols-2">
                   <FormField label="Member Name" required={isRequired} error={isError ? "Required field" : undefined}>
                     <input
+                      name="memberName"
+                      autoComplete="off"
+                      suppressHydrationWarning
                       defaultValue="Ada Lovelace"
                       disabled={isDisabled}
                       className="h-9 w-full rounded-md border border-input px-3 text-xs shadow-xs"

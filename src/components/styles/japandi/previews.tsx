@@ -14,6 +14,7 @@ import {
   IconImage,
   IconInfo,
   IconLogout,
+  IconMenu,
   IconUser,
   IconX,
   avatarSvg,
@@ -64,18 +65,62 @@ export function CardPreview({ mode }: { mode: Mode }) {
 /* ============ 3 · Navbar ============ */
 export function NavbarPreview({ mode }: { mode: Mode }) {
   const k = japandi(mode);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   return (
-    <div className={cn(k.bar, "flex items-center justify-between px-5 py-4")}>
-      <div className={cn(k.serif, "text-sm tracking-[0.2em]", k.strong)}>SABI&nbsp;&amp;&nbsp;CO</div>
-      <nav className="hidden items-center gap-6 text-[13px] tracking-wide sm:flex">
-        {["Shop", "Journal", "Ateliers"].map((l) => (
-          <a key={l} href="#" className={cn(k.muted, "transition-colors hover:text-inherit")}>
-            {l}
-          </a>
-        ))}
-      </nav>
-      <button className={k.btnPrimarySm}>Cart (0)</button>
-    </div>
+    <header className={cn(k.bar, "w-full flex flex-col justify-center px-4 py-3 sm:px-6 sm:py-3.5 transition-all")}>
+      <div className="flex items-center justify-between gap-3 w-full">
+        <div className={cn(k.serif, "text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.25em] font-medium shrink-0", k.strong)}>
+          SABI&nbsp;&amp;&nbsp;CO
+        </div>
+
+        {/* Desktop nav links */}
+        <nav className="hidden md:flex nav-desktop-links items-center gap-6 lg:gap-8 text-[13px] tracking-wide">
+          {["Shop", "Journal", "Ateliers"].map((l) => (
+            <a
+              key={l}
+              href="#"
+              className={cn(
+                k.muted,
+                "transition-colors hover:text-inherit focus-visible:outline-none focus-visible:underline underline-offset-4"
+              )}
+            >
+              {l}
+            </a>
+          ))}
+        </nav>
+
+        {/* Action and mobile menu toggle */}
+        <div className="flex items-center gap-2 shrink-0">
+          <button className={cn(k.btnPrimarySm, "px-3 py-1.5 text-xs sm:px-4 sm:py-2 shadow-xs")}>
+            Cart (0)
+          </button>
+          <button
+            type="button"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className={cn("md:hidden nav-mobile-toggle p-1.5 rounded transition-colors", k.iconBtn)}
+            aria-label="Toggle navigation menu"
+          >
+            {mobileOpen ? <IconX className="h-4 w-4" /> : <IconMenu className="h-4 w-4" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile drawer when menu is opened */}
+      {mobileOpen && (
+        <nav className="pt-3 mt-3 border-t border-current/10 flex flex-col gap-2 animate-in fade-in-0 text-xs">
+          {["Shop", "Journal", "Ateliers"].map((l) => (
+            <a
+              key={l}
+              href="#"
+              className={cn(k.muted, "py-1 transition-colors hover:text-inherit")}
+            >
+              {l}
+            </a>
+          ))}
+        </nav>
+      )}
+    </header>
   );
 }
 
@@ -85,7 +130,16 @@ export function InputPreview({ mode }: { mode: Mode }) {
   return (
     <div className="mx-auto w-full max-w-sm">
       <label className={k.label} htmlFor="japandi-email">Email address</label>
-      <input id="japandi-email" className={k.input} placeholder="you@studio.com" />
+      <input
+        id="japandi-email"
+        name="email"
+        type="email"
+        autoComplete="off"
+        suppressHydrationWarning
+        aria-label="Email address"
+        className={k.input}
+        placeholder="you@studio.com"
+      />
       <p className={cn("mt-2.5 text-xs tracking-wide", k.faint)}>
         One quiet letter each month. Unsubscribe anytime.
       </p>
@@ -111,33 +165,47 @@ export function BadgePreview({ mode }: { mode: Mode }) {
 /* ============ 6 · Modal ============ */
 export function ModalPreview({ mode }: { mode: Mode }) {
   const k = japandi(mode);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
+
+  if (!open) {
+    return (
+      <div className="flex min-h-[200px] items-center justify-center">
+        <button className={k.btnPrimary} onClick={() => setOpen(true)}>Open dialog</button>
+      </div>
+    );
+  }
+
   return (
-    <div className="relative -m-5 flex min-h-[260px] items-center justify-center p-5 sm:-m-10 sm:p-10">
-      <button className={k.btnPrimary} onClick={() => setOpen(true)}>Open dialog</button>
-      {open && (
-        <div className={k.overlay} onClick={() => setOpen(false)}>
-          <div className={cn(k.panel, "w-full max-w-sm p-7")} onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-start justify-between">
-              <h3 className={cn(k.serif, "text-lg tracking-wide", k.strong)}>Join the atelier</h3>
-              <button className={k.iconBtn} onClick={() => setOpen(false)} aria-label="Close">
-                <IconX className="h-3.5 w-3.5" />
-              </button>
-            </div>
-            <p className={cn("mt-3.5 text-sm leading-relaxed", k.muted)}>
-              Receive early access to seasonal releases, studio notes and a 10% welcome gift.
-            </p>
-            <div className="mt-7 flex justify-end gap-3">
-              <button className={cn(k.btnSecondary, "!px-4 !py-2 !text-xs")} onClick={() => setOpen(false)}>
-                Not now
-              </button>
-              <button className={k.btnPrimarySm} onClick={() => setOpen(false)}>
-                Subscribe
-              </button>
-            </div>
-          </div>
+    <div className="relative flex w-full min-h-[380px] sm:min-h-[420px] items-center justify-center p-4 sm:p-6 my-2">
+      <div
+        className={cn(k.overlay, "rounded-xl")}
+        onClick={() => setOpen(false)}
+        aria-hidden="true"
+      />
+      <div
+        className={cn(k.panel, "relative z-20 w-full max-w-sm p-6 sm:p-7 shadow-2xl mx-auto")}
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+      >
+        <div className="flex items-start justify-between gap-4">
+          <h3 className={cn(k.serif, "text-lg tracking-wide", k.strong)}>Join the atelier</h3>
+          <button className={k.iconBtn} onClick={() => setOpen(false)} aria-label="Close">
+            <IconX className="h-3.5 w-3.5" />
+          </button>
         </div>
-      )}
+        <p className={cn("mt-3.5 text-sm leading-relaxed", k.muted)}>
+          Receive early access to seasonal releases, studio notes and a 10% welcome gift.
+        </p>
+        <div className="mt-7 flex flex-wrap justify-end gap-3">
+          <button className={cn(k.btnSecondary, "!px-4 !py-2 !text-xs")} onClick={() => setOpen(false)}>
+            Not now
+          </button>
+          <button className={k.btnPrimarySm} onClick={() => setOpen(false)}>
+            Subscribe
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -277,6 +345,7 @@ export function SwitchPreview({ mode }: { mode: Mode }) {
     <div className="flex items-center justify-center gap-4">
       <button
         role="switch"
+        aria-label="Toggle newsletter"
         aria-checked={on}
         onClick={() => setOn(!on)}
         className={cn(

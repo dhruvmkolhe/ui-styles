@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import type { Mode } from "@/lib/styles/types";
 import { retroFuturistic } from "./kit";
-import { ArrowRight, Zap, X, ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown, Menu, X, Zap } from "lucide-react";
 
 export function ButtonPreview({ mode }: { mode: Mode }) {
   const k = retroFuturistic(mode);
@@ -45,20 +45,41 @@ export function CardPreview({ mode }: { mode: Mode }) {
 
 export function NavbarPreview({ mode }: { mode: Mode }) {
   const k = retroFuturistic(mode);
+  const [open, setOpen] = useState(false);
   return (
-    <header className={`${k.bar} flex items-center justify-between px-6 py-4 w-full`}>
-      <div className="flex items-center gap-3">
-        <span className="h-3 w-3 bg-[#FF00AA] shadow-[0_0_10px_#FF00AA] inline-block rotate-45"></span>
-        <a href="#" className="font-mono font-black text-sm text-[#00F0FF] tracking-widest">NEON_PROTOCOL_</a>
+    <header className={`${k.bar} flex flex-col justify-center px-4 py-3 sm:px-6 sm:py-4 w-full transition-all`}>
+      <div className="flex items-center justify-between gap-3 w-full">
+        <div className="flex items-center gap-2.5 shrink-0">
+          <span className="h-2.5 w-2.5 sm:h-3 sm:w-3 bg-[#FF00AA] shadow-[0_0_10px_#FF00AA] inline-block rotate-45"></span>
+          <a href="#" className="font-mono font-black text-xs sm:text-sm text-[#00F0FF] tracking-widest">NEON_PROTOCOL_</a>
+        </div>
+
+        <nav className="hidden md:flex nav-desktop-links items-center gap-6 sm:gap-8 font-mono text-xs text-[#B399D4] tracking-widest">
+          <a href="#" className="text-[#FF00AA] shadow-sm hover:text-white transition-colors">[GRID]</a>
+          <a href="#" className="hover:text-[#00F0FF] transition-colors">[SYNTH]</a>
+          <a href="#" className="hover:text-[#00F0FF] transition-colors">[CHROME]</a>
+        </nav>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <button className={`${k.btnPrimarySm} text-xs px-2.5 py-1.5`}>SYSTEM LOGIN</button>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="md:hidden nav-mobile-toggle p-1.5 border border-[#00F0FF]/40 text-[#00F0FF] hover:bg-[#00F0FF]/10 transition-colors"
+            aria-label="Toggle menu"
+          >
+            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
+        </div>
       </div>
 
-      <nav className="hidden md:flex items-center gap-8 font-mono text-xs text-[#B399D4] tracking-widest">
-        <a href="#" className="text-[#FF00AA] shadow-sm hover:text-white transition-colors">[GRID]</a>
-        <a href="#" className="hover:text-[#00F0FF] transition-colors">[SYNTH]</a>
-        <a href="#" className="hover:text-[#00F0FF] transition-colors">[CHROME]</a>
-      </nav>
-
-      <button className={k.btnPrimarySm}>SYSTEM LOGIN</button>
+      {open && (
+        <nav className="pt-3 mt-3 border-t border-[#00F0FF]/30 flex flex-col gap-2 font-mono text-xs text-[#B399D4] tracking-widest animate-in fade-in-0">
+          <a href="#" className="py-1 text-[#FF00AA]">[GRID]</a>
+          <a href="#" className="py-1 hover:text-[#00F0FF] transition-colors">[SYNTH]</a>
+          <a href="#" className="py-1 hover:text-[#00F0FF] transition-colors">[CHROME]</a>
+        </nav>
+      )}
     </header>
   );
 }
@@ -67,8 +88,17 @@ export function InputPreview({ mode }: { mode: Mode }) {
   const k = retroFuturistic(mode);
   return (
     <div className="w-full max-w-sm space-y-1.5">
-      <label className={k.label}>INPUT VECTOR CODE</label>
-      <input type="text" placeholder="SYNTH-8492-X" className={k.input} />
+      <label className={k.label} htmlFor="retro-vector-code">INPUT VECTOR CODE</label>
+      <input
+        id="retro-vector-code"
+        name="vectorCode"
+        aria-label="Input Vector Code"
+        type="text"
+        autoComplete="off"
+        suppressHydrationWarning
+        placeholder="SYNTH-8492-X"
+        className={k.input}
+      />
       <p className="font-mono text-[10px] text-[#00F0FF] tracking-widest">TRANSMISSION ENCRYPTED 256-BIT</p>
     </div>
   );

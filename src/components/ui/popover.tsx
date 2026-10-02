@@ -32,6 +32,7 @@ export interface PopoverProps {
   onOpenChange?: (open: boolean) => void
   placement?: PopoverPlacement
   align?: PopoverAlign
+  className?: string
   children: React.ReactNode
 }
 
@@ -41,6 +42,7 @@ export function Popover({
   onOpenChange,
   placement = "bottom",
   align = "center",
+  className,
   children,
 }: PopoverProps) {
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen)
@@ -66,7 +68,7 @@ export function Popover({
     <PopoverContext.Provider
       value={{ open, setOpen, triggerRef, contentId, placement, align }}
     >
-      <div className="relative inline-block">{children}</div>
+      <div className={cn("relative", className || "inline-block")}>{children}</div>
     </PopoverContext.Provider>
   )
 }

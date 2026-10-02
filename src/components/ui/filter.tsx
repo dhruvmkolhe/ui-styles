@@ -11,6 +11,8 @@ export interface FilterOption {
   disabled?: boolean
 }
 
+export type FilterValue = string | number | boolean | string[] | number[] | undefined | null;
+
 export interface FilterConfig {
   id: string
   label: string
@@ -20,14 +22,14 @@ export interface FilterConfig {
   max?: number
   step?: number
   placeholder?: string
-  defaultValue?: any
+  defaultValue?: FilterValue
 }
 
 export interface FilterProps {
   filters: FilterConfig[]
-  values?: Record<string, any>
-  defaultValues?: Record<string, any>
-  onChange?: (values: Record<string, any>) => void
+  values?: Record<string, FilterValue>
+  defaultValues?: Record<string, FilterValue>
+  onChange?: (values: Record<string, FilterValue>) => void
   onClearAll?: () => void
   onClearFilter?: (filterId: string) => void
   disabled?: boolean
@@ -48,9 +50,10 @@ export function Filter({
   showClearAll = true,
   title = "Filters",
 }: FilterProps) {
+  const instanceId = React.useId()
   const isControlled = controlledValues !== undefined
-  const [uncontrolledValues, setUncontrolledValues] = React.useState<Record<string, any>>(() => {
-    const initial: Record<string, any> = { ...defaultValues }
+  const [uncontrolledValues, setUncontrolledValues] = React.useState<Record<string, FilterValue>>(() => {
+    const initial: Record<string, FilterValue> = { ...defaultValues }
     filters.forEach((f) => {
       if (initial[f.id] === undefined && f.defaultValue !== undefined) {
         initial[f.id] = f.defaultValue
@@ -151,9 +154,15 @@ export function Filter({
               )}
             >
               <div className="flex items-center justify-between gap-1 mb-1.5">
-                <span className="text-xs font-semibold text-foreground line-clamp-1">
-                  {filter.label}
-                </span>
+                {filter.type === "radio" || filter.type === "checkbox" || filter.type === "multi-select" ? (
+                  <span className="text-xs font-semibold text-foreground line-clamp-1">
+                    {filter.label}
+                  </span>
+                ) : (
+                  <label htmlFor={`${instanceId}-${filter.id}`} className="text-xs font-semibold text-foreground line-clamp-1 cursor-pointer">
+                    {filter.label}
+                  </label>
+                )}
                 {isFilterActive && (
                   <button
                     type="button"
@@ -170,7 +179,10 @@ export function Filter({
               {filter.type === "select" && (
                 <div className="relative">
                   <select
-                    value={val || ""}
+                    id={`${instanceId}-${filter.id}`}
+                    name={`${instanceId}-${filter.id}`}
+                    aria-label={filter.label}
+                    value={typeof val === "string" || typeof val === "number" ? val : ""}
                     onChange={(e) => updateValue(filter.id, e.target.value)}
                     disabled={disabled}
                     className="w-full h-8 text-xs rounded-md border border-input bg-background px-2 pr-7 text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
@@ -195,8 +207,11 @@ export function Filter({
                     >
                       <input
                         type="radio"
-                        name={filter.id}
+                        id={`${instanceId}-${filter.id}-${opt.value}`}
+                        name={`${instanceId}-${filter.id}`}
+                        aria-label={opt.label}
                         value={opt.value}
+                        suppressHydrationWarning
                         checked={val === opt.value}
                         onChange={() => updateValue(filter.id, opt.value)}
                         disabled={disabled || opt.disabled}
@@ -212,13 +227,16 @@ export function Filter({
               {(filter.type === "checkbox" || filter.type === "multi-select") && (
                 <div className="flex flex-wrap gap-1 mt-1">
                   {filter.options?.map((opt) => {
-                    const selectedList: string[] = Array.isArray(val) ? val : []
+                    const selectedList: string[] = Array.isArray(val) ? (val as string[]) : []
                     const isSelected = selectedList.includes(opt.value)
 
                     return (
                       <button
                         key={opt.value}
                         type="button"
+                        role="checkbox"
+                        aria-checked={isSelected}
+                        aria-label={opt.label}
                         onClick={() => {
                           const next = isSelected
                             ? selectedList.filter((v) => v !== opt.value)
@@ -256,10 +274,14 @@ export function Filter({
                   </div>
                   <input
                     type="range"
+                    id={`${instanceId}-${filter.id}`}
+                    name={`${instanceId}-${filter.id}`}
+                    aria-label={filter.label}
+                    suppressHydrationWarning
                     min={filter.min ?? 0}
                     max={filter.max ?? 100}
                     step={filter.step ?? 1}
-                    value={val !== undefined ? val : filter.max ?? 100}
+                    value={typeof val === "number" ? val : filter.max ?? 100}
                     onChange={(e) => updateValue(filter.id, Number(e.target.value))}
                     disabled={disabled}
                     className="w-full accent-primary h-1.5 rounded-lg bg-muted cursor-pointer"
@@ -271,7 +293,12 @@ export function Filter({
               {filter.type === "text" && (
                 <input
                   type="text"
-                  value={val || ""}
+                  id={`${instanceId}-${filter.id}`}
+                  name={`${instanceId}-${filter.id}`}
+                  aria-label={filter.label || "Filter text"}
+                  autoComplete="off"
+                  suppressHydrationWarning
+                  value={typeof val === "string" ? val : ""}
                   onChange={(e) => updateValue(filter.id, e.target.value)}
                   placeholder={filter.placeholder || "Filter by keyword..."}
                   disabled={disabled}

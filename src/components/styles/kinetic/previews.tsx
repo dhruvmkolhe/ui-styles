@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import type { Mode } from "@/lib/styles/types";
 import { kinetic } from "./kit";
 
@@ -24,6 +24,14 @@ function XIcon() {
   return (
     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  );
+}
+
+function MenuIcon() {
+  return (
+    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
     </svg>
   );
 }
@@ -71,22 +79,43 @@ export function CardPreview({ mode }: { mode: Mode }) {
 
 export function NavbarPreview({ mode }: { mode: Mode }) {
   const k = kinetic(mode);
+  const [open, setOpen] = useState(false);
   return (
-    <header className={`${k.bar} flex items-center justify-between px-6 py-4 w-full`}>
-      <div className="flex items-center gap-3">
-        <div className="w-5 h-5 bg-[#FF5500] -skew-x-12 flex items-center justify-center text-white font-black text-xs">
-          K
+    <header className={`${k.bar} flex flex-col justify-center px-4 py-3 sm:px-6 sm:py-4 w-full transition-all`}>
+      <div className="flex items-center justify-between gap-3 w-full">
+        <div className="flex items-center gap-2.5 shrink-0">
+          <div className="w-5 h-5 bg-[#FF5500] -skew-x-12 flex items-center justify-center text-white font-black text-xs">
+            K
+          </div>
+          <a href="#" className="font-black text-xs sm:text-sm uppercase tracking-wider text-[#FF5500] -skew-x-6">KINETIC_LAB</a>
         </div>
-        <a href="#" className="font-black text-sm uppercase tracking-wider text-[#FF5500] -skew-x-6">KINETIC_LAB</a>
+
+        <nav className="hidden md:flex nav-desktop-links items-center gap-6 lg:gap-8 font-mono text-xs uppercase tracking-widest font-black">
+          <a href="#" className="text-[#FF5500] underline decoration-2 underline-offset-4">01. SPEED</a>
+          <a href="#" className={`${k.muted} hover:text-[#00E5FF]`}>02. MOTION</a>
+          <a href="#" className={`${k.muted} hover:text-[#00E5FF]`}>03. VECTORS</a>
+        </nav>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <button className={`${k.btnPrimarySm} text-xs px-2.5 py-1.5`}>LAUNCH SPEED</button>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="md:hidden nav-mobile-toggle p-1.5 -skew-x-6 border-2 border-[#FF5500] text-[#FF5500] hover:bg-[#FF5500] hover:text-white transition-colors"
+            aria-label="Toggle menu"
+          >
+            {open ? <XIcon /> : <MenuIcon />}
+          </button>
+        </div>
       </div>
 
-      <nav className="hidden md:flex items-center gap-8 font-mono text-xs uppercase tracking-widest font-black">
-        <a href="#" className="text-[#FF5500] underline decoration-2 underline-offset-4">01. SPEED</a>
-        <a href="#" className={`${k.muted} hover:text-[#00E5FF]`}>02. MOTION</a>
-        <a href="#" className={`${k.muted} hover:text-[#00E5FF]`}>03. VECTORS</a>
-      </nav>
-
-      <button className={k.btnPrimarySm}>LAUNCH SPEED</button>
+      {open && (
+        <nav className="pt-3 mt-3 border-t-2 border-[#FF5500]/40 flex flex-col gap-2 font-mono text-xs uppercase tracking-widest font-black animate-in fade-in-0">
+          <a href="#" className="py-1 text-[#FF5500]">01. SPEED</a>
+          <a href="#" className={`py-1 ${k.muted} hover:text-[#00E5FF]`}>02. MOTION</a>
+          <a href="#" className={`py-1 ${k.muted} hover:text-[#00E5FF]`}>03. VECTORS</a>
+        </nav>
+      )}
     </header>
   );
 }
@@ -95,8 +124,18 @@ export function InputPreview({ mode }: { mode: Mode }) {
   const k = kinetic(mode);
   return (
     <div className="w-full max-w-sm space-y-1.5">
-      <label className={k.label}>01 // INPUT VELOCITY PARAMETER</label>
-      <input type="text" placeholder="BOOST-ORANGE-900" className={k.input} defaultValue="" />
+      <label className={k.label} htmlFor="kinetic-velocity">01 // INPUT VELOCITY PARAMETER</label>
+      <input
+        id="kinetic-velocity"
+        name="velocityParameter"
+        aria-label="Input velocity parameter"
+        type="text"
+        autoComplete="off"
+        suppressHydrationWarning
+        placeholder="BOOST-ORANGE-900"
+        className={k.input}
+        defaultValue=""
+      />
       <p className="font-mono text-[10px] text-[#FF5500] font-bold">KINETIC ENGINE ACCELERATION</p>
     </div>
   );

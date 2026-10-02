@@ -19,9 +19,9 @@ export function getFormCodeForStyle(
     type="button"
     role="checkbox"
     aria-checked="true"
-    class="${k.radius} ${k.checkboxAccent} ${k.focusRing} relative mt-0.5 flex h-4.5 w-4.5 shrink-0 items-center justify-center border transition-all"
+    class="${k.radius} ${k.checkboxAccent} ${k.focusRing} relative mt-0.5 flex h-[18px] w-[18px] shrink-0 items-center justify-center border transition-all"
   >
-    <svg class="h-3 w-3 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <svg class="h-3.5 w-3.5 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
     </svg>
   </button>
@@ -37,7 +37,7 @@ export function getFormCodeForStyle(
     type="button"
     role="checkbox"
     aria-checked="false"
-    class="${k.radius} ${k.focusRing} relative mt-0.5 flex h-4.5 w-4.5 shrink-0 items-center justify-center border border-current/40 bg-transparent transition-all"
+    class="${k.radius} ${k.focusRing} ${k.checkboxUnchecked} relative mt-0.5 flex h-[18px] w-[18px] shrink-0 items-center justify-center border transition-all"
   ></button>
   <div class="grid gap-0.5">
     <span class="text-xs font-semibold ${k.text}">SMS security verification</span>
@@ -52,7 +52,7 @@ export function getFormCodeForStyle(
     role="checkbox"
     aria-checked="false"
     aria-invalid="true"
-    class="${k.radius} relative mt-0.5 flex h-4.5 w-4.5 shrink-0 items-center justify-center border border-rose-500 bg-rose-500/10 ring-2 ring-rose-500/30"
+    class="${k.radius} relative mt-0.5 flex h-[18px] w-[18px] shrink-0 items-center justify-center border border-rose-500 bg-rose-500/10 ring-2 ring-rose-500/30"
   ></button>
   <div class="grid gap-0.5">
     <span class="text-xs font-semibold ${k.text}">I accept the Open License Agreement *</span>
@@ -207,20 +207,44 @@ export function getFormCodeForStyle(
 
     case "label":
       return `<!-- ${k.styleName} · Label -->
-<!-- Typography-aligned form labels with required indicator and optional badge -->
+<!-- Typography-aligned form labels with primary hierarchy, required indicators, and contextual badges -->
 
-<!-- Standard Label -->
-<label class="${k.label}">Standard Field Label</label>
+<!-- 1. Standard Field Label -->
+<div class="space-y-1">
+  <label class="${k.label}">Standard Field Label</label>
+  <p class="text-[11px] ${k.muted}">Primary typographical visual weight with high contrast.</p>
+</div>
 
-<!-- Required Label -->
-<label class="${k.label}">
-  Required Field Label <span class="text-rose-500 font-bold ml-0.5">*</span>
-</label>
+<!-- 2. Required Field Label -->
+<div class="space-y-1">
+  <label class="${k.label} flex items-center gap-1.5">
+    <span>Required Field Label</span>
+    <span class="text-rose-500 font-bold" aria-hidden="true">*</span>
+    <span class="sr-only">(required)</span>
+  </label>
+  <p class="text-[11px] ${k.muted}">Includes high-contrast semantic required marker.</p>
+</div>
 
-<!-- Optional Label -->
-<label class="${k.label}">
-  Secondary Phone <span class="text-[10px] font-normal lowercase ${k.faint} ml-1.5">(optional)</span>
-</label>`;
+<!-- 3. Optional Field Label -->
+<div class="space-y-1">
+  <div class="flex items-center justify-between">
+    <label class="${k.label}">Secondary Phone Number</label>
+    <span class="text-[10px] uppercase font-mono tracking-wider px-2 py-0.5 rounded border border-current/20 ${k.faint}">Optional</span>
+  </div>
+  <p class="text-[11px] ${k.muted}">Subtle metadata indicator clarifying non-mandatory nature.</p>
+</div>
+
+<!-- 4. Label with Tooltip & Action Link -->
+<div class="space-y-1">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-1.5">
+      <label class="${k.label}">Tax Identification Number</label>
+      <span title="VAT or EIN registered with revenue authority" class="cursor-help ${k.muted}">ⓘ</span>
+    </div>
+    <a href="#" class="text-[11px] font-medium underline ${k.strong}">Where to find?</a>
+  </div>
+  <p class="text-[11px] ${k.muted}">Integrated inline tooltip hint icon and contextual action link.</p>
+</div>`;
 
     case "form-field":
       return `<!-- ${k.styleName} · Form Field Container -->
@@ -254,29 +278,52 @@ export function getFormCodeForStyle(
 
     case "date-input":
       return `<!-- ${k.styleName} · Date Input -->
-<!-- Semantic date input with calendar trigger icon, clear action, and min/max limits -->
+<!-- Reusable DateInput with displayFormat ('YYYY-MM-DD' | 'DD-MM-YYYY'), calendar trigger, clear action, and ISO-8601 state persistence -->
 
-<div class="relative w-full max-w-sm">
-  <label class="${k.label}" for="date-input">Target Delivery Date</label>
+<div class="relative w-full max-w-sm space-y-2">
+  <div class="flex items-center justify-between">
+    <label class="${k.label}" for="date-input">Target Delivery Date</label>
+    <div class="inline-flex items-center rounded border border-current/15 p-0.5 text-[10px]">
+      <span class="px-1.5 py-0.5 font-mono font-semibold bg-foreground text-background rounded">YYYY-MM-DD</span>
+      <span class="px-1.5 py-0.5 font-mono opacity-60">DD-MM-YYYY</span>
+    </div>
+  </div>
 
   <div class="relative flex items-center">
-    <div class="pointer-events-none absolute left-3 flex items-center justify-center opacity-60">
+    <button
+      type="button"
+      aria-label="Open calendar picker"
+      class="absolute left-3 z-10 flex items-center justify-center opacity-70 hover:opacity-100"
+    >
       <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
       </svg>
-    </div>
+    </button>
 
     <input
       id="date-input"
-      type="date"
+      type="text"
+      inputmode="numeric"
       value="2026-10-15"
-      min="2026-01-01"
-      max="2030-12-31"
-      class="${k.input} ${k.focusRing} w-full pl-9 pr-9 text-xs"
+      placeholder="YYYY-MM-DD"
+      class="${k.input} ${k.focusRing} w-full !pl-10 !pr-10 text-xs"
     />
+
+    <button
+      type="button"
+      aria-label="Clear date"
+      class="absolute right-3 z-10 flex h-4 w-4 items-center justify-center opacity-70 hover:opacity-100"
+    >
+      <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
   </div>
 
-  <p class="mt-1 text-[11px] ${k.faint}">Format: ISO-8601 (YYYY-MM-DD)</p>
+  <div class="flex items-center justify-between text-[11px]">
+    <span class="${k.faint}">Format: ISO-8601 (YYYY-MM-DD)</span>
+    <span class="font-mono font-medium ${k.muted}">Selected: 2026-10-15</span>
+  </div>
 </div>`;
 
     case "number-input":

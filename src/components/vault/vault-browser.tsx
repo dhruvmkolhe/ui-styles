@@ -85,6 +85,12 @@ export function VaultBrowser() {
         <label className="relative flex-1">
           <Search className="absolute left-3.5 top-3.5 h-4 w-4 text-muted-foreground" />
           <input
+            id="vault-search-input"
+            name="vaultSearch"
+            aria-label="Search interactive kits by name, category, or effect"
+            type="text"
+            autoComplete="off"
+            suppressHydrationWarning
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search interactive kits by name, category, or effect..."

@@ -54,8 +54,8 @@ export function glass(m: Mode) {
 
     /* ---------- form ---------- */
     label: d
-      ? "mb-2 block text-xs font-medium uppercase tracking-wider text-white/60"
-      : "mb-2 block text-xs font-medium uppercase tracking-wider text-slate-500",
+      ? "mb-1.5 block text-xs font-semibold uppercase tracking-wider text-white/90"
+      : "mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-800",
     input: d
       ? "w-full rounded-xl border border-white/15 bg-white/[0.06] px-4 py-2.5 text-sm text-white placeholder-white/40 shadow-inner backdrop-blur-md outline-none transition focus:border-violet-400/60 focus:ring-2 focus:ring-violet-400/25"
       : "w-full rounded-xl border border-white/70 bg-white/50 px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 shadow-inner backdrop-blur-md outline-none transition focus:border-violet-500/60 focus:ring-2 focus:ring-violet-500/20",
