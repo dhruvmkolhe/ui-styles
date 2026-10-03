@@ -94,6 +94,90 @@ import { ColorPicker } from "@/components/ui/color-picker";
 import { Combobox } from "@/components/ui/combobox";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { OtpInput } from "@/components/ui/otp-input";
+import { CommandButtonGroup, CommandButton } from "@/components/ui/command-button-group";
+import { ButtonGroup } from "@/components/ui/button-group";
+import { SplitButton } from "@/components/ui/split-button";
+import { SegmentedControl } from "@/components/ui/segmented-control";
+import {
+  Toolbar,
+  ToolbarGroup,
+  ToolbarButton,
+  ToolbarSeparator,
+  ToolbarToggleGroup,
+  ToolbarToggleItem,
+} from "@/components/ui/toolbar";
+import { FloatingToolbar } from "@/components/ui/floating-toolbar";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
+import { MentionInput } from "@/components/ui/mention-input";
+import { EmojiPicker } from "@/components/ui/emoji-picker";
+import { TagEditor } from "@/components/ui/tag-editor";
+import { FileUploadDropzone } from "@/components/ui/file-upload-dropzone";
+import { FileUploadProgressList, type UploadFileItem } from "@/components/ui/file-upload-progress-list";
+import { FileManager, type FSItem } from "@/components/ui/file-manager";
+import { FolderTree, type FolderNode } from "@/components/ui/folder-tree";
+import { TreeView, type TreeNode } from "@/components/ui/tree-view";
+import { OrganizationChart, type OrgNode } from "@/components/ui/organization-chart";
+import { KanbanBoard, type KanbanColumn } from "@/components/ui/kanban-board";
+import { DragAndDropList, type DndListItem } from "@/components/ui/drag-and-drop-list";
+import { TaskBoardCard, type TaskCardData } from "@/components/ui/task-board-card";
+import { CalendarEventCard, type CalendarEvent } from "@/components/ui/calendar-event-card";
+import { AgendaView, type AgendaEvent } from "@/components/ui/agenda-view";
+import { GanttChart, type GanttTask } from "@/components/ui/gantt-chart";
+import { DependencyGraph, type DependencyNode, type DependencyEdge } from "@/components/ui/dependency-graph";
+import { FlowchartEditor, type FlowNode, type FlowEdge } from "@/components/ui/flowchart-editor";
+import { NodeBasedEditor, type GraphEditorNode, type NodeConnection } from "@/components/ui/node-based-editor";
+import { WorkflowBuilder, type WorkflowStep } from "@/components/ui/workflow-builder";
+import { ChatMessage, type ChatMessageData } from "@/components/ui/chat-message";
+import { ChatWindow } from "@/components/ui/chat-window";
+import { ChatComposer } from "@/components/ui/chat-composer";
+import { TypingIndicator } from "@/components/ui/typing-indicator";
+import { ConversationList, type ConversationItem } from "@/components/ui/conversation-list";
+import { UserPresence, type PresenceStatus } from "@/components/ui/user-presence";
+import { VideoCallControls } from "@/components/ui/video-call-controls";
+import { ActivityFeed, type ActivityEvent } from "@/components/ui/activity-feed";
+import { CommentThread, type CommentItem } from "@/components/ui/comment-thread";
+import { ReviewFeedbackPanel, type FeedbackSubmission } from "@/components/ui/review-feedback-panel";
+import { DiffViewer } from "@/components/ui/diff-viewer";
+import { TerminalEmulator } from "@/components/ui/terminal-emulator";
+import { LogViewer } from "@/components/ui/log-viewer";
+import { JSONViewer } from "@/components/ui/json-viewer";
+import { APIRequestBuilder, type APIRequestConfig } from "@/components/ui/api-request-builder";
+import { APIResponseViewer, type APIResponseData } from "@/components/ui/api-response-viewer";
+import { RegexTester } from "@/components/ui/regex-tester";
+import { CronExpressionBuilder } from "@/components/ui/cron-expression-builder";
+import { QueryBuilder, type QueryGroup } from "@/components/ui/query-builder";
+import { FormulaEditor } from "@/components/ui/formula-editor";
+import { SpreadsheetGrid } from "@/components/ui/spreadsheet-grid";
+import { ChartLegend, type ChartSeriesItem } from "@/components/ui/chart-legend";
+import { ChartCrosshairTooltip } from "@/components/ui/chart-crosshair-tooltip";
+import { Heatmap } from "@/components/ui/heatmap";
+import { Treemap } from "@/components/ui/treemap";
+import { SankeyDiagram } from "@/components/ui/sankey-diagram";
+import { NetworkGraph } from "@/components/ui/network-graph";
+import { MapMarkerCluster } from "@/components/ui/map-marker-cluster";
+import { OnboardingTour } from "@/components/ui/onboarding-tour";
+import { SpotlightSearch } from "@/components/ui/spotlight-search";
+import { ApplicationSearch } from "@/components/ui/application-search";
+import { PermissionMatrix } from "@/components/ui/permission-matrix";
+import { AuditLog } from "@/components/ui/audit-log";
+import { FeatureFlagManager } from "@/components/ui/feature-flag-manager";
+import { VersionHistory } from "@/components/ui/version-history";
+import { DesignTokenEditor } from "@/components/ui/design-token-editor";
+import { ResponsivePreviewSwitcher } from "@/components/ui/responsive-preview-switcher";
+import { AccessibilityAuditPanel } from "@/components/ui/accessibility-audit-panel";
+import { ContrastPairTester } from "@/components/ui/contrast-pair-tester";
+import { VisualRegressionComparator } from "@/components/ui/visual-regression-comparator";
+import { LiveComponentPlayground } from "@/components/ui/live-component-playground";
+import { ComponentDependencyGraph } from "@/components/ui/component-dependency-graph";
+import { StateMachineVisualizer } from "@/components/ui/state-machine-visualizer";
+import { MockApiResponseGenerator } from "@/components/ui/mock-api-response-generator";
+import { FormValidationPlayground } from "@/components/ui/form-validation-playground";
+import { KeyboardShortcutEditor } from "@/components/ui/keyboard-shortcut-editor";
+import { ThemeTokenDiff } from "@/components/ui/theme-token-diff";
+import { RtlLayoutPreview } from "@/components/ui/rtl-layout-preview";
+import { LocalizationPreview } from "@/components/ui/localization-preview";
+import { AnimationTimelineEditor } from "@/components/ui/animation-timeline-editor";
+import { ComponentUsageAnalytics } from "@/components/ui/component-usage-analytics";
 import { Button } from "@/components/ui/button";
 import { Alert } from "@/components/ui/alert";
 import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
@@ -184,6 +268,7 @@ import {
 } from "@/components/ui/description-list";
 import { KeyValueList, KeyValueRow } from "@/components/ui/key-value-list";
 import { DataGrid, type DataGridColumn } from "@/components/ui/data-grid";
+import { Faq } from "@/components/ui/faq";
 import {
   Collapsible,
   CollapsibleTrigger,
@@ -212,6 +297,7 @@ import { ConnectionStatus, type ConnectionState } from "@/components/ui/connecti
 import { SkeletonText } from "@/components/ui/skeleton-text";
 import { LoadingBar } from "@/components/ui/loading-bar";
 import { ProcessingIndicator, type ProcessingStatus } from "@/components/ui/processing-indicator";
+import { COMPONENTS_CATALOG } from "@/lib/components-catalog";
 
 const COMPONENTS_DOCS = [
   { id: "checkbox", name: "Checkbox", category: "Form" },
@@ -263,6 +349,7 @@ const COMPONENTS_DOCS = [
   { id: "description-list", name: "Description List", category: "Data Display" },
   { id: "key-value-list", name: "Key-Value List", category: "Data Display" },
   { id: "data-grid", name: "Data Grid", category: "Data Display" },
+  { id: "faq", name: "FAQ Section", category: "Data Display" },
   { id: "collapsible", name: "Collapsible", category: "Layout" },
   { id: "divider", name: "Divider / Separator", category: "Layout" },
   { id: "container", name: "Container", category: "Layout" },
@@ -302,6 +389,83 @@ const COMPONENTS_DOCS = [
   { id: "combobox", name: "Combobox", category: "Advanced / Utility" },
   { id: "multi-select", name: "Multi-Select", category: "Advanced / Utility" },
   { id: "otp-input", name: "OTP / PIN Input", category: "Advanced / Utility" },
+  { id: "command-button-group", name: "Command Button Group", category: "Actions & Rich Text" },
+  { id: "button-group", name: "Button Group", category: "Actions & Rich Text" },
+  { id: "split-button", name: "Split Button", category: "Actions & Rich Text" },
+  { id: "segmented-control", name: "Segmented Control", category: "Actions & Rich Text" },
+  { id: "toolbar", name: "Toolbar", category: "Actions & Rich Text" },
+  { id: "floating-toolbar", name: "Floating Toolbar", category: "Actions & Rich Text" },
+  { id: "rich-text-editor", name: "Rich Text Editor", category: "Actions & Rich Text" },
+  { id: "mention-input", name: "Mention Input", category: "Actions & Rich Text" },
+  { id: "emoji-picker", name: "Emoji Picker", category: "Actions & Rich Text" },
+  { id: "tag-editor", name: "Mention / Tag Editor", category: "Actions & Rich Text" },
+  { id: "file-upload-dropzone", name: "File Upload Dropzone", category: "Files & Hierarchy" },
+  { id: "file-upload-progress", name: "File Upload Progress List", category: "Files & Hierarchy" },
+  { id: "file-manager", name: "File Manager", category: "Files & Hierarchy" },
+  { id: "folder-tree", name: "Folder Tree", category: "Files & Hierarchy" },
+  { id: "tree-view", name: "Tree View", category: "Files & Hierarchy" },
+  { id: "organization-chart", name: "Organization Chart", category: "Files & Hierarchy" },
+  { id: "kanban-board", name: "Kanban Board", category: "Files & Hierarchy" },
+  { id: "drag-and-drop-list", name: "Drag-and-Drop List", category: "Files & Hierarchy" },
+  { id: "task-board-card", name: "Task Board Card", category: "Files & Hierarchy" },
+  { id: "calendar-event-card", name: "Calendar Event Card", category: "Files & Hierarchy" },
+  { id: "agenda-view", name: "Agenda View", category: "Scheduling & Workflows" },
+  { id: "gantt-chart", name: "Gantt Chart", category: "Scheduling & Workflows" },
+  { id: "dependency-graph", name: "Dependency Graph", category: "Scheduling & Workflows" },
+  { id: "flowchart-editor", name: "Flowchart Editor", category: "Scheduling & Workflows" },
+  { id: "node-based-editor", name: "Node-Based Editor", category: "Scheduling & Workflows" },
+  { id: "workflow-builder", name: "Workflow Builder", category: "Scheduling & Workflows" },
+  { id: "chat-message", name: "Chat Message", category: "Scheduling & Workflows" },
+  { id: "chat-window", name: "Chat Window", category: "Scheduling & Workflows" },
+  { id: "chat-composer", name: "Chat Composer", category: "Scheduling & Workflows" },
+  { id: "typing-indicator", name: "Typing Indicator", category: "Scheduling & Workflows" },
+  { id: "conversation-list", name: "Conversation List", category: "Collaboration & DevTools" },
+  { id: "user-presence", name: "User Presence", category: "Collaboration & DevTools" },
+  { id: "video-call-controls", name: "Video Call Controls", category: "Collaboration & DevTools" },
+  { id: "activity-feed", name: "Activity Feed", category: "Collaboration & DevTools" },
+  { id: "comment-thread", name: "Comment Thread", category: "Collaboration & DevTools" },
+  { id: "review-feedback-panel", name: "Review / Feedback Panel", category: "Collaboration & DevTools" },
+  { id: "diff-viewer", name: "Diff Viewer", category: "Collaboration & DevTools" },
+  { id: "terminal-emulator", name: "Terminal Emulator", category: "Collaboration & DevTools" },
+  { id: "log-viewer", name: "Log Viewer", category: "Collaboration & DevTools" },
+  { id: "json-viewer", name: "JSON Viewer", category: "Collaboration & DevTools" },
+  { id: "api-request-builder", name: "API Request Builder", category: "API & Data Utilities" },
+  { id: "api-response-viewer", name: "API Response Viewer", category: "API & Data Utilities" },
+  { id: "regex-tester", name: "Regex Tester", category: "API & Data Utilities" },
+  { id: "cron-expression-builder", name: "Cron Expression Builder", category: "API & Data Utilities" },
+  { id: "query-builder", name: "Query Builder", category: "API & Data Utilities" },
+  { id: "formula-editor", name: "Formula Editor", category: "API & Data Utilities" },
+  { id: "spreadsheet-grid", name: "Spreadsheet Grid", category: "API & Data Utilities" },
+  { id: "chart-legend", name: "Chart Legend", category: "API & Data Utilities" },
+  { id: "chart-crosshair-tooltip", name: "Chart Crosshair / Tooltip", category: "API & Data Utilities" },
+  { id: "heatmap", name: "Heatmap", category: "API & Data Utilities" },
+  { id: "treemap", name: "Treemap", category: "Visualizations & Mapping" },
+  { id: "sankey-diagram", name: "Sankey Diagram", category: "Visualizations & Mapping" },
+  { id: "network-graph", name: "Network Graph", category: "Visualizations & Mapping" },
+  { id: "map-marker-cluster", name: "Map Marker / Cluster", category: "Visualizations & Mapping" },
+  { id: "onboarding-tour", name: "Onboarding Tour", category: "Visualizations & Mapping" },
+  { id: "spotlight-search", name: "Spotlight Search", category: "Visualizations & Mapping" },
+  { id: "application-search", name: "Application Search", category: "Visualizations & Mapping" },
+  { id: "permission-matrix", name: "Permission Matrix", category: "Visualizations & Mapping" },
+  { id: "audit-log", name: "Audit Log", category: "Visualizations & Mapping" },
+  { id: "feature-flag-manager", name: "Feature Flag Manager", category: "Visualizations & Mapping" },
+  { id: "version-history", name: "Version History", category: "Visualizations & Mapping" },
+  { id: "design-token-editor", name: "Design Token Editor", category: "Design System & a11y" },
+  { id: "responsive-preview-switcher", name: "Responsive Preview Switcher", category: "Design System & a11y" },
+  { id: "accessibility-audit-panel", name: "Accessibility Audit Panel", category: "Design System & a11y" },
+  { id: "contrast-pair-tester", name: "Contrast Pair Tester", category: "Design System & a11y" },
+  { id: "visual-regression-comparator", name: "Visual Regression Comparator", category: "Design System & a11y" },
+  { id: "live-component-playground", name: "Live Component Playground", category: "Design System & a11y" },
+  { id: "component-dependency-graph", name: "Component Dependency Graph", category: "Design System & a11y" },
+  { id: "state-machine-visualizer", name: "State Machine Visualizer", category: "Design System & a11y" },
+  { id: "mock-api-response-generator", name: "Mock API Response Generator", category: "Design System & a11y" },
+  { id: "form-validation-playground", name: "Form Validation Playground", category: "Design System & a11y" },
+  { id: "keyboard-shortcut-editor", name: "Keyboard Shortcut Editor", category: "DevEx & Localization" },
+  { id: "theme-token-diff", name: "Theme Token Diff", category: "DevEx & Localization" },
+  { id: "rtl-layout-preview", name: "RTL Layout Preview", category: "DevEx & Localization" },
+  { id: "localization-preview", name: "Localization Preview", category: "DevEx & Localization" },
+  { id: "animation-timeline-editor", name: "Animation Timeline Editor", category: "DevEx & Localization" },
+  { id: "component-usage-analytics", name: "Component Usage Analytics", category: "DevEx & Localization" },
   { id: "playground", name: "Full Suite Playground", category: "Integration" },
 ];
 
@@ -314,12 +478,67 @@ export function ComponentsDocumentationShowcase() {
   const [isError, setIsError] = useState(false);
   const [isRequired, setIsRequired] = useState(false);
 
+  // Batch 10 Actions & Rich Text interactive states
+  const [demoCommandAction, setDemoCommandAction] = useState<string>("Ready");
+  const [demoButtonGroupView, setDemoButtonGroupView] = useState("grid");
+  const [demoSplitStatus, setDemoSplitStatus] = useState("Ready");
+  const [demoSegmentedVal, setDemoSegmentedVal] = useState("week");
+  const [demoToolbarFormats, setDemoToolbarFormats] = useState<string[]>(["bold"]);
+  const [demoToolbarAlign, setDemoToolbarAlign] = useState("left");
+  const [demoFloatingSelection, setDemoFloatingSelection] = useState<string | null>(null);
+  const [demoRichTextVal, setDemoRichTextVal] = useState(
+    "<p>Welcome to <strong>Chameleon UI</strong> rich text editing! Easily add <em>formatted paragraphs</em>, lists, and links.</p>"
+  );
+  const [demoMentionVal, setDemoMentionVal] = useState("Hello @dhruvmkolhe, the team review is ready!");
+  const [demoEmojiVal, setDemoEmojiVal] = useState("🎉");
+  const [demoTagsVal, setDemoTagsVal] = useState<string[]>([
+    "react",
+    "nextjs",
+    "@dhruvmkolhe",
+    "design-tokens",
+  ]);
+
+  // Batch 11 Files & Hierarchy interactive states
+  const [demoDropzoneAccepted, setDemoDropzoneAccepted] = useState<number>(0);
+  const [demoUploadItems, setDemoUploadItems] = useState<UploadFileItem[]>([
+    { id: "u-1", name: "spec-document.pdf", size: 2450000, progress: 100, status: "completed" },
+    { id: "u-2", name: "design-assets.zip", size: 8400000, progress: 54, status: "uploading" },
+    { id: "u-3", name: "screencast.mp4", size: 18200000, progress: 20, status: "paused" },
+  ]);
+  const [demoFileManagerSelect, setDemoFileManagerSelect] = useState<string>("None");
+  const [demoFolderTreeSelect, setDemoFolderTreeSelect] = useState<string>("src");
+  const [demoTreeViewSelect, setDemoTreeViewSelect] = useState<string>("api");
+  const [demoOrgSelect, setDemoOrgSelect] = useState<string>("Dhruv Kolhe");
+  const [demoKanbanCols, setDemoKanbanCols] = useState<KanbanColumn[]>([
+    { id: "todo", title: "To Do", color: "#64748b", taskIds: ["task-1", "task-2"] },
+    { id: "progress", title: "In Progress", color: "#3b82f6", taskIds: ["task-3"] },
+    { id: "done", title: "Completed", color: "#10b981", taskIds: ["task-4"] },
+  ]);
+  const [demoKanbanTasks, setDemoKanbanTasks] = useState<Record<string, TaskCardData>>({
+    "task-1": { id: "task-1", title: "Implement Folder Navigation", priority: "high", labels: ["Files", "A11y"], dueDate: "Oct 24", subtasks: { completed: 1, total: 3 } },
+    "task-2": { id: "task-2", title: "Tree View Roving Focus", priority: "medium", labels: ["Hierarchy"], dueDate: "Oct 25" },
+    "task-3": { id: "task-3", title: "Kanban Board Drag & Drop", priority: "urgent", labels: ["Workflow"], dueDate: "Oct 22", subtasks: { completed: 3, total: 4 } },
+    "task-4": { id: "task-4", title: "Batch 10 Polish & Tests", priority: "low", labels: ["Verified"], dueDate: "Oct 20", subtasks: { completed: 2, total: 2 } },
+  });
+  const [demoDndItems, setDemoDndItems] = useState<DndListItem[]>([
+    { id: "d-1", label: "Architecture Review", description: "Verify zero foreign dependencies" },
+    { id: "d-2", label: "Multi-Style Verification", description: "Audit all 25 design themes" },
+    { id: "d-3", label: "Interactive Tests", description: "Exercise dropzone and tree nodes" },
+  ]);
+
+  // Batch 12 Scheduling & Workflows interactive states
+  const [demoAgendaEvent, setDemoAgendaEvent] = useState<string>("Sprint Review");
+  const [demoGanttTask, setDemoGanttTask] = useState<string>("Batch 12 Frontend");
+  const [demoDepNode, setDemoDepNode] = useState<string>("Core Engine");
+  const [demoComposerMsg, setDemoComposerMsg] = useState<string>("Ready");
+  const [demoTypingActive, setDemoTypingActive] = useState<boolean>(true);
+
   // Component-specific interactive states
   const [cbChecked, setCbChecked] = useState(true);
   const [radioVal, setRadioVal] = useState("pro");
   const [radioVariant, setRadioVariant] = useState<"card" | "standard">("card");
   const [selectVal, setSelectVal] = useState("react");
-  const [textareaVal, setTextareaVal] = useState("Antigravity UI Hub with clean Chakra-style ergonomics.");
+  const [textareaVal, setTextareaVal] = useState("Antigravity Chameleon UI with clean Chakra-style ergonomics.");
   const [dateVal, setDateVal] = useState("2026-10-24");
   const [numberVal, setNumberVal] = useState<number | undefined>(24);
   const [numberStepper, setNumberStepper] = useState<"inline" | "buttons">("buttons");
@@ -406,6 +625,17 @@ export function ComponentsDocumentationShowcase() {
   const [demoMultiSelectVal, setDemoMultiSelectVal] = useState<string[]>(["react", "typescript"]);
   const [demoOtpVal, setDemoOtpVal] = useState("");
   const [demoOtpCompleted, setDemoOtpCompleted] = useState<string | null>(null);
+
+  // Batch 13 Collaboration & DevTools states
+  const [demoSelectedConv, setDemoSelectedConv] = useState("conv-1");
+  const [demoPresenceVal, setDemoPresenceVal] = useState<PresenceStatus>("online");
+  const [demoFeedbackResult, setDemoFeedbackResult] = useState<string | null>(null);
+  const [demoTerminalCmd, setDemoTerminalCmd] = useState<string | null>(null);
+
+  // Batch 14 API & Data Utilities states
+  const [demoSentRequest, setDemoSentRequest] = useState<string | null>(null);
+  const [demoFormulaResult, setDemoFormulaResult] = useState<any>(null);
+
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   // Esc key and scroll lock for full screen mode
@@ -456,7 +686,7 @@ export function ComponentsDocumentationShowcase() {
               Production Component Suites
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Test states, variants, keyboard accessibility, and copy production React code across all 85 components.
+              Test states, variants, keyboard accessibility, and copy production React code across all {COMPONENTS_CATALOG.length} components.
             </p>
           </div>
 
@@ -563,7 +793,7 @@ export function ComponentsDocumentationShowcase() {
 
                 <Checkbox
                   id="interactive-cb"
-                  label="Subscribe to weekly UI Hub updates"
+                  label="Subscribe to weekly Chameleon UI updates"
                   description="Curated components, tokens, and design recipes delivered straight to your inbox."
                   checked={cbChecked}
                   onCheckedChange={(val) => setCbChecked(val)}
@@ -1614,7 +1844,7 @@ export function ComponentsDocumentationShowcase() {
                 title="Design System Export Complete"
                 description="All 35 components have been validated, bundled with Tailwind CSS, and verified against WCAG AAA contrast."
                 details={[
-                  { label: "Artifact", value: "ui-hub-batch-2.tar.gz" },
+                  { label: "Artifact", value: "chameleon-ui-batch-2.tar.gz" },
                   { label: "Components", value: "35 Components" },
                   { label: "Design Styles", value: "25 Aesthetics" },
                 ]}
@@ -1652,7 +1882,7 @@ export function ComponentsDocumentationShowcase() {
 
             <div className="space-y-3 max-w-2xl mx-auto">
               <Callout variant="info" title="Pro-Tip · Zero CSS Overhead">
-                Every style in UI Hub is generated exclusively with utility classes. No external stylesheets or runtime CSS-in-JS dependencies are needed.
+                Every style in Chameleon UI is generated exclusively with utility classes. No external stylesheets or runtime CSS-in-JS dependencies are needed.
               </Callout>
 
               <Callout variant="success" title="Production Ready">
@@ -1971,7 +2201,7 @@ export function ComponentsDocumentationShowcase() {
                 variant="outline"
                 onClick={() =>
                   handleCopy(
-                    `<Sidebar collapsed={isCollapsed}>\n  <SidebarHeader>UI Hub</SidebarHeader>\n  <SidebarContent>\n    <SidebarMenu>\n      <SidebarMenuItem>\n        <SidebarMenuButton icon={<Home />} isActive>Overview</SidebarMenuButton>\n      </SidebarMenuItem>\n    </SidebarMenu>\n  </SidebarContent>\n</Sidebar>`,
+                    `<Sidebar collapsed={isCollapsed}>\n  <SidebarHeader>Chameleon UI</SidebarHeader>\n  <SidebarContent>\n    <SidebarMenu>\n      <SidebarMenuItem>\n        <SidebarMenuButton icon={<Home />} isActive>Overview</SidebarMenuButton>\n      </SidebarMenuItem>\n    </SidebarMenu>\n  </SidebarContent>\n</Sidebar>`,
                     "Sidebar"
                   )
                 }
@@ -2061,7 +2291,7 @@ export function ComponentsDocumentationShowcase() {
                     {!sidebarCollapsed && (
                       <div className="flex-1 min-w-0 text-left">
                         <div className="text-xs font-semibold text-foreground truncate">Jane Doe</div>
-                        <div className="text-[10px] text-muted-foreground truncate">admin@uihub.dev</div>
+                        <div className="text-[10px] text-muted-foreground truncate">admin@chameleon-ui.dev</div>
                       </div>
                     )}
                   </div>
@@ -2086,7 +2316,7 @@ export function ComponentsDocumentationShowcase() {
                 variant="outline"
                 onClick={() =>
                   handleCopy(
-                    `<NavigationMenu>\n  <NavigationMenuList>\n    <NavigationMenuItem>\n      <NavigationMenuTrigger value="products">Products</NavigationMenuTrigger>\n      <NavigationMenuContent value="products">\n        <NavigationMenuLink href="/ui">UI Hub</NavigationMenuLink>\n      </NavigationMenuContent>\n    </NavigationMenuItem>\n  </NavigationMenuList>\n</NavigationMenu>`,
+                    `<NavigationMenu>\n  <NavigationMenuList>\n    <NavigationMenuItem>\n      <NavigationMenuTrigger value="products">Products</NavigationMenuTrigger>\n      <NavigationMenuContent value="products">\n        <NavigationMenuLink href="/ui">Chameleon UI</NavigationMenuLink>\n      </NavigationMenuContent>\n    </NavigationMenuItem>\n  </NavigationMenuList>\n</NavigationMenu>`,
                     "NavigationMenu"
                   )
                 }
@@ -3173,7 +3403,7 @@ export function ComponentsDocumentationShowcase() {
 
             <div className="rounded-xl border border-border bg-background p-6 max-w-2xl mx-auto space-y-6">
               <div className="p-4 rounded-xl border border-border bg-card flex items-center justify-between">
-                <span className="text-xs font-bold text-foreground">UI HUB</span>
+                <span className="text-xs font-bold text-foreground">CHAMELEON UI</span>
                 <MegaMenu
                   label="Explore Directory"
                   columns={[
@@ -3907,6 +4137,79 @@ export function ComponentsDocumentationShowcase() {
                 onCellClick={(r, c, item: any) => {
                   const keys = ["region", "q1", "q2", "q3", "q4"]
                   setGridFocusCell({ r, c, v: String(item[keys[c]] ?? "") })
+                }}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* FAQ */}
+        {activeTab === "faq" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">FAQ Section</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Frequently Asked Questions accordion with live category filtering, instant search, accessible disclosures, and support banner.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Faq\n  items={[\n    {\n      id: "faq-1",\n      question: "How do I install the design system tokens?",\n      answer: "Run npm i @style-tokens/core or copy individual style tokens into your Tailwind configuration.",\n      category: "Getting Started",\n    },\n    {\n      id: "faq-2",\n      question: "Can I customize the color palette?",\n      answer: "Yes, all 25 design styles use CSS variables and Tailwind classes that can be extended.",\n      category: "Customization",\n    },\n  ]}\n  title="Frequently Asked Questions"\n  subtitle="Find answers to common questions about our design systems and components."\n  searchable\n  variant="separated"\n/>`,
+                    "FAQ Section"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="rounded-xl border border-border bg-card/40 p-6 md:p-8">
+              <Faq
+                items={[
+                  {
+                    id: "showcase-faq-1",
+                    question: "How do I install components from the design system?",
+                    answer: "You can copy the component files directly into your project or install the package via your favorite package manager.",
+                    category: "Getting Started",
+                  },
+                  {
+                    id: "showcase-faq-2",
+                    question: "Can I use multiple design styles simultaneously?",
+                    answer: "Yes. Each style provides scoped tokens, classes, and palettes allowing micro-frontends or page-level theme switching.",
+                    category: "Getting Started",
+                  },
+                  {
+                    id: "showcase-faq-3",
+                    question: "Is keyboard accessibility supported?",
+                    answer: "Every interactive element includes full WAI-ARIA accordion attributes, keyboard enter/space triggers, and focus ring outlines.",
+                    category: "Accessibility",
+                  },
+                  {
+                    id: "showcase-faq-4",
+                    question: "How do I override themes and tokens?",
+                    answer: "Pass custom className overrides, or adjust CSS variables defined in your tailwind.config or global style sheet.",
+                    category: "Customization",
+                  },
+                  {
+                    id: "showcase-faq-5",
+                    question: "Does it support server-side rendering with Next.js?",
+                    answer: "Yes, all interactive components are fully compatible with Next.js App Router and Server Components.",
+                    category: "Frameworks",
+                  },
+                ]}
+                title="Frequently Asked Questions"
+                subtitle="Everything you need to know about the component catalog, styles, and integration."
+                searchable
+                variant="separated"
+                supportCta={{
+                  text: "Can't find what you're looking for?",
+                  actionText: "Contact Support",
+                  href: "mailto:support@chameleon-ui.design",
                 }}
               />
             </div>
@@ -5889,6 +6192,3309 @@ export function ComponentsDocumentationShowcase() {
           </div>
         )}
 
+        {/* 105 · COMMAND BUTTON GROUP */}
+        {activeTab === "command-button-group" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Command Button Group</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Group related actions with primary/secondary distinction, keyboard shortcuts, and responsive orientation.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<CommandButtonGroup\n  items={[\n    { id: "save", label: "Save", shortcut: "⌘S", variant: "default" },\n    { id: "duplicate", label: "Duplicate", shortcut: "⌘D" },\n    { id: "export", label: "Export", shortcut: "⌥E" }\n  ]}\n/>`,
+                    "CommandButtonGroup"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-8 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-6">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-3">
+                <span className="font-semibold text-foreground">Interactive Command Actions</span>
+                <span>Last Action: <strong className="text-primary font-mono">{demoCommandAction}</strong></span>
+              </div>
+
+              <div className="space-y-4">
+                <div className="space-y-1.5">
+                  <span className="text-xs font-semibold text-muted-foreground">Attached (Horizontal)</span>
+                  <div className="pt-1">
+                    <CommandButtonGroup
+                      size="default"
+                      items={[
+                        {
+                          id: "save",
+                          label: "Save Changes",
+                          shortcut: "⌘S",
+                          variant: "default",
+                          onClick: () => setDemoCommandAction("Saved changes"),
+                          disabled: isDisabled,
+                        },
+                        {
+                          id: "duplicate",
+                          label: "Duplicate",
+                          shortcut: "⌘D",
+                          variant: "outline",
+                          onClick: () => setDemoCommandAction("Duplicated document"),
+                          disabled: isDisabled,
+                        },
+                        {
+                          id: "export",
+                          label: "Export Code",
+                          shortcut: "⌥E",
+                          variant: "outline",
+                          onClick: () => setDemoCommandAction("Exported code archive"),
+                          disabled: isDisabled,
+                        },
+                        {
+                          id: "delete",
+                          label: "Trash",
+                          shortcut: "⌫",
+                          variant: "outline",
+                          onClick: () => setDemoCommandAction("Moved item to trash"),
+                          disabled: isDisabled,
+                        },
+                      ]}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1.5 pt-2">
+                  <span className="text-xs font-semibold text-muted-foreground">Spaced / Unattached</span>
+                  <div className="pt-1">
+                    <CommandButtonGroup
+                      attached={false}
+                      size="sm"
+                      items={[
+                        {
+                          id: "preview",
+                          label: "Live Preview",
+                          variant: "secondary",
+                          onClick: () => setDemoCommandAction("Opened live preview"),
+                          disabled: isDisabled,
+                        },
+                        {
+                          id: "history",
+                          label: "Version History",
+                          shortcut: "⌘H",
+                          variant: "outline",
+                          onClick: () => setDemoCommandAction("Viewing version history"),
+                          disabled: isDisabled,
+                        },
+                        {
+                          id: "share",
+                          label: "Share Link",
+                          variant: "outline",
+                          onClick: () => setDemoCommandAction("Copied shareable link"),
+                          disabled: isDisabled,
+                        },
+                      ]}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 106 · BUTTON GROUP */}
+        {activeTab === "button-group" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Button Group</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Connected buttons with shared borders, seamless rounded corners, and focus elevation.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<ButtonGroup\n  items={[\n    { id: "grid", label: "Grid View" },\n    { id: "list", label: "List View" },\n    { id: "table", label: "Table View" }\n  ]}\n/>`,
+                    "ButtonGroup"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-8 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-6">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-3">
+                <span className="font-semibold text-foreground">Connected Layout Selectors</span>
+                <span>Active Mode: <strong className="text-foreground capitalize">{demoButtonGroupView}</strong></span>
+              </div>
+
+              <div className="space-y-4">
+                <div className="space-y-1.5">
+                  <span className="text-xs font-semibold text-muted-foreground">Shared Border Items</span>
+                  <div className="pt-1">
+                    <ButtonGroup
+                      size="default"
+                      items={[
+                        {
+                          id: "grid",
+                          label: "Grid Layout",
+                          active: demoButtonGroupView === "grid",
+                          onClick: () => setDemoButtonGroupView("grid"),
+                          disabled: isDisabled,
+                        },
+                        {
+                          id: "list",
+                          label: "List View",
+                          active: demoButtonGroupView === "list",
+                          onClick: () => setDemoButtonGroupView("list"),
+                          disabled: isDisabled,
+                        },
+                        {
+                          id: "board",
+                          label: "Kanban Board",
+                          active: demoButtonGroupView === "board",
+                          onClick: () => setDemoButtonGroupView("board"),
+                          disabled: isDisabled,
+                        },
+                        {
+                          id: "split",
+                          label: "Split Pane",
+                          active: demoButtonGroupView === "split",
+                          onClick: () => setDemoButtonGroupView("split"),
+                          disabled: isDisabled,
+                        },
+                      ]}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1.5 pt-2">
+                  <span className="text-xs font-semibold text-muted-foreground">Vertical Connected Orientation</span>
+                  <div className="pt-1 w-44">
+                    <ButtonGroup
+                      orientation="vertical"
+                      size="sm"
+                      items={[
+                        { id: "top", label: "Top Section", disabled: isDisabled },
+                        { id: "mid", label: "Middle Section", disabled: isDisabled },
+                        { id: "bot", label: "Bottom Section", disabled: isDisabled },
+                      ]}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 107 · SPLIT BUTTON */}
+        {activeTab === "split-button" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Split Button</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Primary action paired with a connected dropdown menu for secondary context actions.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<SplitButton\n  label="Deploy Application"\n  onClick={() => deployLive()}\n  options={[\n    { id: "stage", label: "Deploy to Staging", shortcut: "⌘S" },\n    { id: "dry", label: "Dry Run Build" }\n  ]}\n/>`,
+                    "SplitButton"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-8 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-6">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-3">
+                <span className="font-semibold text-foreground">Interactive Dropdown Actions</span>
+                <span>Status: <strong className="text-primary font-mono">{demoSplitStatus}</strong></span>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-6 justify-center py-4">
+                <SplitButton
+                  label="Publish Release"
+                  variant="default"
+                  size="default"
+                  disabled={isDisabled}
+                  onClick={() => setDemoSplitStatus("Released to production")}
+                  options={[
+                    {
+                      id: "prod",
+                      label: "Deploy to Production",
+                      description: "Run automated blue-green rollout",
+                      shortcut: "⌘P",
+                      onClick: () => setDemoSplitStatus("Production rollout initiated"),
+                    },
+                    {
+                      id: "staging",
+                      label: "Deploy to Staging",
+                      description: "Immediate preview build",
+                      shortcut: "⌘S",
+                      onClick: () => setDemoSplitStatus("Staging deployment complete"),
+                    },
+                    {
+                      id: "dry",
+                      label: "Dry Run Build",
+                      description: "Verify bundle without deploying",
+                      onClick: () => setDemoSplitStatus("Dry run passed successfully"),
+                    },
+                    {
+                      id: "rollback",
+                      label: "Rollback Release",
+                      description: "Revert to previous stable tag",
+                      destructive: true,
+                      onClick: () => setDemoSplitStatus("Rollback executed"),
+                    },
+                  ]}
+                />
+
+                <SplitButton
+                  label="Merge Request"
+                  variant="outline"
+                  size="default"
+                  disabled={isDisabled}
+                  onClick={() => setDemoSplitStatus("Merged with default strategy")}
+                  options={[
+                    {
+                      id: "squash",
+                      label: "Squash and Merge",
+                      onClick: () => setDemoSplitStatus("Squashed and merged"),
+                    },
+                    {
+                      id: "rebase",
+                      label: "Rebase and Merge",
+                      onClick: () => setDemoSplitStatus("Rebased and merged"),
+                    },
+                  ]}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 108 · SEGMENTED CONTROL */}
+        {activeTab === "segmented-control" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Segmented Control</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Interactive multi-option mode switcher with active pill indicator and full keyboard roving navigation.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<SegmentedControl\n  value={timeframe}\n  onValueChange={setTimeframe}\n  options={[\n    { value: "day", label: "Day" },\n    { value: "week", label: "Week" },\n    { value: "month", label: "Month" }\n  ]}\n/>`,
+                    "SegmentedControl"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-8 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-6">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-3">
+                <span className="font-semibold text-foreground">Mode Switcher (Roving Keyboard Nav)</span>
+                <span>Active: <strong className="text-foreground capitalize">{demoSegmentedVal}</strong></span>
+              </div>
+
+              <div className="space-y-5">
+                <div className="space-y-1.5">
+                  <span className="text-xs font-semibold text-muted-foreground">Standard with Badges</span>
+                  <div className="pt-1">
+                    <SegmentedControl
+                      value={demoSegmentedVal}
+                      onValueChange={setDemoSegmentedVal}
+                      disabled={isDisabled}
+                      options={[
+                        { value: "day", label: "Day" },
+                        { value: "week", label: "Week", badge: "Live" },
+                        { value: "month", label: "Month" },
+                        { value: "quarter", label: "Quarter" },
+                        { value: "year", label: "Year" },
+                      ]}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1.5 pt-2">
+                  <span className="text-xs font-semibold text-muted-foreground">Full Width Variant</span>
+                  <div className="pt-1">
+                    <SegmentedControl
+                      fullWidth
+                      value={demoSegmentedVal}
+                      onValueChange={setDemoSegmentedVal}
+                      disabled={isDisabled}
+                      options={[
+                        { value: "day", label: "24h Interval" },
+                        { value: "week", label: "7d Rolling" },
+                        { value: "month", label: "30d Window" },
+                      ]}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 109 · TOOLBAR */}
+        {activeTab === "toolbar" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Toolbar</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Compact responsive row of tools, toggle groups, and formatting buttons with overflow containment.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Toolbar>\n  <ToolbarToggleGroup type="multiple">\n    <ToolbarToggleItem value="bold">B</ToolbarToggleItem>\n    <ToolbarToggleItem value="italic">I</ToolbarToggleItem>\n  </ToolbarToggleGroup>\n  <ToolbarSeparator />\n  <ToolbarButton>Link</ToolbarButton>\n</Toolbar>`,
+                    "Toolbar"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-8 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-6">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-3">
+                <span className="font-semibold text-foreground">Compact Action Row</span>
+                <span>Active: <strong className="text-foreground">{demoToolbarFormats.join(", ") || "none"} ({demoToolbarAlign})</strong></span>
+              </div>
+
+              <div className="flex flex-col items-center gap-4 py-2">
+                <Toolbar>
+                  <ToolbarToggleGroup
+                    type="multiple"
+                    value={demoToolbarFormats}
+                    onValueChange={setDemoToolbarFormats}
+                  >
+                    <ToolbarToggleItem value="bold" disabled={isDisabled}>
+                      <span className="font-bold">B</span>
+                    </ToolbarToggleItem>
+                    <ToolbarToggleItem value="italic" disabled={isDisabled}>
+                      <span className="italic">I</span>
+                    </ToolbarToggleItem>
+                    <ToolbarToggleItem value="underline" disabled={isDisabled}>
+                      <span className="underline">U</span>
+                    </ToolbarToggleItem>
+                  </ToolbarToggleGroup>
+
+                  <ToolbarSeparator />
+
+                  <ToolbarToggleGroup
+                    type="single"
+                    value={demoToolbarAlign}
+                    onValueChange={(val) => val && setDemoToolbarAlign(val)}
+                  >
+                    <ToolbarToggleItem value="left" disabled={isDisabled}>
+                      L
+                    </ToolbarToggleItem>
+                    <ToolbarToggleItem value="center" disabled={isDisabled}>
+                      C
+                    </ToolbarToggleItem>
+                    <ToolbarToggleItem value="right" disabled={isDisabled}>
+                      R
+                    </ToolbarToggleItem>
+                  </ToolbarToggleGroup>
+
+                  <ToolbarSeparator />
+
+                  <ToolbarButton
+                    iconOnly
+                    disabled={isDisabled}
+                    onClick={() => alert("Action triggered from Toolbar button")}
+                  >
+                    <Sparkles className="h-4 w-4 text-primary" />
+                  </ToolbarButton>
+                </Toolbar>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 110 · FLOATING TOOLBAR */}
+        {activeTab === "floating-toolbar" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Floating Toolbar</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Contextual actions that float near selected content with collision detection and keyboard escape.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<FloatingToolbar\n  actions={[\n    { id: "bold", label: "Bold", onClick: () => formatBold() },\n    { id: "link", label: "Link", onClick: () => addLink() }\n  ]}\n/>`,
+                    "FloatingToolbar"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-8 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-6">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-3">
+                <span className="font-semibold text-foreground">Contextual Bubble Toolbar</span>
+                <span>{demoFloatingSelection ? `Action: ${demoFloatingSelection}` : "Click or highlight text below"}</span>
+              </div>
+
+              <div className="space-y-3">
+                <div
+                  onClick={() => setDemoFloatingSelection("Simulated selection active")}
+                  className="p-4 rounded-lg border border-border bg-muted/20 text-sm leading-relaxed cursor-pointer select-text hover:bg-muted/30 transition-colors"
+                >
+                  &ldquo;Simplicity is prerequisite for reliability. Complex state management should be contained behind intuitive, composable primitives.&rdquo;
+                </div>
+                <div className="flex items-center justify-center pt-2">
+                  <div className="inline-flex items-center gap-1 rounded-lg border border-border bg-popover p-1 shadow-lg">
+                    <button
+                      type="button"
+                      onClick={() => setDemoFloatingSelection("Bold formatting applied")}
+                      className="px-2.5 py-1 text-xs font-semibold rounded hover:bg-muted text-foreground"
+                    >
+                      Bold
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setDemoFloatingSelection("Italic formatting applied")}
+                      className="px-2.5 py-1 text-xs italic rounded hover:bg-muted text-foreground"
+                    >
+                      Italic
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setDemoFloatingSelection("Link prompt opened")}
+                      className="px-2.5 py-1 text-xs underline rounded hover:bg-muted text-foreground"
+                    >
+                      Link
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setDemoFloatingSelection("AI Tone rewritten")}
+                      className="px-2.5 py-1 text-xs font-medium rounded hover:bg-muted text-primary"
+                    >
+                      Rewrite ✨
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 111 · RICH TEXT EDITOR */}
+        {activeTab === "rich-text-editor" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Rich Text Editor</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Feature-rich formatting editor supporting bold, lists, links, headings, blockquotes, and safe HTML sanitization.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<RichTextEditor\n  value={content}\n  onChange={setContent}\n  placeholder="Type formatted notes..."\n/>`,
+                    "RichTextEditor"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-8 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-4">
+              <RichTextEditor
+                value={demoRichTextVal}
+                onChange={setDemoRichTextVal}
+                disabled={isDisabled}
+                placeholder="Write rich formatted content here..."
+                minHeight="140px"
+              />
+
+              <div className="rounded-lg border border-border bg-muted/20 p-3 space-y-1">
+                <span className="text-[11px] font-semibold text-muted-foreground uppercase">Sanitized HTML Output</span>
+                <pre className="text-[11px] font-mono text-muted-foreground overflow-x-auto whitespace-pre-wrap">
+                  {demoRichTextVal}
+                </pre>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 112 · MENTION INPUT */}
+        {activeTab === "mention-input" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Mention Input</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Text input with trigger-based autocomplete popup for tagging users and team members.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<MentionInput\n  value={text}\n  onChange={setText}\n  users={[\n    { id: "1", name: "Dhruv Kolhe", username: "dhruvmkolhe" }\n  ]}\n/>`,
+                    "MentionInput"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-8 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-4">
+              <div className="space-y-1">
+                <span className="text-xs font-semibold text-foreground">Tag Team Members</span>
+                <p className="text-xs text-muted-foreground">Type &lsquo;@&rsquo; followed by member name to open suggestions menu.</p>
+              </div>
+
+              <MentionInput
+                value={demoMentionVal}
+                onChange={setDemoMentionVal}
+                disabled={isDisabled}
+                rows={3}
+              />
+
+              <div className="text-xs text-muted-foreground font-mono">
+                Current text length: <strong className="text-foreground">{demoMentionVal.length} chars</strong>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 113 · EMOJI PICKER */}
+        {activeTab === "emoji-picker" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Emoji Picker</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Searchable emoji picker with category tabs, recent history, and live preview.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<EmojiPicker\n  onSelect={(emoji) => handleInsertEmoji(emoji)}\n/>`,
+                    "EmojiPicker"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-8 rounded-xl border border-border bg-card max-w-md mx-auto flex flex-col items-center space-y-5">
+              <div className="text-center space-y-1">
+                <span className="text-xs font-semibold text-foreground uppercase tracking-wider">Emoji Palette</span>
+                <p className="text-xs text-muted-foreground">Selected emoji: <span className="text-xl ml-1">{demoEmojiVal}</span></p>
+              </div>
+
+              <EmojiPicker
+                onSelect={(emoji) => setDemoEmojiVal(emoji)}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 114 · MENTION / TAG EDITOR */}
+        {activeTab === "tag-editor" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Mention / Tag Editor</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Inline chip manager for adding, editing, validating, and removing tags and user mentions.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<TagEditor\n  value={tags}\n  onChange={setTags}\n  placeholder="Add tags..."\n/>`,
+                    "TagEditor"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-8 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-4">
+              <div className="space-y-1">
+                <span className="text-xs font-semibold text-foreground">Interactive Tags & Mentions</span>
+                <p className="text-xs text-muted-foreground">
+                  Press Enter or comma to create tags. Double click an existing tag to edit in-place.
+                </p>
+              </div>
+
+              <TagEditor
+                value={demoTagsVal}
+                onChange={setDemoTagsVal}
+                disabled={isDisabled}
+                placeholder="Type tag or @mention and press Enter..."
+              />
+
+              <div className="text-xs text-muted-foreground font-mono">
+                Total Tags: <strong className="text-foreground">{demoTagsVal.length}</strong> (Tags: {demoTagsVal.join(", ")})
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 115 · FILE UPLOAD DROPZONE */}
+        {activeTab === "file-upload-dropzone" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">File Upload Dropzone</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Drag-and-drop file upload container with format validation, size guards, and file inspection.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<FileUploadDropzone\n  accept={[".png", ".jpg", ".pdf"]}\n  maxSize={10 * 1024 * 1024}\n  onFilesAccepted={(files) => console.log(files)}\n/>`,
+                    "FileUploadDropzone"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-8 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-3">
+                <span className="font-semibold text-foreground">Interactive Dropzone</span>
+                <span>Accepted in Session: <strong className="text-primary font-mono">{demoDropzoneAccepted} files</strong></span>
+              </div>
+
+              <FileUploadDropzone
+                accept={[".png", ".jpg", ".jpeg", ".pdf", ".zip", ".json"]}
+                maxSize={10 * 1024 * 1024}
+                maxFiles={4}
+                disabled={isDisabled}
+                onFilesAccepted={(files) => setDemoDropzoneAccepted(files.length)}
+                helperText="Accepted formats: PNG, JPG, PDF, ZIP, JSON (max 10MB each)"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 116 · FILE UPLOAD PROGRESS LIST */}
+        {activeTab === "file-upload-progress" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">File Upload Progress List</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Multi-file transfer manager with progress tracking, pause/resume, retry, and client demo states.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<FileUploadProgressList\n  files={uploadQueue}\n  onPause={(id) => pauseUpload(id)}\n  onResume={(id) => resumeUpload(id)}\n/>`,
+                    "FileUploadProgressList"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-8 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-4">
+              <FileUploadProgressList
+                files={demoUploadItems}
+                onPause={(id) =>
+                  setDemoUploadItems((prev) =>
+                    prev.map((f) => (f.id === id ? { ...f, status: "paused" } : f))
+                  )
+                }
+                onResume={(id) =>
+                  setDemoUploadItems((prev) =>
+                    prev.map((f) => (f.id === id ? { ...f, status: "uploading" } : f))
+                  )
+                }
+                onRemove={(id) =>
+                  setDemoUploadItems((prev) => prev.filter((f) => f.id !== id))
+                }
+                onClearCompleted={() =>
+                  setDemoUploadItems((prev) => prev.filter((f) => f.status !== "completed"))
+                }
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 117 · FILE MANAGER */}
+        {activeTab === "file-manager" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">File Manager</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Complete browser file explorer with folder navigation, search, grid/list modes, upload, and deletion.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<FileManager\n  onItemSelect={(item) => console.log(item)}\n/>`,
+                    "FileManager"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span className="font-semibold text-foreground">Virtual Filesystem Explorer</span>
+                <span>Selected: <strong className="text-primary font-mono">{demoFileManagerSelect}</strong></span>
+              </div>
+
+              <FileManager
+                onItemSelect={(item) => setDemoFileManagerSelect(`${item.name} (${item.type})`)}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 118 · FOLDER TREE */}
+        {activeTab === "folder-tree" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Folder Tree</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Collapsible directory navigation tree with nested hierarchy levels and folder item counts.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<FolderTree\n  data={directoryTree}\n  onSelect={(node) => console.log(node)}\n/>`,
+                    "FolderTree"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-8 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span className="font-semibold text-foreground">Collapsible Folder Structure</span>
+                <span>Active Node: <strong className="text-primary font-mono">{demoFolderTreeSelect}</strong></span>
+              </div>
+
+              <FolderTree
+                selectedId={demoFolderTreeSelect}
+                onSelect={(n) => setDemoFolderTreeSelect(n.name)}
+                defaultExpandedIds={["root", "src", "components"]}
+                data={[
+                  {
+                    id: "root",
+                    name: "chameleon-ui",
+                    itemCount: 9,
+                    children: [
+                      {
+                        id: "src",
+                        name: "src",
+                        itemCount: 4,
+                        children: [
+                          {
+                            id: "components",
+                            name: "components",
+                            itemCount: 48,
+                            children: [
+                              { id: "ui", name: "ui", itemCount: 124 },
+                              { id: "styles", name: "styles", itemCount: 25 },
+                              { id: "gallery", name: "gallery", itemCount: 3 },
+                            ],
+                          },
+                          { id: "lib", name: "lib", itemCount: 7 },
+                          { id: "app", name: "app", itemCount: 6 },
+                        ],
+                      },
+                      { id: "public", name: "public", itemCount: 14 },
+                      { id: "package.json", name: "package.json", isLeafFile: true, fileType: "code" },
+                      { id: "tsconfig.json", name: "tsconfig.json", isLeafFile: true, fileType: "code" },
+                    ],
+                  },
+                ]}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 119 · TREE VIEW */}
+        {activeTab === "tree-view" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Tree View</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Multi-level hierarchical data viewer with keyboard roving navigation, checkboxes, and badge support.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<TreeView\n  data={treeNodes}\n  showCheckboxes\n  onSelect={(node) => console.log(node)}\n/>`,
+                    "TreeView"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-8 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span className="font-semibold text-foreground">Architecture Hierarchy</span>
+                <span>Selected: <strong className="text-primary font-mono">{demoTreeViewSelect}</strong></span>
+              </div>
+
+              <TreeView
+                selectedId={demoTreeViewSelect}
+                onSelect={(node) => setDemoTreeViewSelect(node.id)}
+                showCheckboxes
+                defaultExpandedIds={["cloud", "frontend"]}
+                data={[
+                  {
+                    id: "cloud",
+                    label: "Cloud Production Tier",
+                    badge: <span className="text-[10px] bg-emerald-500/10 text-emerald-600 px-1 rounded">Active</span>,
+                    children: [
+                      { id: "api", label: "FastAPI Microservices" },
+                      { id: "postgres", label: "PostgreSQL Database Engine" },
+                      { id: "redis", label: "Upstash Redis Cache Cluster" },
+                    ],
+                  },
+                  {
+                    id: "frontend",
+                    label: "Frontend Edge Delivery",
+                    badge: <span className="text-[10px] bg-primary/10 text-primary px-1 rounded">Vercel</span>,
+                    children: [
+                      { id: "next-app", label: "Next.js App Router" },
+                      { id: "design-system", label: "25 Aesthetic Themes Suite" },
+                    ],
+                  },
+                ]}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 120 · ORGANIZATION CHART */}
+        {activeTab === "organization-chart" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Organization Chart</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Visual reporting structure and company hierarchy diagram with branch expand/collapse.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<OrganizationChart\n  data={organizationData}\n  onNodeClick={(member) => inspectMember(member)}\n/>`,
+                    "OrganizationChart"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span className="font-semibold text-foreground">Reporting Structure</span>
+                <span>Active Member: <strong className="text-primary font-mono">{demoOrgSelect}</strong></span>
+              </div>
+
+              <OrganizationChart
+                onNodeClick={(member) => setDemoOrgSelect(`${member.name} (${member.role})`)}
+                data={{
+                  id: "1",
+                  name: "Dhruv Kolhe",
+                  role: "Head of Engineering",
+                  department: "Leadership",
+                  children: [
+                    {
+                      id: "2",
+                      name: "Sarah Chen",
+                      role: "Design System Lead",
+                      department: "Product Design",
+                      children: [
+                        { id: "4", name: "Elena Rostova", role: "UI Designer", department: "Design" },
+                        { id: "5", name: "Marcus Brody", role: "Design Technologist", department: "Design" },
+                      ],
+                    },
+                    {
+                      id: "3",
+                      name: "Alex Rivera",
+                      role: "Staff Web Architect",
+                      department: "Core Engineering",
+                      children: [
+                        { id: "6", name: "Kenji Sato", role: "DevOps Engineer", department: "Infrastructure" },
+                      ],
+                    },
+                  ],
+                }}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 121 · KANBAN BOARD */}
+        {activeTab === "kanban-board" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Kanban Board</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Multi-column workflow board with interactive drag-and-drop task routing and column counters.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<KanbanBoard\n  columns={columns}\n  tasks={tasks}\n  onTaskMove={(taskId, targetCol) => moveTask(taskId, targetCol)}\n/>`,
+                    "KanbanBoard"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-5xl mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span className="font-semibold text-foreground">Interactive Task Board</span>
+                <span className="text-[11px] font-mono text-primary font-medium">Drag cards or use arrow buttons</span>
+              </div>
+
+              <KanbanBoard
+                columns={demoKanbanCols}
+                tasks={demoKanbanTasks}
+                onDeleteTask={(taskId) => {
+                  setDemoKanbanCols((prev) =>
+                    prev.map((c) => ({
+                      ...c,
+                      taskIds: c.taskIds.filter((id) => id !== taskId),
+                    }))
+                  )
+                }}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 122 · DRAG-AND-DROP LIST */}
+        {activeTab === "drag-and-drop-list" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Drag-and-Drop List</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Interactive item reordering list with grip handles, keyboard step alternatives, and removal.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<DragAndDropList\n  items={items}\n  onReorder={(newItems) => setItems(newItems)}\n/>`,
+                    "DragAndDropList"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-8 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span className="font-semibold text-foreground">Interactive Item Reordering</span>
+                <span className="font-mono text-primary text-[11px]">
+                  Order: {demoDndItems.map((i) => i.id).join(" → ")}
+                </span>
+              </div>
+
+              <DragAndDropList
+                items={demoDndItems}
+                onReorder={setDemoDndItems}
+                onRemove={(id) => setDemoDndItems((prev) => prev.filter((i) => i.id !== id))}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 123 · TASK BOARD CARD */}
+        {activeTab === "task-board-card" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Task Board Card</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Workflow task card displaying priority badges, checklist counters, assignees, and due dates.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<TaskBoardCard\n  task={{\n    id: "t-1",\n    title: "Implement File Manager",\n    priority: "urgent",\n    dueDate: "2026-10-24"\n  }}\n/>`,
+                    "TaskBoardCard"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-8 rounded-xl border border-border bg-card max-w-md mx-auto space-y-4">
+              <TaskBoardCard
+                canMoveLeft
+                canMoveRight
+                task={{
+                  id: "showcase-card",
+                  title: "Hierarchical Tree Navigation & Drag Reorder",
+                  description: "Full accessible keyboard alternatives for drag and drop with WAI-ARIA tree semantics.",
+                  priority: "urgent",
+                  labels: ["Batch 11", "Files", "A11y"],
+                  dueDate: "2026-10-24",
+                  subtasks: { completed: 8, total: 10 },
+                  assignees: [
+                    { id: "1", name: "Dhruv Kolhe" },
+                    { id: "2", name: "Sarah Chen" },
+                  ],
+                }}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 124 · CALENDAR EVENT CARD */}
+        {activeTab === "calendar-event-card" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Calendar Event Card</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Schedule appointment card with category palettes, virtual call links, attendees, and RSVP actions.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<CalendarEventCard\n  event={{\n    id: "e-1",\n    title: "Engineering Sprint Sync",\n    date: "2026-10-24",\n    startTime: "10:00 AM",\n    endTime: "11:00 AM"\n  }}\n/>`,
+                    "CalendarEventCard"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-8 rounded-xl border border-border bg-card max-w-xl mx-auto space-y-6">
+              <div className="space-y-1.5">
+                <span className="text-xs font-semibold text-muted-foreground">Full Event Card</span>
+                <CalendarEventCard
+                  onJoinMeeting={() => alert("Connecting to Google Meet room...")}
+                  onRSVP={(_, status) => alert(`RSVP updated: ${status}`)}
+                  event={{
+                    id: "event-main",
+                    title: "Chameleon UI Architecture & Component Audit",
+                    description: "Review of Batch 11 Files and Hierarchical navigation primitives across 25 design themes.",
+                    date: "2026-10-24",
+                    startTime: "03:00 PM",
+                    endTime: "04:30 PM",
+                    category: "Engineering",
+                    color: "#6366f1",
+                    location: "Studio Conference Room 4B / Google Meet",
+                    meetingLink: "https://meet.google.com/xyz-uvwx-rst",
+                    attendees: [
+                      { id: "1", name: "Dhruv Kolhe" },
+                      { id: "2", name: "Alex Rivera" },
+                      { id: "3", name: "Sarah Chen" },
+                    ],
+                    status: "confirmed",
+                  }}
+                />
+              </div>
+
+              <div className="space-y-1.5 pt-2">
+                <span className="text-xs font-semibold text-muted-foreground">Compact Agenda Item</span>
+                <CalendarEventCard
+                  variant="compact"
+                  onJoinMeeting={() => alert("Joining standup call...")}
+                  event={{
+                    id: "event-compact",
+                    title: "Daily Frontend Standup",
+                    date: "2026-10-24",
+                    startTime: "09:30 AM",
+                    endTime: "09:45 AM",
+                    color: "#10b981",
+                    meetingLink: "https://meet.google.com/standup",
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 125 · AGENDA VIEW */}
+        {activeTab === "agenda-view" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Agenda View</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Chronological event schedule grouped by date with timeframe filters, time slots, and empty state.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<AgendaView\n  events={events}\n  onEventClick={(ev) => console.log(ev)}\n/>`,
+                    "AgendaView"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-3xl mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span className="font-semibold text-foreground">Upcoming Schedule</span>
+                <span>Active Event: <strong className="text-primary font-mono">{demoAgendaEvent}</strong></span>
+              </div>
+
+              <AgendaView
+                onEventClick={(ev) => setDemoAgendaEvent(ev.title)}
+                onAddEvent={() => alert("Open New Event Modal")}
+                events={[
+                  {
+                    id: "a-1",
+                    title: "Sprint Review & Architecture Audit",
+                    date: "2026-10-24",
+                    startTime: "10:00 AM",
+                    endTime: "11:30 AM",
+                    category: "Engineering",
+                    color: "#6366f1",
+                    location: "Studio Conference Room 4B",
+                    status: "confirmed",
+                    attendees: [{ name: "Dhruv" }, { name: "Sarah" }, { name: "Alex" }],
+                  },
+                  {
+                    id: "a-2",
+                    title: "Design System Tokens Sync",
+                    date: "2026-10-24",
+                    startTime: "02:00 PM",
+                    endTime: "03:00 PM",
+                    category: "Design",
+                    color: "#10b981",
+                    isVirtual: true,
+                    status: "confirmed",
+                    attendees: [{ name: "Sarah" }, { name: "Elena" }],
+                  },
+                  {
+                    id: "a-3",
+                    title: "Executive Roadmap Planning",
+                    date: "2026-10-25",
+                    startTime: "09:30 AM",
+                    endTime: "11:00 AM",
+                    category: "Product",
+                    color: "#f59e0b",
+                    location: "Boardroom A",
+                    status: "tentative",
+                    attendees: [{ name: "Dhruv" }, { name: "Marcus" }],
+                  },
+                ]}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 126 · GANTT CHART */}
+        {activeTab === "gantt-chart" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Gantt Chart</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Project roadmap timeline with configurable dependency curves, progress bars, and milestones.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<GanttChart\n  tasks={tasks}\n  startDate="2026-10-01"\n  endDate="2026-10-31"\n  onTaskClick={(t) => console.log(t)}\n/>`,
+                    "GanttChart"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-5xl mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span className="font-semibold text-foreground">Q4 Engineering Roadmap</span>
+                <span>Active Task: <strong className="text-primary font-mono">{demoGanttTask}</strong></span>
+              </div>
+
+              <GanttChart
+                startDate="2026-10-01"
+                endDate="2026-10-31"
+                onTaskClick={(t) => setDemoGanttTask(t.name)}
+                tasks={[
+                  {
+                    id: "t-1",
+                    name: "API & Data Schema",
+                    startDate: "2026-10-02",
+                    endDate: "2026-10-08",
+                    progress: 100,
+                    color: "#3b82f6",
+                    assignee: "Alex",
+                  },
+                  {
+                    id: "t-2",
+                    name: "Batch 12 Frontend",
+                    startDate: "2026-10-06",
+                    endDate: "2026-10-18",
+                    progress: 65,
+                    color: "#6366f1",
+                    assignee: "Dhruv",
+                    dependencies: ["t-1"],
+                  },
+                  {
+                    id: "t-3",
+                    name: "Design Token Sync",
+                    startDate: "2026-10-12",
+                    endDate: "2026-10-22",
+                    progress: 40,
+                    color: "#10b981",
+                    assignee: "Sarah",
+                    dependencies: ["t-2"],
+                  },
+                  {
+                    id: "t-4",
+                    name: "Production Release",
+                    startDate: "2026-10-24",
+                    endDate: "2026-10-24",
+                    progress: 0,
+                    isMilestone: true,
+                    dependencies: ["t-2", "t-3"],
+                  },
+                ]}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 127 · DEPENDENCY GRAPH */}
+        {activeTab === "dependency-graph" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Dependency Graph</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Entity relationship topology map with cycle detection, orphan edge protection, and node selection.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<DependencyGraph\n  nodes={nodes}\n  edges={edges}\n  onNodeSelect={(node) => console.log(node)}\n/>`,
+                    "DependencyGraph"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span className="font-semibold text-foreground">Microservices Topology</span>
+                <span>Selected: <strong className="text-primary font-mono">{demoDepNode}</strong></span>
+              </div>
+
+              <DependencyGraph
+                onNodeSelect={(n) => setDemoDepNode(n ? n.label : "None")}
+                nodes={[
+                  { id: "core", label: "Core Engine", category: "Core", version: "v2.4", x: 40, y: 80 },
+                  { id: "auth", label: "Auth Provider", category: "Security", version: "v1.8", x: 260, y: 30 },
+                  { id: "db", label: "PostgreSQL DB", category: "Data", version: "v15", x: 260, y: 140 },
+                  { id: "gateway", label: "API Gateway", category: "Network", version: "v3.0", x: 480, y: 80 },
+                ]}
+                edges={[
+                  { id: "e1", from: "core", to: "auth" },
+                  { id: "e2", from: "core", to: "db" },
+                  { id: "e3", from: "auth", to: "gateway" },
+                  { id: "e4", from: "db", to: "gateway" },
+                ]}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 128 · FLOWCHART EDITOR */}
+        {activeTab === "flowchart-editor" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Flowchart Editor</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Editable process diagram builder with process, decision, and terminal nodes on a dot canvas grid.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<FlowchartEditor\n  initialNodes={nodes}\n  initialEdges={edges}\n  onChange={(n, e) => console.log(n, e)}\n/>`,
+                    "FlowchartEditor"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <FlowchartEditor />
+            </div>
+          </div>
+        )}
+
+        {/* 129 · NODE-BASED EDITOR */}
+        {activeTab === "node-based-editor" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Node-Based Editor</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Visual node graph with typed I/O ports, bezier cables, keyboard movement, and connection routing.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<NodeBasedEditor\n  initialNodes={nodes}\n  initialConnections={connections}\n/>`,
+                    "NodeBasedEditor"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <NodeBasedEditor />
+            </div>
+          </div>
+        )}
+
+        {/* 130 · WORKFLOW BUILDER */}
+        {activeTab === "workflow-builder" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Workflow Builder</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Multistep automation pipeline configuration with trigger, action, delay, and branch steps.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<WorkflowBuilder\n  initialSteps={steps}\n  onChange={(s) => console.log(s)}\n/>`,
+                    "WorkflowBuilder"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <WorkflowBuilder />
+            </div>
+          </div>
+        )}
+
+        {/* 131 · CHAT MESSAGE */}
+        {activeTab === "chat-message" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Chat Message</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Individual conversation message with sender avatar, timestamp, status checkmarks, and attachments.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<ChatMessage\n  message={{\n    id: "m-1",\n    sender: { id: "u-1", name: "Sarah Chen" },\n    content: "Batch 12 components ready!",\n    timestamp: "10:14 AM"\n  }}\n  isOutgoing={false}\n/>`,
+                    "ChatMessage"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-8 rounded-xl border border-border bg-card max-w-xl mx-auto space-y-4">
+              <ChatMessage
+                isOutgoing={false}
+                message={{
+                  id: "m-demo-1",
+                  sender: { id: "sarah", name: "Sarah Chen", role: "Design Lead" },
+                  content: "Hey Dhruv! Did you review the Batch 12 Scheduling & Workflow components?",
+                  timestamp: "10:14 AM",
+                  status: "read",
+                  attachments: [
+                    { id: "a-1", name: "workflow-spec.pdf", size: 245000, type: "file" },
+                  ],
+                }}
+              />
+
+              <ChatMessage
+                isOutgoing={true}
+                message={{
+                  id: "m-demo-2",
+                  sender: { id: "me", name: "Dhruv Kolhe", role: "VP Engineering" },
+                  content: "Yes! All 10 components are built with zero foreign dependencies and WAI-ARIA support.",
+                  timestamp: "10:16 AM",
+                  status: "read",
+                }}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 132 · CHAT WINDOW */}
+        {activeTab === "chat-window" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Chat Window</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Full messaging interface with conversation stream, presence indicator, search filter, and composer.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<ChatWindow\n  title="Design Sync"\n  onSendMessage={(text, files) => console.log(text, files)}\n/>`,
+                    "ChatWindow"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-4">
+              <ChatWindow />
+            </div>
+          </div>
+        )}
+
+        {/* 133 · CHAT COMPOSER */}
+        {activeTab === "chat-composer" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Chat Composer</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Message input bar with auto-resizing textarea, attachment chips, emoji shortcut, and send trigger.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<ChatComposer\n  onSend={(text, files) => handleSendMessage(text, files)}\n/>`,
+                    "ChatComposer"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-8 rounded-xl border border-border bg-card max-w-xl mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Interactive Composer</span>
+                <span>Last Sent: <strong className="text-primary font-mono">{demoComposerMsg}</strong></span>
+              </div>
+
+              <ChatComposer
+                onSend={(text) => setDemoComposerMsg(text || "Attachment sent")}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 134 · TYPING INDICATOR */}
+        {activeTab === "typing-indicator" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Typing Indicator</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Smooth bouncing dots presence indicator with bubble and text variants and reduced-motion fallback.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<TypingIndicator\n  active={true}\n  variant="bubble"\n/>`,
+                    "TypingIndicator"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-8 rounded-xl border border-border bg-card max-w-xl mx-auto space-y-6">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Simulation Toggle</span>
+                <button
+                  type="button"
+                  onClick={() => setDemoTypingActive(!demoTypingActive)}
+                  className="text-xs font-semibold text-primary hover:underline"
+                >
+                  {demoTypingActive ? "Pause Indicator" : "Activate Indicator"}
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <span className="text-[11px] font-semibold text-muted-foreground block">Bubble Variant</span>
+                  <TypingIndicator active={demoTypingActive} variant="bubble" />
+                </div>
+
+                <div className="space-y-1">
+                  <span className="text-[11px] font-semibold text-muted-foreground block">Text Variant</span>
+                  <TypingIndicator active={demoTypingActive} name="Sarah Chen" variant="text" />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 135 · CONVERSATION LIST */}
+        {activeTab === "conversation-list" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Conversation List</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Browse chats and channels with search filtering, unread badges, presence, and selection.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<ConversationList\n  selectedId={selectedId}\n  onSelectConversation={(item) => setSelectedId(item.id)}\n/>`,
+                    "ConversationList"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-md mx-auto space-y-4">
+              <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                <span>Selected Chat ID:</span>
+                <span className="font-mono text-primary font-bold">{demoSelectedConv}</span>
+              </div>
+              <ConversationList
+                selectedId={demoSelectedConv}
+                onSelectConversation={(c) => setDemoSelectedConv(c.id)}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 136 · USER PRESENCE */}
+        {activeTab === "user-presence" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">User Presence</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Configurable presence states (online, busy, away, offline, in-meeting) in badge, pill, and detailed modes.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<UserPresence status="online" variant="pill" />\n<UserPresence status="online" variant="detailed" userName="Dhruv Kolhe" />`,
+                    "UserPresence"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-xl mx-auto space-y-6">
+              <div className="space-y-2">
+                <span className="text-xs font-semibold text-muted-foreground block">Pill Badges</span>
+                <div className="flex flex-wrap items-center gap-3">
+                  <UserPresence status="online" variant="pill" />
+                  <UserPresence status="busy" variant="pill" />
+                  <UserPresence status="away" variant="pill" />
+                  <UserPresence status="in-meeting" variant="pill" />
+                  <UserPresence status="offline" variant="pill" />
+                </div>
+              </div>
+
+              <div className="space-y-2 pt-2 border-t border-border">
+                <span className="text-xs font-semibold text-muted-foreground block">Interactive Status Selector</span>
+                <UserPresence
+                  status={demoPresenceVal}
+                  onChangeStatus={(s) => setDemoPresenceVal(s)}
+                  variant="selector"
+                />
+              </div>
+
+              <div className="space-y-2 pt-2 border-t border-border">
+                <span className="text-xs font-semibold text-muted-foreground block">Detailed Profile Card</span>
+                <UserPresence
+                  status={demoPresenceVal}
+                  variant="detailed"
+                  userName="Dhruv Kolhe"
+                  userRole="Staff Architect"
+                  customMessage="Reviewing Batch 13 Collaboration Tools"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 137 · VIDEO CALL CONTROLS */}
+        {activeTab === "video-call-controls" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Video Call Controls</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Meeting dock with mute, camera, screen-share, hand raise, and safe simulation indicators.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<VideoCallControls\n  roomName="Design Systems Sync"\n  callDuration="24:18"\n  onToggleMic={(muted) => console.log("Muted:", muted)}\n/>`,
+                    "VideoCallControls"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-4">
+              <VideoCallControls />
+            </div>
+          </div>
+        )}
+
+        {/* 138 · ACTIVITY FEED */}
+        {activeTab === "activity-feed" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Activity Feed</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Chronological event timeline for commits, PR reviews, deployments, comments, and releases.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<ActivityFeed\n  groupByDate={true}\n  showFilters={true}\n  onEventClick={(ev) => console.log(ev)}\n/>`,
+                    "ActivityFeed"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-xl mx-auto space-y-4">
+              <ActivityFeed />
+            </div>
+          </div>
+        )}
+
+        {/* 139 · COMMENT THREAD */}
+        {activeTab === "comment-thread" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Comment Thread</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Nested discussion threads with multi-level replies, inline editing, deletion, and reactions.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<CommentThread\n  allowNesting={true}\n  onAddComment={(text, parentId) => console.log(text, parentId)}\n/>`,
+                    "CommentThread"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-4">
+              <CommentThread />
+            </div>
+          </div>
+        )}
+
+        {/* 140 · REVIEW / FEEDBACK PANEL */}
+        {activeTab === "review-feedback-panel" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Review / Feedback Panel</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Collect technical ratings and reviews with criteria breakdown, tags, and validation feedback.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<ReviewFeedbackPanel\n  onSubmitFeedback={(fb) => console.log("Feedback:", fb)}\n/>`,
+                    "ReviewFeedbackPanel"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-xl mx-auto space-y-4">
+              {demoFeedbackResult && (
+                <div className="p-3 rounded-lg bg-primary/10 border border-primary/20 text-xs text-primary font-medium">
+                  {demoFeedbackResult}
+                </div>
+              )}
+              <ReviewFeedbackPanel
+                onSubmitFeedback={(fb) =>
+                  setDemoFeedbackResult(
+                    `Received rating: ${fb.rating}/5 stars from ${fb.authorName}`
+                  )
+                }
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 141 · DIFF VIEWER */}
+        {activeTab === "diff-viewer" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Diff Viewer</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Compare code or text changes cleanly with split side-by-side and unified inline modes.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<DiffViewer\n  oldCode={oldCode}\n  newCode={newCode}\n  initialMode="split"\n/>`,
+                    "DiffViewer"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-3xl mx-auto space-y-4">
+              <DiffViewer />
+            </div>
+          </div>
+        )}
+
+        {/* 142 · TERMINAL EMULATOR */}
+        {activeTab === "terminal-emulator" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Terminal Emulator</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Interactive sandboxed terminal with safe built-in commands, history navigation, and ANSI styling.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<TerminalEmulator\n  promptPrefix="developer@chameleon-ui:~$"\n  onExecuteCommand={(cmd) => console.log(cmd)}\n/>`,
+                    "TerminalEmulator"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-4">
+              {demoTerminalCmd && (
+                <div className="flex items-center justify-between text-xs text-muted-foreground border-b border-border pb-2">
+                  <span>Last Executed:</span>
+                  <span className="font-mono text-primary font-bold">{demoTerminalCmd}</span>
+                </div>
+              )}
+              <TerminalEmulator
+                onExecuteCommand={(cmd) => setDemoTerminalCmd(cmd)}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 143 · LOG VIEWER */}
+        {activeTab === "log-viewer" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Log Viewer</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Filter and inspect application logs with search, severity levels, auto-scroll, and metadata JSON.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<LogViewer\n  initialLevel="ALL"\n  showSearch={true}\n  autoScroll={true}\n/>`,
+                    "LogViewer"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-3xl mx-auto space-y-4">
+              <LogViewer />
+            </div>
+          </div>
+        )}
+
+        {/* 144 · JSON VIEWER */}
+        {activeTab === "json-viewer" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">JSON Viewer</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Expandable/collapsible JSON tree inspector with syntax colors, search, and raw error handling.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<JSONViewer\n  data={jsonObject}\n  initialExpandedDepth={2}\n  showSearch={true}\n/>`,
+                    "JSONViewer"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-4">
+              <JSONViewer />
+            </div>
+          </div>
+        )}
+
+        {/* 145 · API REQUEST BUILDER */}
+        {activeTab === "api-request-builder" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">API Request Builder</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Configure HTTP methods, endpoints, query params, headers, payload body, and authentication.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<APIRequestBuilder\n  initialMethod="GET"\n  initialUrl="https://api.chameleon-ui.dev/v1/metrics"\n  onSendRequest={(req) => console.log(req)}\n/>`,
+                    "APIRequestBuilder"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-3xl mx-auto space-y-4">
+              {demoSentRequest && (
+                <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-700 dark:text-emerald-300 font-mono">
+                  {demoSentRequest}
+                </div>
+              )}
+              <APIRequestBuilder
+                onSendRequest={(req) =>
+                  setDemoSentRequest(
+                    `Dispatched: ${req.method} ${req.url} (${req.params.filter(p=>p.enabled).length} params, ${req.headers.filter(h=>h.enabled).length} headers)`
+                  )
+                }
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 146 · API RESPONSE VIEWER */}
+        {activeTab === "api-response-viewer" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">API Response Viewer</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Inspect HTTP response status, latency, payload size, JSON body formatting, and headers table.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<APIResponseViewer\n  response={responseData}\n/>`,
+                    "APIResponseViewer"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-3xl mx-auto space-y-4">
+              <APIResponseViewer />
+            </div>
+          </div>
+        )}
+
+        {/* 147 · REGEX TESTER */}
+        {activeTab === "regex-tester" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Regex Tester</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Test regular expressions with flags, live match highlighting, capture groups, and presets.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<RegexTester\n  initialPattern="(\\w+)@(\\w+\\.[a-z]{2,})"\n  initialFlags="g"\n/>`,
+                    "RegexTester"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-3xl mx-auto space-y-4">
+              <RegexTester />
+            </div>
+          </div>
+        )}
+
+        {/* 148 · CRON EXPRESSION BUILDER */}
+        {activeTab === "cron-expression-builder" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Cron Expression Builder</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Configure 5-part cron schedules with visual controls, human-readable explanations, and common presets.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<CronExpressionBuilder\n  initialExpression="0 9 * * 1"\n  onChange={(cron) => console.log(cron)}\n/>`,
+                    "CronExpressionBuilder"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-4">
+              <CronExpressionBuilder />
+            </div>
+          </div>
+        )}
+
+        {/* 149 · QUERY BUILDER */}
+        {activeTab === "query-builder" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Query Builder</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Construct database filters with condition groups (AND/OR), field operators, and SQL preview.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<QueryBuilder\n  initialQuery={query}\n  onChange={(q) => console.log(q)}\n/>`,
+                    "QueryBuilder"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-3xl mx-auto space-y-4">
+              <QueryBuilder />
+            </div>
+          </div>
+        )}
+
+        {/* 150 · FORMULA EDITOR */}
+        {activeTab === "formula-editor" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Formula Editor</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Spreadsheet-style formula bar with safe recursive evaluator (no eval), cell context, and syntax help.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<FormulaEditor\n  initialFormula="=SUM(A1, B2, 45)"\n  cellContext={{ A1: 120, B2: 80 }}\n  onFormulaChange={(formula, res) => console.log(formula, res)}\n/>`,
+                    "FormulaEditor"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-4">
+              <FormulaEditor
+                onFormulaChange={(_, res) => setDemoFormulaResult(res)}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* 151 · SPREADSHEET GRID */}
+        {activeTab === "spreadsheet-grid" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Spreadsheet Grid</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Editable spreadsheet grid with cell coordinates, keyboard navigation, and dynamic formula resolution.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<SpreadsheetGrid\n  rowsCount={5}\n  colsCount={4}\n  onChange={(data) => console.log(data)}\n/>`,
+                    "SpreadsheetGrid"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-3xl mx-auto space-y-4">
+              <SpreadsheetGrid />
+            </div>
+          </div>
+        )}
+
+        {/* 152 · CHART LEGEND */}
+        {activeTab === "chart-legend" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Chart Legend</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Toggle chart data series visibility with color swatches, metrics, and selection controls.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<ChartLegend\n  series={seriesList}\n  onChangeSeries={(s) => console.log(s)}\n/>`,
+                    "ChartLegend"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-4">
+              <ChartLegend />
+            </div>
+          </div>
+        )}
+
+        {/* 153 · CHART CROSSHAIR / TOOLTIP */}
+        {activeTab === "chart-crosshair-tooltip" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Chart Crosshair / Tooltip</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Interactive dual hairline crosshair tracking cursor coordinates with contextual data tooltip.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<ChartCrosshairTooltip\n  width={600}\n  height={240}\n/>`,
+                    "ChartCrosshairTooltip"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-4">
+              <ChartCrosshairTooltip />
+            </div>
+          </div>
+        )}
+
+        {/* 154 · HEATMAP */}
+        {activeTab === "heatmap" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Heatmap</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  2D intensity matrix mapping values to color ramps with cell inspection and min/max scale legend.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Heatmap\n  colorTheme="emerald"\n  showLegend={true}\n/>`,
+                    "Heatmap"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-4">
+              <Heatmap />
+            </div>
+          </div>
+        )}
+
+        {/* 155 · TREEMAP */}
+        {activeTab === "treemap" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Treemap</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Visualize hierarchical proportions accurately with nested squarified rectangles, labels, and drill-down.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<Treemap\n  colorTheme="emerald"\n  width={640}\n  height={360}\n  onNodeClick={(n) => console.log(n)}\n/>`,
+                    "Treemap"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-3xl mx-auto space-y-4">
+              <Treemap />
+            </div>
+          </div>
+        )}
+
+        {/* 156 · SANKEY DIAGRAM */}
+        {activeTab === "sankey-diagram" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Sankey Diagram</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Visualize weighted flows between categories with smooth cubic Bézier ribbons and invalid link tolerance.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<SankeyDiagram\n  width={720}\n  height={360}\n  onNodeClick={(n) => console.log(n)}\n/>`,
+                    "SankeyDiagram"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-3xl mx-auto space-y-4">
+              <SankeyDiagram />
+            </div>
+          </div>
+        )}
+
+        {/* 157 · NETWORK GRAPH */}
+        {activeTab === "network-graph" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Network Graph</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Display connected entities with interactive draggable nodes, selection, zoom/pan, and node inspector.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<NetworkGraph\n  width={740}\n  height={400}\n  onNodeSelect={(n) => console.log(n)}\n/>`,
+                    "NetworkGraph"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <NetworkGraph />
+            </div>
+          </div>
+        )}
+
+        {/* 158 · MAP MARKER / CLUSTER */}
+        {activeTab === "map-marker-cluster" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Map Marker / Cluster</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Group geographic points into proximity clusters across zoom levels with interactive pin details.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<MapMarkerCluster\n  width={740}\n  height={380}\n  clusterDistance={45}\n/>`,
+                    "MapMarkerCluster"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <MapMarkerCluster />
+            </div>
+          </div>
+        )}
+
+        {/* 159 · ONBOARDING TOUR */}
+        {activeTab === "onboarding-tour" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Onboarding Tour</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Step-by-step guided product walkthrough with spotlight targets, keyboard navigation, and completion state.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<OnboardingTour\n  onComplete={() => console.log("Tour completed")}\n  onDismiss={() => console.log("Tour dismissed")}\n/>`,
+                    "OnboardingTour"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-2xl mx-auto space-y-4">
+              <OnboardingTour />
+            </div>
+          </div>
+        )}
+
+        {/* 160 · SPOTLIGHT SEARCH */}
+        {activeTab === "spotlight-search" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Spotlight Search</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Global command search palette (⌘K) with category filtering, keyboard navigation, and quick preview.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<SpotlightSearch\n  onSelect={(item) => console.log(item)}\n/>`,
+                    "SpotlightSearch"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-3xl mx-auto space-y-4">
+              <SpotlightSearch />
+            </div>
+          </div>
+        )}
+
+        {/* 160b · APPLICATION SEARCH */}
+        {activeTab === "application-search" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Application Search</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Unified search across all registered application content — styles, components, and pages.
+                  Returns real matches from the live content index with text highlighting, category grouping, and keyboard navigation.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `import { ApplicationSearch } from "@/components/ui/application-search"\nimport { useRouter } from "next/navigation"\n\nconst router = useRouter()\n\n<ApplicationSearch\n  onSelect={(entry) => router.push(entry.href)}\n  maxPerCategory={6}\n/>`,
+                    "ApplicationSearch"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="grid gap-6 lg:grid-cols-2">
+              {/* Live interactive preview */}
+              <div className="rounded-xl border border-border bg-background p-6 space-y-4">
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground">
+                  Interactive Preview
+                </span>
+                <ApplicationSearch
+                  loading={isDisabled}
+                  error={isError}
+                  onSelect={(entry) => {
+                    /* In a real app: router.push(entry.href) */
+                    window.alert(`Selected: "${entry.title}" → ${entry.href}`)
+                  }}
+                  maxPerCategory={5}
+                />
+                <p className="text-[11px] text-muted-foreground">
+                  Toggle <strong>Disabled</strong> for loading state · Toggle <strong>Error</strong> for error state above.
+                  Type any component name, style, or keyword to see live results.
+                </p>
+              </div>
+
+              {/* States panel */}
+              <div className="space-y-4">
+                <div className="rounded-xl border border-border bg-background p-5 space-y-4">
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground block">
+                    States
+                  </span>
+
+                  {/* Normal */}
+                  <div className="space-y-1.5">
+                    <span className="text-xs font-semibold text-foreground">Normal — idle hint</span>
+                    <ApplicationSearch
+                      onSelect={() => {}}
+                      maxPerCategory={3}
+                      placeholder="Type to search…"
+                      className="max-h-64 overflow-hidden"
+                    />
+                  </div>
+                </div>
+
+                <div className="rounded-xl border border-border bg-background p-5 space-y-4">
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground block">
+                    Loading &amp; Error states
+                  </span>
+                  <div className="space-y-3">
+                    <ApplicationSearch
+                      loading
+                      maxPerCategory={3}
+                      placeholder="Searching…"
+                    />
+                    <ApplicationSearch
+                      error="Failed to load search index. Check your connection."
+                      maxPerCategory={3}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Behaviour notes */}
+            <div className="rounded-lg border border-border bg-muted/20 p-4 text-xs space-y-2">
+              <p className="font-semibold text-foreground">Behaviour notes</p>
+              <ul className="text-muted-foreground space-y-1 list-disc list-inside">
+                <li>Searches registered entries from SEARCH_INDEX (styles, components, pages)</li>
+                <li>Results sorted by relevance: exact title match &gt; prefix match &gt; contains match &gt; description/keyword match</li>
+                <li>Category filter pills narrow results without clearing the query</li>
+                <li>Text highlighting marks the matched query fragment inside titles and descriptions</li>
+                <li>Keyboard: ↑ ↓ navigate · Enter selects · Escape clears query</li>
+                <li>No private or sensitive content is indexed</li>
+              </ul>
+            </div>
+          </div>
+        )}
+
+        {/* 161 · PERMISSION MATRIX */}
+        {activeTab === "permission-matrix" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Permission Matrix</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Configure roles, permissions, and access levels using an interactive RBAC grid with client sandbox declaration.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<PermissionMatrix\n  onSavePermissions={(perms) => console.log(perms)}\n/>`,
+                    "PermissionMatrix"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <PermissionMatrix />
+            </div>
+          </div>
+        )}
+
+        {/* 162 · AUDIT LOG */}
+        {activeTab === "audit-log" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Audit Log</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Security and administrative audit trail with actor filtering, status filters, and changed state diff modal.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<AuditLog\n  onExportLogs={() => console.log("Export triggered")}\n/>`,
+                    "AuditLog"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <AuditLog />
+            </div>
+          </div>
+        )}
+
+        {/* 163 · FEATURE FLAG MANAGER */}
+        {activeTab === "feature-flag-manager" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Feature Flag Manager</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Progressive delivery toggles by environment and audience group with rollout percentage sliders.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<FeatureFlagManager\n  initialEnvironment="production"\n  onFlagChange={(flags) => console.log(flags)}\n/>`,
+                    "FeatureFlagManager"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-3xl mx-auto space-y-4">
+              <FeatureFlagManager />
+            </div>
+          </div>
+        )}
+
+        {/* 164 · VERSION HISTORY */}
+        {activeTab === "version-history" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Version History</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Compare revision differences with line diffs and safe functional rollback restoration.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<VersionHistory\n  onRestoreRevision={(rev) => console.log(rev)}\n/>`,
+                    "VersionHistory"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <VersionHistory />
+            </div>
+          </div>
+        )}
+
+        {/* 165 · DESIGN TOKEN EDITOR */}
+        {activeTab === "design-token-editor" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Design Token Editor</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Edit colors, typography, spacing, and corner radii safely in a scoped sandbox with CSS export.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<DesignTokenEditor\n  onTokensChange={(t) => console.log(t)}\n/>`,
+                    "DesignTokenEditor"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <DesignTokenEditor />
+            </div>
+          </div>
+        )}
+
+        {/* 166 · RESPONSIVE PREVIEW SWITCHER */}
+        {activeTab === "responsive-preview-switcher" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Responsive Preview Switcher</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Preview components across mobile, tablet, and desktop viewports with device frames and orientation toggles.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<ResponsivePreviewSwitcher\n  initialPreset="mobile-lg"\n/>`,
+                    "ResponsivePreviewSwitcher"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <ResponsivePreviewSwitcher />
+            </div>
+          </div>
+        )}
+
+        {/* 167 · ACCESSIBILITY AUDIT PANEL */}
+        {activeTab === "accessibility-audit-panel" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Accessibility Audit Panel</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Automated WCAG 2.1 rule checks and structured criteria for manual screen-reader testing.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<AccessibilityAuditPanel\n  onRunAudit={() => console.log("Audit re-run")}\n/>`,
+                    "AccessibilityAuditPanel"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <AccessibilityAuditPanel />
+            </div>
+          </div>
+        )}
+
+        {/* 168 · CONTRAST PAIR TESTER */}
+        {activeTab === "contrast-pair-tester" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Contrast Pair Tester</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Compare foreground and background colors with exact WCAG 2.1 relative luminance and compliance scoring.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<ContrastPairTester\n  initialForeground="#0f766e"\n  initialBackground="#ffffff"\n/>`,
+                    "ContrastPairTester"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-3xl mx-auto space-y-4">
+              <ContrastPairTester />
+            </div>
+          </div>
+        )}
+
+        {/* 169 · VISUAL REGRESSION COMPARATOR */}
+        {activeTab === "visual-regression-comparator" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Visual Regression Comparator</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Compare before-and-after screenshots with a draggable reveal slider, side-by-side mode, and onion-skin.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<VisualRegressionComparator\n  baselineTitle="v1.4"\n  currentTitle="v1.5"\n/>`,
+                    "VisualRegressionComparator"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <VisualRegressionComparator />
+            </div>
+          </div>
+        )}
+
+        {/* 170 · LIVE COMPONENT PLAYGROUND */}
+        {activeTab === "live-component-playground" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Live Component Playground</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Expose supported component props, themes, and sizes safely without arbitrary code execution.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<LiveComponentPlayground\n  initialLabel="Explore Tokens"\n  initialVariant="primary"\n/>`,
+                    "LiveComponentPlayground"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <LiveComponentPlayground />
+            </div>
+          </div>
+        )}
+
+        {/* 171 · COMPONENT DEPENDENCY GRAPH */}
+        {activeTab === "component-dependency-graph" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Component Dependency Graph</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Visualize relationships between tokens, primitives, composites, and high-level features.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<ComponentDependencyGraph\n  onSelectNode={(node) => console.log(node)}\n/>`,
+                    "ComponentDependencyGraph"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <ComponentDependencyGraph />
+            </div>
+          </div>
+        )}
+
+        {/* 172 · STATE MACHINE VISUALIZER */}
+        {activeTab === "state-machine-visualizer" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">State Machine Visualizer</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Finite state machine diagram with active node highlighting, event triggers, and transition log.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<StateMachineVisualizer\n  initialState="idle"\n  onTransition={(from, evt, to) => console.log(from, evt, to)}\n/>`,
+                    "StateMachineVisualizer"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-3xl mx-auto space-y-4">
+              <StateMachineVisualizer />
+            </div>
+          </div>
+        )}
+
+        {/* 173 · MOCK API RESPONSE GENERATOR */}
+        {activeTab === "mock-api-response-generator" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Mock API Response Generator</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Produce configurable sample API responses with realistic status codes, headers, and bodies.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<MockApiResponseGenerator\n  defaultStatus={200}\n  defaultTemplate="users"\n/>`,
+                    "MockApiResponseGenerator"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-3xl mx-auto space-y-4">
+              <MockApiResponseGenerator />
+            </div>
+          </div>
+        )}
+
+        {/* 174 · FORM VALIDATION PLAYGROUND */}
+        {activeTab === "form-validation-playground" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Form Validation Playground</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Test and inspect regex, password complexity, boundary clamping, and async validation rules in real-time.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<FormValidationPlayground\n  onValidSubmit={(data) => console.log(data)}\n/>`,
+                    "FormValidationPlayground"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <FormValidationPlayground />
+            </div>
+          </div>
+        )}
+
+        {/* 175 · KEYBOARD SHORTCUT EDITOR */}
+        {activeTab === "keyboard-shortcut-editor" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Keyboard Shortcut Editor</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Configure key bindings, verify collision safety against OS shortcuts, and test keystrokes live.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<KeyboardShortcutEditor\n  onShortcutsChange={(shortcuts) => console.log(shortcuts)}\n/>`,
+                    "KeyboardShortcutEditor"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <KeyboardShortcutEditor />
+            </div>
+          </div>
+        )}
+
+        {/* 176 · THEME TOKEN DIFF */}
+        {activeTab === "theme-token-diff" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Theme Token Diff</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Compare two theme configurations side-by-side and highlight added, removed, and modified tokens.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<ThemeTokenDiff\n  themeAName="Base Clean (Light)"\n  themeBName="Dark Tech (Cyan Glow)"\n/>`,
+                    "ThemeTokenDiff"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <ThemeTokenDiff />
+            </div>
+          </div>
+        )}
+
+        {/* 177 · RTL LAYOUT PREVIEW */}
+        {activeTab === "rtl-layout-preview" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">RTL Layout Preview</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Preview right-to-left components and bidirectional mirroring without mutating global document state.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<RtlLayoutPreview\n  initialDirection="rtl"\n  initialLanguage="ar"\n/>`,
+                    "RtlLayoutPreview"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <RtlLayoutPreview />
+            </div>
+          </div>
+        )}
+
+        {/* 178 · LOCALIZATION PREVIEW */}
+        {activeTab === "localization-preview" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Localization Preview</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Test localized strings, native Intl date/currency formatting, and text expansion layout stress.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<LocalizationPreview\n  initialLocale="de-DE"\n/>`,
+                    "LocalizationPreview"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <LocalizationPreview />
+            </div>
+          </div>
+        )}
+
+        {/* 179 · ANIMATION TIMELINE EDITOR */}
+        {activeTab === "animation-timeline-editor" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Animation Timeline Editor</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Scrub transition progress, adjust easing curves and keyframes, and export CSS animation rules.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<AnimationTimelineEditor\n  initialDurationMs={600}\n  initialEasing="spring-overshoot"\n/>`,
+                    "AnimationTimelineEditor"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <AnimationTimelineEditor />
+            </div>
+          </div>
+        )}
+
+        {/* 180 · COMPONENT USAGE ANALYTICS */}
+        {activeTab === "component-usage-analytics" && (
+          <div className="space-y-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+              <div>
+                <h3 className="text-lg font-bold text-foreground">Component Usage Analytics</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Inspect component usage frequency, dominant variants, and prop distributions with honest telemetry.
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  handleCopy(
+                    `<ComponentUsageAnalytics\n  onExportReport={(data) => console.log(data)}\n/>`,
+                    "ComponentUsageAnalytics"
+                  )
+                }
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500 mr-1" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+                {copied ? "Copied" : "Copy Code"}
+              </Button>
+            </div>
+
+            <div className="p-6 rounded-xl border border-border bg-card max-w-4xl mx-auto space-y-4">
+              <ComponentUsageAnalytics />
+            </div>
+          </div>
+        )}
+
         {/* 70 · PLAYGROUND */}
         {activeTab === "playground" && (
           <div className="space-y-8">
@@ -5980,7 +9586,7 @@ export function ComponentsDocumentationShowcase() {
                     <strong className="text-foreground block">Controlled &amp; Uncontrolled:</strong> Every input supports standard React state hooks or native FormData forms.
                   </p>
                   <p>
-                    <strong className="text-foreground block">25 Styles Synchronization:</strong> Seamlessly ported to every aesthetic in UI Hub with matching tokens, fonts, and dark mode.
+                    <strong className="text-foreground block">25 Styles Synchronization:</strong> Seamlessly ported to every aesthetic in Chameleon UI with matching tokens, fonts, and dark mode.
                   </p>
                 </div>
               </div>

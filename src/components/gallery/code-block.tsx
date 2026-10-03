@@ -43,6 +43,7 @@ export function CodeBlock({
         </div>
         <button
           onClick={onCopy}
+          data-track="copy-code"
           className={cn(
             "inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 font-mono text-[11px] transition-colors",
             copied

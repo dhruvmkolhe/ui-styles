@@ -1,5 +1,5 @@
 {
-  "name": "ui-hub-root",
+  "name": "chameleon-ui-root",
   "private": true,
   "type": "module",
   "scripts": {
@@ -16,7 +16,7 @@
     "lint": "eslint src",
     "build:cli": "cd cli && npm install && npm run build",
     "test:cli": "cd cli && npm test",
-    "ui-hub": "node cli/dist/cli.js",
+    "chameleon": "node cli/dist/cli.js",
     "cli:dev": "cd cli && npm run dev",
     "start": "cd backend && npm start",
     "sync:components": "cd backend && npm run sync:components",
