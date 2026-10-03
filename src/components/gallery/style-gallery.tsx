@@ -1,10 +1,9 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useCallback, memo } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ArrowLeft,
   Check,
   ChevronLeft,
   ChevronRight,
@@ -28,6 +27,7 @@ import type {
   StyleMeta,
   StyleSlug,
 } from "@/lib/styles/types";
+import { STYLE_LIST } from "@/lib/styles/registry";
 import { copyCode } from "@/lib/copy";
 import { CodeBlock } from "@/components/gallery/code-block";
 import { Button } from "@/components/ui/button";
@@ -58,16 +58,7 @@ import { GRADIENT_MODERN_BUNDLE } from "@/components/styles/gradient-modern";
 import { KINETIC_BUNDLE } from "@/components/styles/kinetic";
 import { TYPOGRAPHY_FIRST_BUNDLE } from "@/components/styles/typography-first";
 import { METROPOLITAN_BUNDLE } from "@/components/styles/metropolitan";
-
-import { getCommonFormDefs } from "@/components/styles/common-form-defs";
-import { getCommonFeedbackDefs } from "@/components/styles/common-feedback-defs";
-import { getCommonNavigationDefs } from "@/components/styles/common-navigation-defs";
-import { getCommonOverlayDefs } from "@/components/styles/common-overlay-defs";
-import { getCommonDataDisplayDefs } from "@/components/styles/common-data-display-defs";
-import { getCommonLayoutDefs } from "@/components/styles/common-layout-defs";
-import { getCommonStatusDefs } from "@/components/styles/common-status-defs";
-import { getCommonMediaDefs } from "@/components/styles/common-media-defs";
-import { getCommonAdvancedDefs } from "@/components/styles/common-advanced-defs";
+import { resolveStyleBundleDefs } from "@/lib/styles/common-defs";
 
 const BUNDLES: Partial<Record<StyleSlug, StyleBundle>> = {
   glassmorphism: GLASSMORPHISM_BUNDLE,
@@ -308,6 +299,7 @@ function FullScreenPreviewOverlay({
             size="sm"
             variant="outline"
             onClick={handleCopy}
+            data-track="copy-code"
             className={cn("h-8 text-xs", copied && "border-emerald-500 text-emerald-500")}
           >
             {copied ? <Check className="h-3.5 w-3.5 mr-1 text-emerald-500" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
@@ -386,7 +378,10 @@ function FullScreenPreviewOverlay({
 
 /* ------------------------------------------------------------------ */
 
-function GallerySection({
+// Memoized: the parent re-renders on every scroll-spy update while scrolling,
+// but a section only needs to re-render when its own props change (mode,
+// isOpen, data). Callbacks below are stabilized with useCallback so memo holds.
+const GallerySection = memo(function GallerySection({
   def,
   index,
   bundle,
@@ -402,8 +397,8 @@ function GallerySection({
   styleName: string;
   mode: Mode;
   isOpen: boolean;
-  onToggleCode: () => void;
-  onFullScreen: () => void;
+  onToggleCode: (id: string) => void;
+  onFullScreen: (index: number) => void;
 }) {
   const [copied, setCopied] = useState(false);
   const code = useMemo(() => (isOpen ? def.code(mode) : ""), [isOpen, def, mode]);
@@ -422,48 +417,49 @@ function GallerySection({
   return (
     <section id={def.id} className="scroll-mt-36">
       {/* header */}
-      <div className="mb-2 flex flex-wrap items-center justify-between gap-3">
+      <div className="mb-2.5 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-baseline gap-2.5">
-          <span className="font-mono text-xs text-muted-foreground/70">
+          <span className="font-mono text-sm font-semibold text-muted-foreground/70">
             {String(index + 1).padStart(2, "0")}
           </span>
-          <h3 className="text-lg font-bold tracking-tight text-foreground">{def.name}</h3>
+          <h2 className="text-xl font-bold tracking-tight text-foreground">{def.name}</h2>
         </div>
         <div className="flex items-center gap-2">
           <Button
             variant="ghost"
             size="sm"
-            onClick={onFullScreen}
-            className="h-8 text-xs text-muted-foreground hover:text-foreground"
+            onClick={() => onFullScreen(index)}
+            className="h-9 px-3 text-xs sm:text-sm text-muted-foreground hover:text-foreground"
             title="Full screen preview"
           >
-            <Maximize2 className="h-3.5 w-3.5 mr-1" />
+            <Maximize2 className="h-4 w-4 mr-1.5" />
             Full screen
           </Button>
           <Button
             variant="ghost"
             size="sm"
-            onClick={onToggleCode}
-            className="h-8 text-xs text-muted-foreground hover:text-foreground"
+            onClick={() => onToggleCode(def.id)}
+            className="h-9 px-3 text-xs sm:text-sm text-muted-foreground hover:text-foreground"
           >
-            <TerminalSquare className="h-3.5 w-3.5 mr-1" />
+            <TerminalSquare className="h-4 w-4 mr-1.5" />
             {isOpen ? "Hide code" : "View code"}
           </Button>
           <Button
             size="sm"
             variant="outline"
             onClick={handleCopy}
+            data-track="copy-code"
             className={cn(
-              "h-8 text-xs transition-all",
+              "h-9 px-3.5 text-xs sm:text-sm transition-all",
               copied && "border-emerald-500 text-emerald-500"
             )}
           >
-            {copied ? <Check className="h-3.5 w-3.5 mr-1 text-emerald-500" /> : <Copy className="h-3.5 w-3.5 mr-1" />}
+            {copied ? <Check className="h-4 w-4 mr-1.5 text-emerald-500" /> : <Copy className="h-4 w-4 mr-1.5" />}
             {copied ? "Copied!" : "Copy Code"}
           </Button>
         </div>
       </div>
-      <p className="mb-4 text-xs leading-relaxed text-muted-foreground">
+      <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
         {def.description}
       </p>
 
@@ -490,12 +486,12 @@ function GallerySection({
         {/* Quick floating full-screen button */}
         <button
           type="button"
-          onClick={onFullScreen}
+          onClick={() => onFullScreen(index)}
           aria-label={`Full screen preview for ${def.name}`}
-          className="absolute top-3 right-3 z-10 inline-flex items-center justify-center h-7 w-7 rounded-md border border-border/60 bg-background/60 backdrop-blur-xs text-muted-foreground hover:text-foreground hover:bg-background/90 opacity-60 group-hover/stage:opacity-100 transition-all shadow-xs"
+          className="absolute top-3.5 right-3.5 z-10 inline-flex items-center justify-center h-8 w-8 rounded-lg border border-border/60 bg-background/60 backdrop-blur-xs text-muted-foreground hover:text-foreground hover:bg-background/90 opacity-60 group-hover/stage:opacity-100 transition-all shadow-xs"
           title="Full screen preview"
         >
-          <Maximize2 className="h-3.5 w-3.5" />
+          <Maximize2 className="h-4 w-4" />
         </button>
 
         {Decor && (
@@ -505,11 +501,11 @@ function GallerySection({
         )}
         <div
           className={cn(
-            "relative min-h-[220px] p-4 sm:p-8 md:p-12 flex items-center justify-center transition-colors duration-300 overflow-x-auto max-w-full",
+            "relative min-h-[260px] sm:min-h-[300px] p-6 sm:p-10 md:p-14 flex items-center justify-center transition-colors duration-300 overflow-x-auto max-w-full",
             bundle.text(mode)
           )}
         >
-          <div className="w-full max-w-2xl flex items-center justify-center max-w-full">
+          <div className="w-full max-w-4xl flex items-center justify-center max-w-full">
             <Preview mode={mode} />
           </div>
         </div>
@@ -536,7 +532,7 @@ function GallerySection({
       </AnimatePresence>
     </section>
   );
-}
+});
 
 /* ------------------------------------------------------------------ */
 
@@ -550,37 +546,9 @@ export function StyleGallery({
   const baseBundle = BUNDLES[slug];
   const bundle = useMemo(() => {
     if (!baseBundle) return undefined;
-    const formDefs = getCommonFormDefs(slug);
-    const feedbackDefs = getCommonFeedbackDefs(slug);
-    const navigationDefs = getCommonNavigationDefs(slug);
-    const overlayDefs = getCommonOverlayDefs(slug);
-    const dataDisplayDefs = getCommonDataDisplayDefs(slug);
-    const layoutDefs = getCommonLayoutDefs(slug);
-    const statusDefs = getCommonStatusDefs(slug);
-    const mediaDefs = getCommonMediaDefs(slug);
-    const advancedDefs = getCommonAdvancedDefs(slug);
-    const allDefs = [
-      ...baseBundle.defs,
-      ...formDefs,
-      ...feedbackDefs,
-      ...navigationDefs,
-      ...overlayDefs,
-      ...dataDisplayDefs,
-      ...layoutDefs,
-      ...statusDefs,
-      ...mediaDefs,
-      ...advancedDefs,
-    ];
-    const seen = new Set<string>();
-    const uniqueDefs = allDefs.filter((d) => {
-      if (seen.has(d.id)) return false;
-      seen.add(d.id);
-      return true;
-    });
-
     return {
       ...baseBundle,
-      defs: uniqueDefs,
+      defs: resolveStyleBundleDefs(baseBundle.defs, slug),
     };
   }, [baseBundle, slug]);
 
@@ -638,8 +606,15 @@ export function StyleGallery({
 
   if (!bundle) return <ComingSoon meta={meta} />;
 
-  const toggleCode = (id: string) =>
-    setOpenCode((prev) => ({ ...prev, [id]: !prev[id] }));
+  // Stable callbacks so memoized sections skip re-renders on scroll-spy updates.
+  const toggleCode = useCallback(
+    (id: string) => setOpenCode((prev) => ({ ...prev, [id]: !prev[id] })),
+    []
+  );
+  const handleFullScreen = useCallback(
+    (index: number) => setFullScreenIndex(index),
+    []
+  );
 
   const modeBtn = (m: Mode) =>
     cn(
@@ -651,17 +626,27 @@ export function StyleGallery({
   const activeDef = bundle.defs[activeIndex] || bundle.defs[0];
   const activeNumberStr = String(Math.max(1, activeIndex + 1)).padStart(2, "0");
 
+  // Related styles for internal linking: the next 4 aesthetics after the
+  // current one (cyclical), so every gallery page links deeper into the hub.
+  const relatedStyles = useMemo(() => {
+    const start = STYLE_LIST.findIndex((s) => s.slug === slug);
+    return Array.from({ length: 4 }, (_, n) => {
+      const s = STYLE_LIST[(start + 1 + n + STYLE_LIST.length) % STYLE_LIST.length];
+      return s;
+    }).filter((s) => s.slug !== slug);
+  }, [slug]);
+
   return (
-    <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+    <div className="container max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
       <div className="flex gap-8 lg:gap-12 items-start">
         {/* ================================================================== */}
         {/* LEFT SIDEBAR: Sticky from top to bottom (Desktop)                   */}
         {/* ================================================================== */}
-        <aside className="hidden lg:flex w-64 xl:w-72 shrink-0 flex-col sticky top-20 h-[calc(100vh-5.5rem)] pb-4 pr-6 border-r border-border/40">
+        <aside className="hidden lg:flex w-72 xl:w-80 shrink-0 flex-col sticky top-20 h-[calc(100vh-5.5rem)] pb-4 pr-6 border-r border-border/40">
           {/* Search Filter Box */}
-          <div className="relative mb-3">
+          <div className="relative mb-3.5">
             <label htmlFor="component-filter-search" className="sr-only">Filter components</label>
-            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground/60 pointer-events-none" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60 pointer-events-none" />
             <input
               id="component-filter-search"
               name="componentFilter"
@@ -672,14 +657,14 @@ export function StyleGallery({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Filter components (e.g. Button)"
-              className="w-full rounded-lg border border-border/70 bg-card/60 pl-8 pr-7 py-1.5 text-xs text-foreground placeholder:text-muted-foreground/60 outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/40 transition-all"
+              className="w-full rounded-lg border border-border/70 bg-card/60 pl-9 pr-8 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/40 transition-all"
             />
             {searchQuery && (
               <button
                 type="button"
                 aria-label="Clear filter"
                 onClick={() => setSearchQuery("")}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] text-muted-foreground hover:text-foreground"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground hover:text-foreground"
               >
                 ✕
               </button>
@@ -687,25 +672,25 @@ export function StyleGallery({
           </div>
 
           {/* Directory Count Header */}
-          <div className="flex items-center justify-between pb-2 mb-2 border-b border-border/40">
-            <span className="text-xs font-semibold text-foreground/90">Component Directory</span>
-            <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-muted/60 text-muted-foreground">
+          <div className="flex items-center justify-between pb-2.5 mb-2 border-b border-border/40">
+            <span className="text-sm font-semibold text-foreground/90">Component Directory</span>
+            <span className="font-mono text-xs px-2 py-0.5 rounded bg-muted/60 text-muted-foreground font-medium">
               {filteredDefs.length} items
             </span>
           </div>
 
           {/* Section Category Header */}
-          <div className="flex items-center justify-between mb-1.5 px-1">
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground">
+          <div className="flex items-center justify-between mb-2 px-1">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground">
               Components
             </span>
-            <span className="text-[9px] font-mono text-muted-foreground/60 uppercase">
+            <span className="text-[10px] font-mono text-muted-foreground/60 uppercase">
               {searchQuery ? "FILTERED" : "ALL"}
             </span>
           </div>
 
           {/* Scrollable Component List */}
-          <nav className="flex-1 overflow-y-auto space-y-0.5 pr-1 scrollbar-thin">
+          <nav className="flex-1 overflow-y-auto space-y-1 pr-1 scrollbar-thin">
             {filteredDefs.map((d) => {
               const originalIndex = bundle.defs.findIndex((item) => item.id === d.id);
               const isActive = d.id === activeId;
@@ -723,16 +708,16 @@ export function StyleGallery({
                     }
                   }}
                   className={cn(
-                    "group flex items-center justify-between gap-2 rounded-lg px-2.5 py-1.5 text-xs transition-all",
+                    "group flex items-center justify-between gap-2.5 rounded-lg px-3 py-2 text-sm transition-all",
                     isActive
                       ? "bg-accent text-accent-foreground font-semibold border border-border/60 shadow-xs"
                       : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
                   )}
                 >
-                  <div className="flex items-center gap-2 min-w-0">
+                  <div className="flex items-center gap-2.5 min-w-0">
                     <span
                       className={cn(
-                        "w-4 font-mono text-[10px]",
+                        "w-5 font-mono text-xs",
                         isActive ? "text-foreground font-bold" : "text-muted-foreground/60"
                       )}
                     >
@@ -744,7 +729,7 @@ export function StyleGallery({
               );
             })}
             {filteredDefs.length === 0 && (
-              <div className="p-4 text-center text-xs text-muted-foreground">
+              <div className="p-4 text-center text-sm text-muted-foreground">
                 No components match &quot;{searchQuery}&quot;
               </div>
             )}
@@ -752,14 +737,14 @@ export function StyleGallery({
 
           {/* Bottom Status Pill: Closest to viewport */}
           <div className="pt-3 border-t border-border/40 mt-auto flex items-center justify-between text-xs">
-            <div className="flex items-center gap-1.5 text-muted-foreground text-[11px]">
+            <div className="flex items-center gap-2 text-muted-foreground text-xs">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
               </span>
               <span>Closest to viewport</span>
             </div>
-            <span className="font-mono text-[10px] font-semibold px-2 py-0.5 rounded bg-muted/60 text-muted-foreground border border-border/40 uppercase truncate max-w-[120px]">
+            <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded bg-muted/60 text-muted-foreground border border-border/40 uppercase truncate max-w-[130px]">
               {activeNumberStr}. {activeDef?.name || "BUTTON"}
             </span>
           </div>
@@ -771,26 +756,47 @@ export function StyleGallery({
         <main className="flex-1 min-w-0 pb-20">
           {/* Header */}
           <div className="pb-8">
-            <Link
-              href="/explore"
-              className="inline-flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground mb-4"
-            >
-              <ArrowLeft className="h-3.5 w-3.5" />
-              All styles
-            </Link>
+            <nav aria-label="Breadcrumb" className="mb-4">
+              <ol className="flex flex-wrap items-center gap-1.5 text-sm">
+                <li>
+                  <Link
+                    href="/"
+                    className="font-medium text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li aria-hidden="true">
+                  <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/60" />
+                </li>
+                <li>
+                  <Link
+                    href="/explore"
+                    className="font-medium text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    Explore
+                  </Link>
+                </li>
+                <li aria-hidden="true">
+                  <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/60" />
+                </li>
+                <li aria-current="page" className="font-semibold text-foreground">
+                  {meta.name}
+                </li>
+              </ol>
+            </nav>
 
             <div className="flex flex-wrap items-center gap-3">
               <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl text-foreground">
                 {meta.name}
               </h1>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/25 px-3 py-1 text-xs font-semibold text-emerald-400">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                Live · {bundle.defs.length} Components
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/60 px-3.5 py-1 text-xs sm:text-sm font-semibold text-muted-foreground">
+                {bundle.defs.length} Components
               </span>
             </div>
 
-            <p className="mt-2 text-base sm:text-lg font-medium text-foreground/90">{meta.tagline}</p>
-            <p className="mt-2 max-w-2xl text-xs sm:text-sm leading-relaxed text-muted-foreground">
+            <p className="mt-2 text-lg sm:text-xl font-semibold text-foreground/90">{meta.tagline}</p>
+            <p className="mt-2.5 max-w-3xl text-sm sm:text-base leading-relaxed text-muted-foreground">
               {meta.description}
             </p>
 
@@ -800,22 +806,22 @@ export function StyleGallery({
                 {meta.tags.map((t) => (
                   <span
                     key={t}
-                    className="rounded-full border border-border/70 bg-card/60 px-3 py-1 text-xs text-muted-foreground"
+                    className="rounded-full border border-border/70 bg-card/60 px-3.5 py-1 text-xs sm:text-sm font-medium text-muted-foreground"
                   >
                     {t}
                   </span>
                 ))}
               </div>
 
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-2">
                 {meta.palette.map((hex) => (
                   <span key={hex} className="group/pal relative">
                     <span
-                      className="block h-5 w-5 rounded-full border border-border/80 shadow-xs"
+                      className="block h-6 w-6 rounded-full border border-border/80 shadow-xs"
                       style={{ backgroundColor: hex }}
                       title={hex}
                     />
-                    <span className="pointer-events-none absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-popover px-1.5 py-0.5 font-mono text-[9px] text-popover-foreground opacity-0 shadow transition-opacity group-hover/pal:opacity-100">
+                    <span className="pointer-events-none absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-popover px-1.5 py-0.5 font-mono text-[10px] text-popover-foreground opacity-0 shadow transition-opacity group-hover/pal:opacity-100">
                       {hex}
                     </span>
                   </span>
@@ -825,16 +831,16 @@ export function StyleGallery({
           </div>
 
           {/* Sticky Toolbar: Preview mode Light/Dark toggle */}
-          <div className="sticky top-16 z-30 -mx-4 mb-10 border-y border-border/70 bg-background/95 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6">
+          <div className="sticky top-16 z-30 -mx-4 mb-10 border-y border-border/70 bg-background px-4 py-3 sm:-mx-6 sm:px-6">
             <div className="flex items-center justify-between gap-4">
-              <p className="flex items-center gap-2 text-xs text-muted-foreground">
-                <TerminalSquare className="h-3.5 w-3.5 shrink-0" />
+              <p className="flex items-center gap-2 text-sm text-muted-foreground">
+                <TerminalSquare className="h-4 w-4 shrink-0" />
                 <span>
                   {bundle.defs.length} components · rendered live · copy-ready HTML + Tailwind
                 </span>
               </p>
               <div className="flex items-center gap-2.5 shrink-0">
-                <span className="hidden text-xs text-muted-foreground sm:inline">
+                <span className="hidden text-sm text-muted-foreground sm:inline">
                   Preview mode
                 </span>
                 <div className="inline-flex items-center rounded-lg border border-border bg-card p-1">
@@ -847,7 +853,7 @@ export function StyleGallery({
                       />
                     )}
                     <span className="relative z-10 flex items-center gap-1.5">
-                      <Sun className="h-3.5 w-3.5" /> Light
+                      <Sun className="h-4 w-4" /> Light
                     </span>
                   </button>
                   <button onClick={() => setMode("dark")} className={modeBtn("dark")}>
@@ -859,7 +865,7 @@ export function StyleGallery({
                       />
                     )}
                     <span className="relative z-10 flex items-center gap-1.5">
-                      <Moon className="h-3.5 w-3.5" /> Dark
+                      <Moon className="h-4 w-4" /> Dark
                     </span>
                   </button>
                 </div>
@@ -896,11 +902,41 @@ export function StyleGallery({
                 styleName={meta.name}
                 mode={mode}
                 isOpen={Boolean(openCode[d.id])}
-                onToggleCode={() => toggleCode(d.id)}
-                onFullScreen={() => setFullScreenIndex(i)}
+                onToggleCode={toggleCode}
+                onFullScreen={handleFullScreen}
               />
             ))}
           </div>
+
+          {/* Related styles: internal link hub at the foot of every gallery */}
+          <section aria-labelledby="related-styles-heading" className="mt-20 border-t border-border/60 pt-10">
+            <h2 id="related-styles-heading" className="text-2xl font-bold tracking-tight text-foreground">
+              Keep exploring
+            </h2>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+              Liked {meta.name}? Each aesthetic below is its own complete gallery of
+              copy-ready components in light and dark modes.
+            </p>
+            <div className="mt-6 grid gap-4 sm:grid-cols-2">
+              {relatedStyles.map((s) => (
+                <Link
+                  key={s.slug}
+                  href={`/style/${s.slug}`}
+                  className="group rounded-xl border border-border bg-card p-5 shadow-xs transition-all hover:border-teal-500/50 hover:shadow-md"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-base font-bold text-foreground group-hover:text-teal-600 dark:group-hover:text-teal-400">
+                      {s.name}
+                    </span>
+                    <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+                  </div>
+                  <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                    {s.tagline}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </section>
         </main>
       </div>
 

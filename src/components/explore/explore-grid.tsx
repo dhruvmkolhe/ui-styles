@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { motion } from "framer-motion";
 import { Search, Sparkles, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { STYLE_LIST } from "@/lib/styles/registry";
@@ -51,10 +50,10 @@ export function ExploreGrid() {
   return (
     <div className="mt-8 space-y-8">
       {/* Search and Category Filter Bar */}
-      <div className="mx-auto max-w-3xl space-y-4">
+      <div className="mx-auto max-w-3xl space-y-5">
         {/* Search input */}
         <div className="relative">
-          <Search className="absolute left-3.5 top-3 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-4 top-3.5 h-4.5 w-4.5 text-muted-foreground" />
           <input
             id="explore-search-input"
             name="exploreSearch"
@@ -65,21 +64,21 @@ export function ExploreGrid() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search styles by name, vibe, or keyword (e.g. glass, retro, minimal)..."
-            className="w-full rounded-lg border border-border bg-card py-2.5 pl-10 pr-10 text-sm shadow-sm outline-none placeholder:text-muted-foreground focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-colors"
+            className="w-full rounded-xl border border-border bg-card py-3 pl-11 pr-11 text-base shadow-sm outline-none placeholder:text-muted-foreground focus:border-teal-500 focus:ring-1 focus:ring-teal-500 transition-colors"
           />
           {query && (
             <button
               onClick={() => setQuery("")}
-              className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+              className="absolute right-4 top-3.5 text-muted-foreground hover:text-foreground"
               aria-label="Clear search"
             >
-              <X className="h-4 w-4" />
+              <X className="h-4.5 w-4.5" />
             </button>
           )}
         </div>
 
         {/* Category Pills */}
-        <div className="flex flex-wrap items-center justify-center gap-2">
+        <div className="flex flex-wrap items-center justify-center gap-2.5">
           {CATEGORIES.map((c) => {
             const active = category === c.id;
             return (
@@ -87,7 +86,7 @@ export function ExploreGrid() {
                 key={c.id}
                 onClick={() => setCategory(c.id)}
                 className={cn(
-                  "rounded-md border px-3.5 py-1.5 text-xs font-semibold transition-all",
+                  "rounded-lg border px-4 py-2 text-sm font-semibold transition-all",
                   active
                     ? "border-teal-600 bg-teal-600 text-white shadow-sm"
                     : "border-border bg-card text-muted-foreground hover:border-teal-500/40 hover:text-foreground"
@@ -101,7 +100,7 @@ export function ExploreGrid() {
       </div>
 
       {/* Results count status */}
-      <div className="flex items-center justify-between border-b border-border pb-3 text-xs text-muted-foreground">
+      <div className="flex items-center justify-between border-b border-border pb-4 text-sm text-muted-foreground">
         <span>Showing {styles.length} of {STYLE_LIST.length} aesthetics</span>
         {(query || category !== "all") && (
           <button
@@ -118,7 +117,7 @@ export function ExploreGrid() {
 
       {/* Grid */}
       {styles.length > 0 ? (
-        <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {styles.map((s) => (
             <StyleCard key={s.slug} meta={s} variant="full" />
           ))}

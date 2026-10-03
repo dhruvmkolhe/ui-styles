@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Code2, Layers, Palette, Sparkles, SquareTerminal } from "lucide-react";
+import { ArrowRight, Code2, Palette, Sparkles, SquareTerminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const stats = [
@@ -13,79 +13,94 @@ const stats = [
 
 export function Hero() {
   return (
-    <section className="relative border-b border-border/80 bg-background/50 py-16 sm:py-24">
-      <div className="container flex flex-col items-center text-center">
-        {/* Chakra style announcement badge */}
-        <div className="inline-flex items-center gap-2 rounded-full border border-teal-500/25 bg-teal-50 px-3.5 py-1 text-xs font-semibold text-teal-700 dark:bg-teal-950/40 dark:text-teal-300">
-          <span className="flex h-2 w-2 rounded-full bg-teal-500" />
+    <section className="relative overflow-hidden border-b border-border/80 bg-background py-14 sm:py-20 lg:py-24">
+      {/* Ambient background: dot grid + aurora orbs */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        <div
+          className="absolute inset-0 opacity-60 dark:opacity-40"
+          style={{
+            backgroundImage:
+              "radial-gradient(rgba(20, 184, 166, 0.22) 1px, transparent 1px)",
+            backgroundSize: "26px 26px",
+            maskImage:
+              "radial-gradient(ellipse 75% 65% at 50% 35%, black 30%, transparent 75%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 75% 65% at 50% 35%, black 30%, transparent 75%)",
+          }}
+        />
+        <div className="absolute -top-32 left-1/2 h-96 w-[42rem] -translate-x-1/2 rounded-full bg-teal-500/20 blur-[120px] dark:bg-teal-500/15" />
+        <div className="absolute top-24 -left-32 h-72 w-72 rounded-full bg-violet-500/15 blur-[100px] dark:bg-violet-500/10" />
+        <div className="absolute top-32 -right-32 h-72 w-72 rounded-full bg-cyan-500/15 blur-[100px] dark:bg-cyan-500/10" />
+      </div>
+
+      <div className="container relative flex flex-col items-center text-center">
+        {/* Announcement badge */}
+        <div className="inline-flex items-center gap-2 rounded-full border border-teal-500/25 bg-teal-50 px-4 py-1.5 text-xs sm:text-sm font-medium text-teal-700 shadow-xs dark:bg-teal-950/40 dark:text-teal-300">
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-teal-500 opacity-60" />
+            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-teal-500" />
+          </span>
           <span>Open Source UI Component Hub</span>
           <span className="text-muted-foreground/60">·</span>
           <span className="font-normal text-muted-foreground">375+ Components</span>
         </div>
 
-        {/* Chakra clean bold title */}
-        <h1 className="mt-6 max-w-4xl text-balance text-4xl font-extrabold tracking-tight text-foreground sm:text-6xl sm:leading-[1.12]">
+        {/* Clean bold title */}
+        <h1 className="mt-6 max-w-5xl text-balance text-4xl font-extrabold tracking-tight text-foreground sm:text-6xl lg:text-7xl sm:leading-[1.1]">
           Every UI Style.{" "}
-          <span className="text-teal-600 dark:text-teal-400">Authentically Crafted.</span>
+          <span className="text-gradient">Authentically Crafted.</span>
         </h1>
 
         {/* Subtitle */}
-        <p className="mt-5 max-w-2xl text-balance text-base text-muted-foreground sm:text-lg sm:leading-relaxed">
+        <p className="mt-5 max-w-3xl text-balance text-base text-muted-foreground sm:text-xl sm:leading-relaxed">
           A curated collection of production-ready components crafted across 25
           authentic aesthetics — from Japandi and Glassmorphism to Neobrutalism
           and Minimalist. Copy clean HTML and Tailwind CSS snippets with zero setup.
         </p>
 
-        {/* Chakra Button Group */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <Button asChild size="lg" className="rounded-md bg-teal-600 px-6 font-semibold text-white shadow-sm hover:bg-teal-700 active:bg-teal-800">
-            <Link href="/explore">
+        {/* Button Group */}
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+          <Button asChild size="lg" className="h-12 rounded-lg bg-teal-600 px-8 text-base font-semibold text-white shadow-lg shadow-teal-600/25 hover:bg-teal-700 active:bg-teal-800">
+            <Link href="/explore" data-track="cta-explore-styles">
               Explore Styles
-              <ArrowRight className="h-4 w-4 ml-1.5" />
+              <ArrowRight className="h-4.5 w-4.5 ml-2" />
             </Link>
           </Button>
           <Button
             asChild
             size="lg"
             variant="outline"
-            className="rounded-md border-border bg-card px-6 font-semibold shadow-sm hover:bg-muted"
+            className="h-12 rounded-lg border-border bg-card px-8 text-base font-semibold shadow-sm hover:bg-muted"
           >
-            <Link href="/components">
-              <SquareTerminal className="h-4 w-4 mr-2 text-teal-600 dark:text-teal-400" />
+            <Link href="/components" data-track="cta-component-catalog">
+              <SquareTerminal className="h-4.5 w-4.5 mr-2.5 text-teal-600 dark:text-teal-400" />
               Component Catalog
-            </Link>
-          </Button>
-          <Button
-            asChild
-            size="lg"
-            variant="ghost"
-            className="rounded-md px-4 font-semibold text-muted-foreground hover:bg-muted hover:text-foreground"
-          >
-            <Link href="/component-vault">
-              <Layers className="h-4 w-4 mr-2" />
-              Component Vault
             </Link>
           </Button>
         </div>
 
-        {/* Chakra Stat Cards */}
-        <div className="mt-14 grid w-full max-w-4xl grid-cols-2 gap-3 sm:grid-cols-4">
-          {stats.map((s) => (
-            <div
-              key={s.label}
-              className="rounded-lg border border-border bg-card p-4 text-left shadow-sm transition-all hover:border-teal-500/50 hover:shadow-md"
-            >
-              <div className="flex items-center justify-between">
-                <p className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-                  {s.value}
-                </p>
-                <s.icon className="h-4 w-4 text-teal-600 dark:text-teal-400" />
+        {/* Stat Strip */}
+        <div className="mt-10 w-full max-w-5xl xl:max-w-6xl overflow-hidden rounded-2xl border border-border bg-border/50 shadow-sm">
+          <div className="grid grid-cols-2 gap-px sm:grid-cols-4">
+            {stats.map((s) => (
+              <div
+                key={s.label}
+                className="flex items-center gap-3.5 bg-card px-5 py-4 sm:px-6 sm:py-5 transition-colors hover:bg-muted/40"
+              >
+                <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-teal-500/20 bg-teal-50 text-teal-600 dark:bg-teal-950/40 dark:text-teal-400">
+                  <s.icon className="h-5 w-5" />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-2xl font-extrabold tracking-tight text-foreground">
+                    {s.value}
+                  </p>
+                  <p className="mt-0.5 truncate text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    {s.label}
+                  </p>
+                </div>
               </div>
-              <p className="mt-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                {s.label}
-              </p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
