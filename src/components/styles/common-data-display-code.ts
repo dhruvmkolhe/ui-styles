@@ -229,6 +229,81 @@ export function getDataDisplayCodeForStyle(
   </table>
 </div>`;
 
+    case "faq":
+      return `<!-- ${k.styleName} · FAQ Section -->
+<!-- Interactive frequently asked questions accordion with category filters and contact banner -->
+
+<div class="w-full max-w-2xl mx-auto space-y-6">
+  <!-- FAQ Header -->
+  <div class="text-center space-y-2">
+    <h3 class="text-2xl font-bold tracking-tight ${k.text}">${k.styleName} Knowledge Base</h3>
+    <p class="text-xs ${k.muted}">Find answers to common questions about setup, tokens, and licensing.</p>
+  </div>
+
+  <!-- Search Filter -->
+  <div class="relative w-full">
+    <input
+      type="text"
+      placeholder="Search answers..."
+      class="${k.input} ${k.radius} w-full pl-9 pr-4 py-2 text-xs border"
+    />
+  </div>
+
+  <!-- FAQ Accordion List -->
+  <div class="space-y-3">
+    <!-- Item 1: Open State -->
+    <div class="${k.panel} ${k.radius} border overflow-hidden">
+      <button
+        type="button"
+        aria-expanded="true"
+        class="w-full flex items-center justify-between p-4 text-left transition-colors font-semibold text-xs ${k.strong}"
+      >
+        <span>How do I install these components into Next.js?</span>
+        <svg class="h-4 w-4 shrink-0 rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      <div class="px-4 pb-4 pt-1 text-xs ${k.muted} leading-relaxed border-t border-current/10">
+        Every component is crafted with Tailwind CSS classes and accessible HTML primitives. Copy the snippet directly into your project or install individual primitives from the UI directory.
+      </div>
+    </div>
+
+    <!-- Item 2: Collapsed State -->
+    <div class="${k.panel} ${k.radius} border overflow-hidden">
+      <button
+        type="button"
+        aria-expanded="false"
+        class="w-full flex items-center justify-between p-4 text-left transition-colors font-semibold text-xs ${k.strong}"
+      >
+        <span>Are these components fully accessible (WCAG 2.1)?</span>
+        <svg class="h-4 w-4 shrink-0 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Item 3: Collapsed State -->
+    <div class="${k.panel} ${k.radius} border overflow-hidden">
+      <button
+        type="button"
+        aria-expanded="false"
+        class="w-full flex items-center justify-between p-4 text-left transition-colors font-semibold text-xs ${k.strong}"
+      >
+        <span>Can I use this theme in commercial software?</span>
+        <svg class="h-4 w-4 shrink-0 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Support Footer Banner -->
+  <div class="${k.panelSoft} ${k.radius} border p-4 flex items-center justify-between gap-4">
+    <p class="text-xs ${k.muted}">Still have questions? Our engineering team is here to help.</p>
+    <a href="#" class="${k.btnPrimarySm} text-xs shrink-0">Contact Support</a>
+  </div>
+</div>`;
+
     default:
       return `<!-- ${k.styleName} · ${componentId} -->\n<div class="${k.panel} ${k.radius} border p-4 text-xs">Preview code for ${componentId}</div>`;
   }

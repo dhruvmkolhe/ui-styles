@@ -7,7 +7,7 @@ export interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 }
 
 export const Image = React.forwardRef<HTMLImageElement, ImageProps>(
-  ({ className, alt, fallbackText = "Failed to load", ...props }, ref) => {
+  ({ className, alt, fallbackText = "Failed to load", loading = "lazy", decoding = "async", ...props }, ref) => {
     const [isLoading, setIsLoading] = React.useState(true)
     const [hasError, setHasError] = React.useState(false)
 
@@ -26,6 +26,8 @@ export const Image = React.forwardRef<HTMLImageElement, ImageProps>(
           <img
             ref={ref}
             alt={alt || "Image"}
+            loading={loading}
+            decoding={decoding}
             className={cn(
               "w-full h-full object-cover transition-opacity duration-300",
               isLoading ? "opacity-0" : "opacity-100"

@@ -57,6 +57,7 @@ import {
 } from "@/components/ui/description-list"
 import { KeyValueList, KeyValueRow } from "@/components/ui/key-value-list"
 import { DataGrid, type DataGridColumn } from "@/components/ui/data-grid"
+import { Faq } from "@/components/ui/faq"
 
 /* ========================================================================== */
 /* 1 · Table Preview                                                          */
@@ -784,3 +785,72 @@ export function DataGridPreview({ slug, mode }: { slug: StyleSlug; mode: Mode })
     </div>
   )
 }
+
+/* ========================================================================== */
+/* 11 · FAQ Preview                                                           */
+/* ========================================================================== */
+export function FaqPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
+  const k = getStyleFormKit(slug, mode)
+
+  const faqItems = [
+    {
+      id: "installation",
+      category: "Installation",
+      question: "How do I install these components into my Next.js app?",
+      answer: (
+        <span>
+          Every component is designed with standard Tailwind CSS and accessible Radix primitives. Simply copy the clean code block directly into your project or install individual UI primitives from the <code className={cn("px-1.5 py-0.5 rounded font-mono text-[11px]", k.panelSoft)}>components/ui/</code> directory.
+        </span>
+      ),
+    },
+    {
+      id: "theming",
+      category: "Customization",
+      question: `What makes the ${k.styleName} aesthetic unique?`,
+      answer: (
+        <span>
+          This design aesthetic combines handcrafted design tokens including radius (<code className={cn("px-1 rounded font-mono text-[11px]", k.panelSoft)}>{k.radius || "custom"}</code>), custom focus rings, high-contrast borders, and paired light/dark color accents tailored specifically to {k.styleName}.
+        </span>
+      ),
+    },
+    {
+      id: "accessibility",
+      category: "Accessibility",
+      question: "Are these components fully WCAG 2.1 compliant?",
+      answer: (
+        <span>
+          Yes. All interactive disclosures and buttons feature WAI-ARIA compliance, full keyboard tab-navigation with Space/Enter toggle handling, and visible high-contrast focus indicators.
+        </span>
+      ),
+    },
+    {
+      id: "licensing",
+      category: "Licensing",
+      question: "Can I use these components in commercial applications?",
+      answer: (
+        <span>
+          100% free and open-source. All code is MIT-licensed and free to use in personal, open-source, or commercial production projects with no attribution required.
+        </span>
+      ),
+    },
+  ]
+
+  return (
+    <div className="mx-auto w-full max-w-xl">
+      <Faq
+        items={faqItems}
+        title={`${k.styleName} Knowledge Base`}
+        subtitle="Frequently asked questions and technical implementation details."
+        allowMultiple={false}
+        defaultOpenId="installation"
+        itemClassName={cn(k.panel, k.radius, "border")}
+        supportCta={{
+          text: "Can't find what you're looking for?",
+          actionText: "Contact Support",
+          href: "mailto:support@chameleon-ui.design",
+        }}
+      />
+    </div>
+  )
+}
+

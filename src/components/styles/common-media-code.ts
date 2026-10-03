@@ -8,7 +8,7 @@ export function getMediaCodeForStyle(slug: StyleSlug, componentId: string, mode:
     case "image":
       return `<!-- ${k.styleName} · Image -->\n<div class="relative overflow-hidden ${k.radius} bg-muted w-full h-64">\n  <img src="..." alt="Image" class="w-full h-full object-cover" />\n</div>`
     case "image-gallery":
-      return `<!-- ${k.styleName} · Image Gallery -->\n<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">\n  <div class="relative aspect-square overflow-hidden ${k.radius} group cursor-pointer">\n    <img src="..." class="w-full h-full object-cover" />\n  </div>\n</div>`
+      return `<!-- ${k.styleName} · Image Gallery -->\n<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">\n  <div class="relative aspect-square overflow-hidden ${k.radius} group cursor-pointer">\n    <img src="..." alt="Gallery image" class="w-full h-full object-cover" />\n  </div>\n</div>`
     case "carousel":
       return `<!-- ${k.styleName} · Carousel -->\n<div class="relative group w-full">\n  <div class="flex overflow-x-auto snap-x snap-mandatory gap-4">\n    <div class="flex-none w-[80%] snap-center ${k.radius}">...</div>\n  </div>\n</div>`
     case "video-player":
@@ -16,7 +16,7 @@ export function getMediaCodeForStyle(slug: StyleSlug, componentId: string, mode:
     case "audio-player":
       return `<!-- ${k.styleName} · Audio Player -->\n<div class="flex w-full items-center p-2 ${k.radius} bg-muted/50 border">\n  <audio controls class="w-full h-10 outline-none"></audio>\n</div>`
     case "lightbox":
-      return `<!-- ${k.styleName} · Lightbox -->\n<button class="relative group overflow-hidden ${k.radius} cursor-zoom-in block w-full h-full">\n  <img src="..." />\n</button>`
+      return `<!-- ${k.styleName} · Lightbox -->\n<button class="relative group overflow-hidden ${k.radius} cursor-zoom-in block w-full h-full" aria-label="Open image in lightbox">\n  <img src="..." alt="Enlarged preview" />\n</button>`
     case "media-card":
       return `<!-- ${k.styleName} · Media Card -->\n<div class="${k.radius} border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">\n  <div class="relative w-full overflow-hidden">...</div>\n  <div class="p-4 flex flex-col flex-1">...</div>\n</div>`
     case "code-block":

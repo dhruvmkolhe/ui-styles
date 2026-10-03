@@ -210,7 +210,7 @@ export function getFeedbackCodeForStyle(
         Pro-Tip · Zero CSS Overhead
       </h5>
       <p class="${k.text} leading-relaxed">
-        Every style in UI Hub is generated exclusively with utility classes. No external stylesheets required.
+        Every style in Chameleon UI is generated exclusively with utility classes. No external stylesheets required.
       </p>
     </div>
   </div>

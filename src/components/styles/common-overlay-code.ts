@@ -94,7 +94,7 @@ export function getOverlayCodeForStyle(
       <div class="space-y-3 text-xs">
         <label class="block space-y-1">
           <span class="font-semibold ${k.strong}">Project Namespace</span>
-          <input type="text" value="@ui-hub/design" class="${k.input} ${k.radius} w-full px-3 py-1.5 border text-xs" />
+          <input type="text" value="@chameleon-ui/design" class="${k.input} ${k.radius} w-full px-3 py-1.5 border text-xs" />
         </label>
       </div>
     </div>
@@ -188,7 +188,7 @@ export function getOverlayCodeForStyle(
   <div class="rounded-xl border border-current/10 bg-current/5 p-4 flex flex-col justify-between">
     <div>
       <span class="text-[9px] font-bold uppercase rounded px-1.5 py-0.5 bg-teal-500/20 text-teal-600">NEW</span>
-      <h6 class="font-bold mt-2">UI Hub CLI v3.0</h6>
+      <h6 class="font-bold mt-2">Chameleon UI CLI v3.0</h6>
       <p class="text-[11px] ${k.muted} mt-1">Export entire style bundles with zero dependencies.</p>
     </div>
     <a href="#" class="text-teal-600 font-bold mt-3">Read Release Notes →</a>

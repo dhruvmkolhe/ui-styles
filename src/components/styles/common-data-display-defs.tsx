@@ -11,6 +11,7 @@ import {
   DescriptionListPreview,
   KeyValueListPreview,
   DataGridPreview,
+  FaqPreview,
 } from "./common-data-display-previews";
 import { getDataDisplayCodeForStyle } from "./common-data-display-code";
 
@@ -95,6 +96,14 @@ export function getCommonDataDisplayDefs(slug: StyleSlug): ComponentDef[] {
         "Spreadsheet-style 2D matrix featuring roving tabindex, active cell highlighting, and full directional arrow-key navigation.",
       Preview: ({ mode }: { mode: Mode }) => <DataGridPreview slug={slug} mode={mode} />,
       code: (mode: Mode) => getDataDisplayCodeForStyle(slug, "data-grid", mode),
+    },
+    {
+      id: "faq",
+      name: "FAQ Section",
+      description:
+        "Interactive frequently asked questions accordion with category badges, smooth toggle transitions, and stylized answers across light and dark modes.",
+      Preview: ({ mode }: { mode: Mode }) => <FaqPreview slug={slug} mode={mode} />,
+      code: (mode: Mode) => getDataDisplayCodeForStyle(slug, "faq", mode),
     },
   ];
 }

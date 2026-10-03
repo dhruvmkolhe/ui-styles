@@ -663,7 +663,7 @@ export function CalloutPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) 
               Pro-Tip · Zero CSS Overhead
             </h5>
             <p className={cn("leading-relaxed", k.text)}>
-              Every style in UI Hub is generated exclusively with utility classes. No external stylesheets or runtime CSS-in-JS overhead are required.
+              Every style in Chameleon UI is generated exclusively with utility classes. No external stylesheets or runtime CSS-in-JS overhead are required.
             </p>
           </div>
         </div>

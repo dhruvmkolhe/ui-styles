@@ -252,7 +252,7 @@ export function HoverCardPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }
 export function DrawerPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) {
   const k = getStyleFormKit(slug, mode)
   const [open, setOpen] = useState(false)
-  const [projectName, setProjectName] = useState("Antigravity UI Hub")
+  const [projectName, setProjectName] = useState("Antigravity Chameleon UI")
 
   return (
     <div className="mx-auto w-full max-w-lg space-y-4">

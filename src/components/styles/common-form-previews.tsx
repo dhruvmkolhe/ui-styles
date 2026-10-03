@@ -740,7 +740,7 @@ export function FormFieldPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }
             className={cn("w-full text-xs font-mono", k.input)}
           />
           <span className={cn("absolute right-3 text-xs font-mono opacity-50")}>
-            .uihub.dev
+            .chameleon-ui.dev
           </span>
         </div>
         <p className={cn("text-[11px] leading-tight", k.faint)}>

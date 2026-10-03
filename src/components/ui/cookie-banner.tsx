@@ -24,7 +24,7 @@ export interface CookieBannerProps {
   className?: string
 }
 
-const STORAGE_KEY = "ui-hub-cookie-consent"
+const STORAGE_KEY = "chameleon-ui-cookie-consent"
 
 export function CookieBanner({
   storageKey = STORAGE_KEY,

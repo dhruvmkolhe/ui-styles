@@ -215,7 +215,7 @@ export function SidebarPreview({ slug, mode }: { slug: StyleSlug; mode: Mode }) 
             </div>
             {!isCollapsed && (
               <div className="flex-1 min-w-0">
-                <div className={cn("text-xs font-bold truncate", k.strong)}>UI Hub Studio</div>
+                <div className={cn("text-xs font-bold truncate", k.strong)}>Chameleon UI Studio</div>
                 <div className={cn("text-[10px] font-mono", k.muted)}>v2.4.0</div>
               </div>
             )}

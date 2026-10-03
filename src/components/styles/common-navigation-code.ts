@@ -76,7 +76,7 @@ export function getNavigationCodeForStyle(
 <aside aria-label="Main sidebar" class="${k.panel} ${k.radius} w-64 border flex flex-col h-[420px] select-none">
   <!-- Header -->
   <div class="h-14 border-b border-current/10 px-4 flex items-center justify-between">
-    <span class="font-extrabold text-sm tracking-tight ${k.strong}">UI HUB STUDIO</span>
+    <span class="font-extrabold text-sm tracking-tight ${k.strong}">CHAMELEON UI STUDIO</span>
     <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-current/10">PRO</span>
   </div>
 
